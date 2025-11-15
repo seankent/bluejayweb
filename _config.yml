@@ -17,3 +17,9 @@ logo: "/assets/images/bluejay_devices.svg"
 
 # Set a path/url to a favicon that will be displayed by the browser
 favicon_ico: "/assets/images/logo.svg"
+
+# Disable breadcrumbs site-wide
+breadcrumbs: false
+
+# Disable TOC site-wide
+has_toc: false

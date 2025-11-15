@@ -1,1 +1,46 @@
 $bluejayblue: #304e67;
+//$bluejayblue: #ff0000;
+
+//$feedback-color: rgba(227, 242, 253, 0.3); 
+//$feedback-color: rgba(48, 78, 103, 0.01); 
+
+// Scale everything proportionally
+//$root-font-size: 18px;  // Default is 16px
+//$body-font-size: .fs-10;
+//$font-size: fs-6;
+//$body-font-size: fs-6;
+
+// Increase all font sizes proportionally
+//$font-size-1: 0.6875rem;   // Default: 0.5625rem
+//$font-size-2: 0.8125rem;   // Default: 0.6875rem
+//$font-size-3: 0.9375rem;   // Default: 0.75rem
+//$font-size-4: 1.0625rem;   // Default: 0.875rem
+//$font-size-5: 1.25rem;     // Default: 1rem (main body text)
+//$font-size-6: 1.375rem;    // Default: 1.125rem
+//$font-size-7: 1.75rem;     // Default: 1.5rem
+//$font-size-8: 2.25rem;     // Default: 2rem
+//$font-size-9: 2.5rem;      // Default: 2.25rem
+//$font-size-10: 3rem;       // Default: 2.625re
+
+// Single scale factor to adjust all font sizes
+$font-scale: 1.15;  // 1.25 = 25% larger, 1.5 = 50% larger, etc.
+
+// Apply the scale factor to all font sizes
+$font-size-1: 0.5625rem * $font-scale;
+$font-size-2: 0.6875rem * $font-scale;
+$font-size-3: 0.75rem * $font-scale;
+$font-size-4: 0.875rem * $font-scale;
+$font-size-5: 1rem * $font-scale;      // Main body text
+$font-size-6: 1.125rem * $font-scale;
+$font-size-7: 1.5rem * $font-scale;
+$font-size-8: 2rem * $font-scale;
+$font-size-9: 2.25rem * $font-scale;
+$font-size-10: 2.625rem * $font-scale;
+
+$content-width: 55rem;
+
+$nav-width: 20rem;
+$nav-width-md: 20rem;
+
+// Body text font
+//$body-font-family: "Georgia", "Times New Roman", serif;
