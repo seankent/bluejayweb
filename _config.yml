@@ -5,4 +5,15 @@ theme: just-the-docs
 url: https://seankent.github.io/bluejayweb
 
 aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  #Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  "Bluejay Devices on GitHub": 
+    - "https://github.com/seankent/bluejayweb"
+
+
+color_scheme: bluejay 
+
+# Set a path/url to a logo that will be displayed instead of the title
+logo: "/assets/images/bluejay_devices.svg"
+
+# Set a path/url to a favicon that will be displayed by the browser
+favicon_ico: "/assets/images/logo.svg"
