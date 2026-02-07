@@ -2,12 +2,10 @@
 let scrollTimeouts = new Map();
 
 
-function load()
-{
+function load() {
     let config = JSON.parse(localStorage.getItem('config') || '{}');
 
-    if (JSON.stringify(config) === '{}')
-    {
+    if (JSON.stringify(config) === '{}') {
         config["nav"] = {};
     }
 
@@ -15,27 +13,22 @@ function load()
     return config
 }
 
-function store(config)
-{
+function store(config) {
     console.log(config);
     localStorage.setItem('config', JSON.stringify(config));
 }
 
 
-function save()
-{
+function save() {
     console.log("[INFO] Saving state.");
 
-    let config = load() ;
+    let config = load();
 
-    for (let element of document.querySelectorAll(".nav-item"))
-    {
-        if (element.classList.contains("show"))
-        {
+    for (let element of document.querySelectorAll(".nav-item")) {
+        if (element.classList.contains("show")) {
             config["nav"][element.id] = "yes";
         }
-        else
-        {
+        else {
             config["nav"][element.id] = "no";
         }
     }
@@ -44,24 +37,30 @@ function save()
 }
 
 
-function restore()
-{
+function restore() {
     console.log("[INFO] Restoring state.");
 
-    let config = load() ;
+    let config = load();
 
-    for (let element of document.querySelectorAll(".nav-item"))
-    {
-        if (element.id in config["nav"] && config["nav"][element.id] === "yes")
-        {
+    for (let element of document.querySelectorAll(".nav-item")) {
+        if (element.id in config["nav"] && config["nav"][element.id] === "yes") {
             element.classList.add('show');
         }
 
-        if (element.getAttribute('data-page-id') == document.body.getAttribute('data-page-id')) 
-        {
+        if (element.getAttribute('data-page-id') == document.body.getAttribute('data-page-id')) {
             element.classList.add("active");
         }
+    }
 
+    // Expand all parent nav-items if they aren't already expanded
+    for (let element of document.querySelectorAll(".nav-item")) {
+        if (element.getAttribute('data-page-id') == document.body.getAttribute('data-page-id')) {
+            element = element.parentElement
+            while (element.classList.contains("nav-item")) {
+                element.classList.add("show");
+                element = element.parentElement
+            }
+        }
     }
 }
 
@@ -77,7 +76,7 @@ function removeNavMenuExpanded() {
 }
 
 function toggleNavExpanded() {
-    this.parentElement.parentElement.classList.toggle('show');
+    this.parentElement.classList.toggle('show');
 }
 
 function navButtonClick() {
@@ -101,49 +100,49 @@ function setDisplayImage() {
 
 
 function handleScroll(e) {
-//    let element = e.target;
-//    element.classList.add('is-scrolling');
-//
-//    // Clear existing timeout for THIS specific element
-//    if (scrollTimeouts.has(element)) {
-//        clearTimeout(scrollTimeouts.get(element));
-//    }
-//
-//    //scrollTimeout = setTimeout(() => {
-//    //    element.classList.remove('is-scrolling');
-//    //}, 500);
-//
-//
-//    // Create new timeout for THIS specific element
-//    const timeout = setTimeout(() => {
-//        element.classList.remove('is-scrolling');
-//        //scrollTimeouts.delete(scrollingElement); // Clean up
-//    }, 1000);
-//
-//    // Store the timeout with the element as the key
-//    scrollTimeouts.set(element, timeout);
+    //    let element = e.target;
+    //    element.classList.add('is-scrolling');
+    //
+    //    // Clear existing timeout for THIS specific element
+    //    if (scrollTimeouts.has(element)) {
+    //        clearTimeout(scrollTimeouts.get(element));
+    //    }
+    //
+    //    //scrollTimeout = setTimeout(() => {
+    //    //    element.classList.remove('is-scrolling');
+    //    //}, 500);
+    //
+    //
+    //    // Create new timeout for THIS specific element
+    //    const timeout = setTimeout(() => {
+    //        element.classList.remove('is-scrolling');
+    //        //scrollTimeouts.delete(scrollingElement); // Clean up
+    //    }, 1000);
+    //
+    //    // Store the timeout with the element as the key
+    //    scrollTimeouts.set(element, timeout);
 }
 
 
 
 for (let element of document.querySelectorAll('.nav-hamburger-button')) {
-    element.addEventListener('click', addNavMenuExpanded); 
+    element.addEventListener('click', addNavMenuExpanded);
 }
 
 for (let element of document.querySelectorAll('.nav-cross-button')) {
-    element.addEventListener('click', removeNavMenuExpanded); 
+    element.addEventListener('click', removeNavMenuExpanded);
 }
 
-for (let element of document.querySelectorAll('.nav-button-chevron')) {
-    element.addEventListener('click', toggleNavExpanded); 
+for (let element of document.querySelectorAll('.nav-toggle')) {
+    element.addEventListener('click', toggleNavExpanded);
 }
 
 for (let element of document.querySelectorAll('.nav-button')) {
-    element.addEventListener('click', navButtonClick); 
+    element.addEventListener('click', navButtonClick);
 }
 
 for (let element of document.querySelectorAll('.product-gallery-thumbnail')) {
-    element.addEventListener('click', setDisplayImage); 
+    element.addEventListener('click', setDisplayImage);
 }
 
 // Save state whenever leaving page
@@ -183,3 +182,40 @@ document.addEventListener('scroll', handleScroll, true);
 //        autoHideDelay: 1000,
 //    },
 //});
+
+function copyToClipboard(e) {
+    // Traverse up to find the button if the click hit the SVG or path
+    let button = e.target.closest('.copy-button');
+    if (!button) return;
+
+    let wrapper = button.parentElement;
+    let codeHilite = wrapper.querySelector('.codehilite');
+    let codeBlock = codeHilite ? codeHilite.querySelector('pre') : null;
+
+    // Icons
+    const clipboardIcon = '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    const checkIcon = '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
+    if (codeBlock) {
+        let text = codeBlock.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            button.innerHTML = checkIcon;
+            button.classList.add("copied");
+
+            setTimeout(() => {
+                button.innerHTML = clipboardIcon;
+                button.classList.remove("copied");
+            }, 1000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+}
+
+function setupCopyButtons() {
+    for (let button of document.querySelectorAll('.copy-button')) {
+        button.addEventListener('click', copyToClipboard);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', setupCopyButtons);

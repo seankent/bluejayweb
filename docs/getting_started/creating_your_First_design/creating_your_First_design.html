@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="Creating Your First Design - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Creating Your First Design | Bluejay Devices</title>
+        <link href="/images/logo.svg" rel="icon"/>
+        <link href="/css/styles.css" rel="stylesheet"/>
+        <link href="/css/content.css" rel="stylesheet"/>
+        <link href="/css/syntax.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/></head>
+    <body data-page-id="docs-getting_started-creating_your_First_design">
+        <div class="header">
+            <a class="nav-logo" href="/index.html">
+                <img alt="logo" src="/images/bluejay_devices.svg"/>
+            </a>
+            <div class="header-right">
+                <div class="navbar">
+                    <a class="button navbar-button" href="/about/about.html">
+                        About
+                    </a>
+                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                        Docs
+                    </a>
+                    <a class="button navbar-button" href="/contact/contact.html">
+                        Contact
+                    </a>
+                </div>
+                <a aria-label="GitHub" class="icon-button" href="https://github.com/Bluejay-Devices" rel="noopener noreferrer" target="_blank">
+                        <svg fill="currentColor" height="2rem" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                        </svg>
+                </a>
+                <div class="nav-hamburger-button">
+                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="800px" stroke="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 0 24 24" width="800px" xmlns="http://www.w3.org/2000/svg"><path d="M20 7L4 7" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 12L4 12" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 17L4 17" stroke-linecap="round" stroke-width="1.5"></path></svg></div>
+            </div>
+        </div>
+        <div class="side-nav">
+            <div class="nav-item" data-page-id="" id="side-nav-">
+                <div class="nav-toggle">
+                    <div>
+                        Home
+                    </div>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="side-nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="docs" id="side-nav-docs">
+                    <div class="nav-toggle">
+                        <div>
+                            Docs
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-overview" id="side-nav-docs-overview">
+                        <div class="nav-button">
+                            <a href="/docs/overview/overview.html">
+                                Overview
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-getting_started" id="side-nav-docs-getting_started">
+                        <div class="nav-toggle">
+                            <div>
+                                Getting Started
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-introduction" id="side-nav-docs-getting_started-introduction">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/introduction/introduction.html">
+                                    Introduction
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-installing_the_tools" id="side-nav-docs-getting_started-installing_the_tools">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/installing_the_tools/installing_the_tools.html">
+                                    Installing the Tools
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-creating_your_First_design" id="side-nav-docs-getting_started-creating_your_First_design">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/creating_your_First_design/creating_your_First_design.html">
+                                    Creating Your First Design
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-building_the_bitstream" id="side-nav-docs-getting_started-building_the_bitstream">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/building_the_bitstream/building_the_bitstream.html">
+                                    Building the Bitstream
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-programming_the_board" id="side-nav-docs-getting_started-programming_the_board">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/programming_the_board/programming_the_board.html">
+                                    Programming the Board
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_info" id="side-nav-docs-board_info">
+                        <div class="nav-toggle">
+                            <div>
+                                Board Info
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-board_io" id="side-nav-docs-board_info-board_io">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/board_io/board_io.html">
+                                    Board I/O
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-pin_mappings" id="side-nav-docs-board_info-pin_mappings">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/pin_mappings/pin_mappings.html">
+                                    Pin Mappings
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-power_delivery" id="side-nav-docs-board_info-power_delivery">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/power_delivery/power_delivery.html">
+                                    Power Delivery
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-configuration_and_programming" id="side-nav-docs-board_info-configuration_and_programming">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/configuration_and_programming/configuration_and_programming.html">
+                                    Configuration and Programming
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-status_leds" id="side-nav-docs-board_info-status_leds">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/status_leds/status_leds.html">
+                                    Status LEDs
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-board_topology" id="side-nav-docs-board_info-board_topology">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/board_topology/board_topology.html">
+                                    Board Topology
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-mechanical_info" id="side-nav-docs-board_info-mechanical_info">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/mechanical_info/mechanical_info.html">
+                                    Mechanical Info
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-tutorials" id="side-nav-docs-tutorials">
+                        <div class="nav-toggle">
+                            <div>
+                                Tutorials
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-tutorials-using_the_pll" id="side-nav-docs-tutorials-using_the_pll">
+                            <div class="nav-button">
+                                <a href="/docs/tutorials/using_the_pll/using_the_pll.html">
+                                    Using the PLL
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-tutorials-using_the_ebr" id="side-nav-docs-tutorials-using_the_ebr">
+                            <div class="nav-button">
+                                <a href="/docs/tutorials/using_the_ebr/using_the_ebr.html">
+                                    Using the EBR
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="contact" id="side-nav-contact">
+                    <div class="nav-button">
+                        <a href="/contact/contact.html">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="docs">
+                <div class="markdown-content">
+                    <h1>Creating Your First Design</h1>
+                    <h2>Overview</h2>
+                    <p>In this section, you'll create a simple LED blinker design. This design will blink the Bluejay's USR LED on and off at 1 Hz, demonstrating the basics of writing RTL code and mapping signals to physical pins.</p>
+                    <h2>The Blinky Module</h2>
+                    <p>Create a file called <code>blinky.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><span class="code-label">Systemverilog</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6000000</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="o">~</span><span class="n">out</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <p>The module has one input, <code>clk</code>, which connects to the board's 12 MHz oscillator, and one output, <code>out</code>, which connects to the USR LED.</p>
+                    <h2>How It Works</h2>
+                    <p>To generate a 1 Hz square wave, the design uses a counter (<code>cnt</code>) that increments on each clock cycle. When the counter reaches <code>MAX_COUNT</code>, it resets to 0 and toggles the LED output.</p>
+                    <p>For a 12 MHz clock (83.33 ns period), <code>MAX_COUNT</code> is set to 6,000,000 so that the LED toggles every 0.5 seconds (once per second for a complete on/off cycle). The counter is 24 bits wide to accommodate this value.</p>
+                    <p>Note that this simple design doesn't include a reset signal. Instead, it relies on the FPGA's flip-flops being automatically initialized to <code>1'b0</code> during configuration. This choice was made so the design works without having to connect an external button or switch to drive a reset pin.</p>
+                    <h2>Pin Constraints</h2>
+                    <p>Next, we need to map the design's ports to physical pins on the FPGA using a pin constraints file.</p>
+                    <p>Pin constraints files are simple - each line maps a signal in the design to a physical pin on the FPGA package. The basic format is:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="n">set_io</span><span class="w"> </span><span class="o">&lt;</span><span class="n">signal_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pin_number</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+                    <p>Additionally, we can specify timing constraints such as clock frequencies.</p>
+                    <p>Create a file called <code>blinky.pcf</code> with the following contents:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>set_io clk C4
+set_io out E1
+set_frequency clk 12.0
+</code></pre></div></div>
+
+                    <p>The first assignment connects <code>clk</code> to pin <code>C4</code>, which is connected to the 12 MHz oscillator on the Bluejay board. The second assignment connects <code>out</code> to pin <code>E1</code>, which drives the USR LED via header pin <code>D16</code>.</p>
+                    <p>The <code>set_frequency</code> constraint tells NextPNR (the place-and-route tool) that the <code>clk</code> signal runs at 12.0 MHz. NextPNR will:
+                    1. Use this constraint during place-and-route timing analysis
+                    2. Report whether timing was met in its output
+                    3. Show you the maximum achieved frequency (Fmax) and slack</p>
+                    <p>You'll see output like:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">118.30</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">12.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
+
+                    <p>or if timing fails (if we set the clock frequency to 200 MHz):</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="n">ERROR</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">118.30</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">FAIL</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">200.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
+
+                    <p>For the complete board pinout, see the <a href="link">Board I/O</a> page.</p>
+                    <h2>Project Structure</h2>
+                    <p>At this point, your project directory should contain two files:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="n">blinky</span><span class="o">.</span><span class="n">sv</span><span class="w">       </span><span class="c1"># The RTL design</span>
+<span class="n">blinky</span><span class="o">.</span><span class="n">pcf</span><span class="w">      </span><span class="c1"># The pin constraints</span>
+</code></pre></div></div>
+
+                    <h2>Next Steps</h2>
+                    <p>With your design files created, you're ready to build the bitstream!</p>
+                    <p><a href="link">Next: Building the Bitstream →</a></p>
+                </div>
+                <div class="main-navbar">
+                    <a class="button navbar-button" href="/docs/getting_started/installing_the_tools/installing_the_tools.html">
+                        Back
+                    </a>
+                    <a class="button navbar-button" href="/docs/getting_started/building_the_bitstream/building_the_bitstream.html">
+                        Next
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="nav-cross-button">
+                <svg fill="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"></path> </g></svg></div>
+            <div class="nav-item" data-page-id="" id="nav-">
+                <div class="nav-toggle">
+                    <div>
+                        Home
+                    </div>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="docs" id="nav-docs">
+                    <div class="nav-toggle">
+                        <div>
+                            Docs
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-overview" id="nav-docs-overview">
+                        <div class="nav-button">
+                            <a href="/docs/overview/overview.html">
+                                Overview
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-getting_started" id="nav-docs-getting_started">
+                        <div class="nav-toggle">
+                            <div>
+                                Getting Started
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-introduction" id="nav-docs-getting_started-introduction">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/introduction/introduction.html">
+                                    Introduction
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-installing_the_tools" id="nav-docs-getting_started-installing_the_tools">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/installing_the_tools/installing_the_tools.html">
+                                    Installing the Tools
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-creating_your_First_design" id="nav-docs-getting_started-creating_your_First_design">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/creating_your_First_design/creating_your_First_design.html">
+                                    Creating Your First Design
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-building_the_bitstream" id="nav-docs-getting_started-building_the_bitstream">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/building_the_bitstream/building_the_bitstream.html">
+                                    Building the Bitstream
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-getting_started-programming_the_board" id="nav-docs-getting_started-programming_the_board">
+                            <div class="nav-button">
+                                <a href="/docs/getting_started/programming_the_board/programming_the_board.html">
+                                    Programming the Board
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_info" id="nav-docs-board_info">
+                        <div class="nav-toggle">
+                            <div>
+                                Board Info
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-board_io" id="nav-docs-board_info-board_io">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/board_io/board_io.html">
+                                    Board I/O
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-pin_mappings" id="nav-docs-board_info-pin_mappings">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/pin_mappings/pin_mappings.html">
+                                    Pin Mappings
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-power_delivery" id="nav-docs-board_info-power_delivery">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/power_delivery/power_delivery.html">
+                                    Power Delivery
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-configuration_and_programming" id="nav-docs-board_info-configuration_and_programming">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/configuration_and_programming/configuration_and_programming.html">
+                                    Configuration and Programming
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-status_leds" id="nav-docs-board_info-status_leds">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/status_leds/status_leds.html">
+                                    Status LEDs
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-board_topology" id="nav-docs-board_info-board_topology">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/board_topology/board_topology.html">
+                                    Board Topology
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-board_info-mechanical_info" id="nav-docs-board_info-mechanical_info">
+                            <div class="nav-button">
+                                <a href="/docs/board_info/mechanical_info/mechanical_info.html">
+                                    Mechanical Info
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-tutorials" id="nav-docs-tutorials">
+                        <div class="nav-toggle">
+                            <div>
+                                Tutorials
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-tutorials-using_the_pll" id="nav-docs-tutorials-using_the_pll">
+                            <div class="nav-button">
+                                <a href="/docs/tutorials/using_the_pll/using_the_pll.html">
+                                    Using the PLL
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="docs-tutorials-using_the_ebr" id="nav-docs-tutorials-using_the_ebr">
+                            <div class="nav-button">
+                                <a href="/docs/tutorials/using_the_ebr/using_the_ebr.html">
+                                    Using the EBR
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="contact" id="nav-contact">
+                    <div class="nav-button">
+                        <a href="/contact/contact.html">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-content">
+                <span>© 2026 Bluejay Devices</span>
+            </div>
+        </div>
+    <script src="/js/app.js"></script>
+    
+
+</body></html>

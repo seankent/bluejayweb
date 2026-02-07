@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="Programming the Board - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Programming the Board | Bluejay Devices</title>
+        <link href="/images/logo.svg" rel="icon"/>
+        <link href="/css/styles.css" rel="stylesheet"/>
+        <link href="/css/content.css" rel="stylesheet"/>
+        <link href="/css/syntax.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/></head>
+    <body data-page-id="boards-bluejay-getting_started-programming_the_board">
+        <div class="header">
+            <a class="nav-logo" href="/index.html">
+                <img alt="logo" src="/images/bluejay_devices.svg"/>
+            </a>
+            <div class="header-right">
+                <div class="navbar">
+                    <a class="button navbar-button" href="/about/about.html">
+                        About
+                    </a>
+                    <a class="button navbar-button" href="/boards/boards.html">
+                        Boards
+                    </a>
+                    <a class="button navbar-button" href="/contact/contact.html">
+                        Contact
+                    </a>
+                </div>
+                <a aria-label="GitHub" class="icon-button" href="https://github.com/Bluejay-Devices" rel="noopener noreferrer" target="_blank">
+                        <svg fill="currentColor" height="2rem" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                        </svg>
+                </a>
+                <div class="nav-hamburger-button">
+                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="800px" stroke="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 0 24 24" width="800px" xmlns="http://www.w3.org/2000/svg"><path d="M20 7L4 7" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 12L4 12" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 17L4 17" stroke-linecap="round" stroke-width="1.5"></path></svg></div>
+            </div>
+        </div>
+        <div class="side-nav">
+            <div class="nav-item" data-page-id="" id="side-nav-">
+                <div class="nav-toggle">
+                    <div>
+                        Home
+                    </div>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="side-nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="boards" id="side-nav-boards">
+                    <div class="nav-toggle">
+                        <div>
+                            Boards
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-jay40" id="side-nav-boards-jay40">
+                        <div class="nav-toggle">
+                            <div>
+                                Jay40
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-input_output" id="side-nav-boards-jay40-input_output">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/input_output/input_output.html">
+                                    Input/Output
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-configuration" id="side-nav-boards-jay40-configuration">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/configuration/configuration.html">
+                                    Configuration
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-power" id="side-nav-boards-jay40-power">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/power/power.html">
+                                    Power
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-using_a_pll" id="side-nav-boards-jay40-using_a_pll">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/using_a_pll/using_a_pll.html">
+                                    Using a PLL
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-bluejay" id="side-nav-boards-bluejay">
+                        <div class="nav-toggle">
+                            <div>
+                                Bluejay
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-getting_started" id="side-nav-boards-bluejay-getting_started">
+                            <div class="nav-toggle">
+                                <div>
+                                    Getting Started
+                                </div>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-introduction" id="side-nav-boards-bluejay-getting_started-introduction">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/introduction/introduction.html">
+                                        Introduction
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-installing_the_tools" id="side-nav-boards-bluejay-getting_started-installing_the_tools">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/installing_the_tools/installing_the_tools.html">
+                                        Installing the Tools
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-creating_your_First_design" id="side-nav-boards-bluejay-getting_started-creating_your_First_design">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/creating_your_First_design/creating_your_First_design.html">
+                                        Creating Your First Design
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-building_the_bitstream" id="side-nav-boards-bluejay-getting_started-building_the_bitstream">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/building_the_bitstream/building_the_bitstream.html">
+                                        Building the Bitstream
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-programming_the_board" id="side-nav-boards-bluejay-getting_started-programming_the_board">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/programming_the_board/programming_the_board.html">
+                                        Programming the Board
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-board_information" id="side-nav-boards-bluejay-board_information">
+                            <div class="nav-toggle">
+                                <div>
+                                    Board Information
+                                </div>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_overview" id="side-nav-boards-bluejay-board_information-board_overview">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_overview/board_overview.html">
+                                        Board Overview
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_io" id="side-nav-boards-bluejay-board_information-board_io">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_io/board_io.html">
+                                        Board I/O
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-pin_mappings" id="side-nav-boards-bluejay-board_information-pin_mappings">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/pin_mappings/pin_mappings.html">
+                                        Pin Mappings
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-power_delivery" id="side-nav-boards-bluejay-board_information-power_delivery">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/power_delivery/power_delivery.html">
+                                        Power Delivery
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-configuration_and_programming" id="side-nav-boards-bluejay-board_information-configuration_and_programming">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/configuration_and_programming/configuration_and_programming.html">
+                                        Configuration and Programming
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-status_leds" id="side-nav-boards-bluejay-board_information-status_leds">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/status_leds/status_leds.html">
+                                        Status LEDs
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_topology" id="side-nav-boards-bluejay-board_information-board_topology">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_topology/board_topology.html">
+                                        Board Topology
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-mechanical_information" id="side-nav-boards-bluejay-board_information-mechanical_information">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/mechanical_information/mechanical_information.html">
+                                        Mechanical Information
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-tutorials" id="side-nav-boards-bluejay-tutorials">
+                            <div class="nav-toggle">
+                                <div>
+                                    Tutorials
+                                </div>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-tutorials-using_the_pll" id="side-nav-boards-bluejay-tutorials-using_the_pll">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/tutorials/using_the_pll/using_the_pll.html">
+                                        Using the PLL
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-tutorials-using_the_ebr" id="side-nav-boards-bluejay-tutorials-using_the_ebr">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/tutorials/using_the_ebr/using_the_ebr.html">
+                                        Using the EBR
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="contact" id="side-nav-contact">
+                    <div class="nav-button">
+                        <a href="/contact/contact.html">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="docs">
+                <div class="markdown-content">
+                    <h1>Programming the Board</h1>
+                    <h2>Overview</h2>
+                    <p>With your bitstream generated, it's time to load the design onto the FPGA. This page covers how to connect a programmer to the Bluejay and load your bitstream.</p>
+                    <h2>What You'll Need</h2>
+                    <p>You'll need an FTDI-based USB programmer to connect your computer to the board's configuration interface. Two common options are:</p>
+                    <ul>
+                    <li>FTDI C232HM USB-to-serial cable</li>
+                    <li>Adafruit FT232H breakout board</li>
+                    </ul>
+                    <p>Both use the FT232H chip to perform USB-to-SPI conversion, allowing you to program the FPGA.</p>
+                    <h2>Understanding the Configuration Interface</h2>
+                    <p>Bitstreams are loaded onto the iCE40 using a SPI interface (<code>CS</code>, <code>SCK</code>, <code>MOSI</code>, <code>MISO</code>) and two dedicated configuration signals:</p>
+                    <ul>
+                    <li><code>CRESET_B</code> (abbreviated <code>CRST</code>) - Configuration reset</li>
+                    <li><code>CDONE</code> (abbreviated <code>CDN</code>) - Configuration done</li>
+                    </ul>
+                    <p>The Bluejay's CONFIG interface (located at the bottom of header J1) provides access to these signals, along with power and ground.</p>
+                    <h2>Programmer Setup</h2>
+                    <h3>FTDI C232HM USB-to-Serial Cable</h3>
+                    <p>The FTDI C232HM cable has a USB Type-A connector on one end and 10 color-coded wires with female headers on the other.</p>
+                    <p><strong>Cable Pinout:</strong></p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 10%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 30%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Pin</th>
+                              <th>Pin Name</th>
+                              <th>Pin Color</th>
+                              <th>Type</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>VCC</td>
+                                <td>Red</td>
+                                <td>Output</td>
+                                <td>3.3V power output</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>SK</td>
+                                <td>Orange</td>
+                                <td>Output</td>
+                                <td>Serial clock</td> 
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>DO</td>
+                                <td>Yellow</td>
+                                <td>Output</td>
+                                <td>Serial data output</td> 
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>DI</td>
+                                <td>Green</td>
+                                <td>Input</td>
+                                <td>Serial data input</td> 
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>CS</td>
+                                <td>Brown</td>
+                                <td>Output</td>
+                                <td>Serial chip select</td> 
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>GPIOL0</td>
+                                <td>Gray</td>
+                                <td>Input/Output</td>
+                                <td>General purpose input/output</td> 
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>GPIOL1</td>
+                                <td>Purple</td>
+                                <td>Input/Output</td>
+                                <td>General purpose input/output</td> 
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>GPIOL2</td>
+                                <td>White</td>
+                                <td>Input/Output</td>
+                                <td>General purpose input/output</td> 
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>GPIOL3</td>
+                                <td>Blue</td>
+                                <td>Input/Output</td>
+                                <td>General purpose input/output</td> 
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>GND</td>
+                                <td>Black</td>
+                                <td>GND</td>
+                                <td>Ground</td> 
+                            </tr>
+                        </tbody>
+                    </table></div>
+
+                    <p><strong>Connections to Bluejay:</strong></p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 50%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Bluejay Pin Name</th>
+                              <th>FTDI Cable Pin Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3V3</td>
+                                <td>VCC</td>
+                            </tr>
+                            <tr>
+                                <td>GND</td>
+                                <td>GND</td>
+                            </tr>
+                            <tr>
+                                <td>CS</td>
+                                <td>CS</td>
+                            </tr>
+                            <tr>
+                                <td>SCK</td>
+                                <td>SK</td>
+                            </tr>
+                            <tr>
+                                <td>MOSI</td>
+                                <td>DO</td>
+                            </tr>
+                            <tr>
+                                <td>MISO</td>
+                                <td>DI</td>
+                            </tr>
+                            <tr>
+                                <td>CRST</td>
+                                <td>GPIOL3</td>
+                            </tr>
+                            <tr>
+                                <td>CDN</td>
+                                <td>GPIOL2</td>
+                            </tr>
+                        </tbody>
+                    </table></div>
+
+                    <p>The cables are not labeled, so connections must be made based on wire color.</p>
+                    <h3>Adafruit FT232H Breakout Board</h3>
+                    <p>The Adafruit FT232H breakout board connects to your computer via USB-C and breaks out the FT232H I/O on two 11-pin headers.</p>
+                    <p><strong>Connections to Bluejay:</strong></p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 50%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Bluejay Pin Name</th>
+                              <th>FT232H Breakout Board Pin Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3V3</td>
+                                <td>3V</td>
+                            </tr>
+                            <tr>
+                                <td>GND</td>
+                                <td>GND</td>
+                            </tr>
+                            <tr>
+                                <td>CS</td>
+                                <td>D4</td>
+                            </tr>
+                            <tr>
+                                <td>SCK</td>
+                                <td>D0</td>
+                            </tr>
+                            <tr>
+                                <td>MOSI</td>
+                                <td>D1</td>
+                            </tr>
+                            <tr>
+                                <td>MISO</td>
+                                <td>D2</td>
+                            </tr>
+                            <tr>
+                                <td>CDN</td>
+                                <td>D6</td>
+                            </tr>
+                            <tr>
+                                <td>CRST</td>
+                                <td>D7</td>
+                            </tr>
+                        </tbody>
+                    </table></div>
+
+                    <h2>Programming the FPGA (Volatile)</h2>
+                    <p>This method loads the bitstream directly into the FPGA's SRAM. The configuration is lost when power is removed.</p>
+                    <h3>Board Setup</h3>
+                    <ol>
+                    <li>Set the configuration mode jumper to <strong>SM</strong> (Slave Mode)</li>
+                    <li>Connect the <strong>LED EN</strong> jumper to enable the LEDs</li>
+                    <li>Disconnect USB and 5V power - the programmer will supply 3.3V through the 3V3 and GND pins</li>
+                    </ol>
+                    <p></p><div class="img-wrapper"><span class="figure-label">Figure 1</span><img alt="Board setup diagram" src="diag/sm_mode.svg" style="width: 30rem;"/></div><p></p>
+                    <h3>Programming Command</h3>
+                    <p>Once the programmer is connected, run:</p>
+                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span>gen/blinky.bin
+</code></pre></div></div>
+
+                    <p>The <code>-S</code> flag tells IceProg to program the FPGA's SRAM directly.</p>
+                    <p>If successful, the USR LED should start blinking at 1 Hz!</p>
+                    <h3>Using the Makefile</h3>
+                    <p>If you created the Makefile in the previous step, you can program the FPGA with:</p>
+                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
+</code></pre></div></div>
+
+                    <h2>Programming the Flash (Optional)</h2>
+                    <p>To make your design persistent across power cycles, you can program the onboard flash chip. The FPGA will then automatically configure itself from flash on each power-up.</p>
+                    <h3>Board Setup</h3>
+                    <ol>
+                    <li>Set the configuration mode jumper to <strong>MM</strong> (Master Mode)</li>
+                    <li>Keep all other connections the same</li>
+                    </ol>
+                    <p></p><div class="img-wrapper"><span class="figure-label">Figure 2</span><img alt="Board setup diagram" src="diag/mm_mode.svg" style="width: 30rem;"/></div><p></p>
+                    <h3>Programming Command</h3>
+                    <p>Run:</p>
+                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>gen/blinky.bin
+</code></pre></div></div>
+
+                    <p>Note the absence of the <code>-S</code> flag. Without it, IceProg defaults to programming the flash chip.</p>
+                    <p>After programming completes, IceProg releases the FTDI pins, allowing <code>CS</code> and <code>CRST</code> to be pulled high. This prompts the FPGA to enter Master Mode and load the bitstream from flash. The USR LED should start blinking immediately.</p>
+                    <p>You can now disconnect the programmer. The design will automatically load whenever the board is powered on.</p>
+                    <h3>Using the Makefile</h3>
+                    <p>If using the Makefile:</p>
+                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>flash
+</code></pre></div></div>
+
+                    <h2>Congratulations!</h2>
+                    <p>You've successfully created and programmed your first FPGA design on the Bluejay!</p>
+                    <h2>Next Steps</h2>
+                    <p>Now that you've completed your first design, you can:</p>
+                    <ul>
+                    <li><strong>Learn about the hardware:</strong> Check out the <a href="link">Board Overview</a> to understand the Bluejay's features</li>
+                    <li><strong>Try advanced examples:</strong> Explore tutorials on using the <a href="link">PLL</a> and <a href="link">EBR</a></li>
+                    <li><strong>Build your own projects:</strong> Use the Bluejay's 39 I/O pins to interface with sensors, displays, and other devices</li>
+                    </ul>
+                    <p><a href="link">Return to Getting Started</a></p>
+                </div>
+                <div class="main-navbar">
+                    <a class="button navbar-button" href="/boards/bluejay/getting_started/building_the_bitstream/building_the_bitstream.html">
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="nav-cross-button">
+                <svg fill="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"></path> </g></svg></div>
+            <div class="nav-item" data-page-id="" id="nav-">
+                <div class="nav-toggle">
+                    <div>
+                        Home
+                    </div>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="boards" id="nav-boards">
+                    <div class="nav-toggle">
+                        <div>
+                            Boards
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-jay40" id="nav-boards-jay40">
+                        <div class="nav-toggle">
+                            <div>
+                                Jay40
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-input_output" id="nav-boards-jay40-input_output">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/input_output/input_output.html">
+                                    Input/Output
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-configuration" id="nav-boards-jay40-configuration">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/configuration/configuration.html">
+                                    Configuration
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-power" id="nav-boards-jay40-power">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/power/power.html">
+                                    Power
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-using_a_pll" id="nav-boards-jay40-using_a_pll">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/using_a_pll/using_a_pll.html">
+                                    Using a PLL
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-bluejay" id="nav-boards-bluejay">
+                        <div class="nav-toggle">
+                            <div>
+                                Bluejay
+                            </div>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-getting_started" id="nav-boards-bluejay-getting_started">
+                            <div class="nav-toggle">
+                                <div>
+                                    Getting Started
+                                </div>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-introduction" id="nav-boards-bluejay-getting_started-introduction">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/introduction/introduction.html">
+                                        Introduction
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-installing_the_tools" id="nav-boards-bluejay-getting_started-installing_the_tools">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/installing_the_tools/installing_the_tools.html">
+                                        Installing the Tools
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-creating_your_First_design" id="nav-boards-bluejay-getting_started-creating_your_First_design">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/creating_your_First_design/creating_your_First_design.html">
+                                        Creating Your First Design
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-building_the_bitstream" id="nav-boards-bluejay-getting_started-building_the_bitstream">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/building_the_bitstream/building_the_bitstream.html">
+                                        Building the Bitstream
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-getting_started-programming_the_board" id="nav-boards-bluejay-getting_started-programming_the_board">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/getting_started/programming_the_board/programming_the_board.html">
+                                        Programming the Board
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-board_information" id="nav-boards-bluejay-board_information">
+                            <div class="nav-toggle">
+                                <div>
+                                    Board Information
+                                </div>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_overview" id="nav-boards-bluejay-board_information-board_overview">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_overview/board_overview.html">
+                                        Board Overview
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_io" id="nav-boards-bluejay-board_information-board_io">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_io/board_io.html">
+                                        Board I/O
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-pin_mappings" id="nav-boards-bluejay-board_information-pin_mappings">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/pin_mappings/pin_mappings.html">
+                                        Pin Mappings
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-power_delivery" id="nav-boards-bluejay-board_information-power_delivery">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/power_delivery/power_delivery.html">
+                                        Power Delivery
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-configuration_and_programming" id="nav-boards-bluejay-board_information-configuration_and_programming">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/configuration_and_programming/configuration_and_programming.html">
+                                        Configuration and Programming
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-status_leds" id="nav-boards-bluejay-board_information-status_leds">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/status_leds/status_leds.html">
+                                        Status LEDs
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_topology" id="nav-boards-bluejay-board_information-board_topology">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_topology/board_topology.html">
+                                        Board Topology
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-mechanical_information" id="nav-boards-bluejay-board_information-mechanical_information">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/mechanical_information/mechanical_information.html">
+                                        Mechanical Information
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-tutorials" id="nav-boards-bluejay-tutorials">
+                            <div class="nav-toggle">
+                                <div>
+                                    Tutorials
+                                </div>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-tutorials-using_the_pll" id="nav-boards-bluejay-tutorials-using_the_pll">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/tutorials/using_the_pll/using_the_pll.html">
+                                        Using the PLL
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-tutorials-using_the_ebr" id="nav-boards-bluejay-tutorials-using_the_ebr">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/tutorials/using_the_ebr/using_the_ebr.html">
+                                        Using the EBR
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="contact" id="nav-contact">
+                    <div class="nav-button">
+                        <a href="/contact/contact.html">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-content">
+                <span>© 2026 Bluejay Devices</span>
+            </div>
+        </div>
+    <script src="/js/app.js"></script>
+    
+
+</body></html>

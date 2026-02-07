@@ -8,21 +8,21 @@ stylelint-disable selector-no-type, max-nesting-depth, selector-max-compound-sel
 
 html .markdown-content,
 html .markdown-content * {
-    font-family: var(--content-font-family); 
+    font-family: var(--content-font-family);
     justify.markdown-content: left;
     color: var(--grey-9);
 }
 
-.markdown-content {
-}
+.markdown-content {}
 
 .markdown-content p {
-    margin: 1rem 0 0 0;
-    line-height: 1.6; 
+    margin: 0 0 1.25rem 0; /* Switched to bottom margin, slightly increased gap */
+    line-height: 1.6;
+    color: var(--grey-7);
 }
 
-.markdown-content > :first-child {
-    margin: 0;
+.markdown-content> :first-child {
+    margin-top: 0;
 }
 
 .markdown-content h1,
@@ -31,19 +31,40 @@ html .markdown-content * {
 .markdown-content h4,
 .markdown-content h5,
 .markdown-content h6 {
-    margin: 2rem 0 1rem 0;
-    //background-color: red;
-    font-family: var(--page-font-family); 
+    margin: 2.5rem 0 1.25rem 0; /* Increased top margin for better sectioning */
+    //font-family: var(--page-font-family);
+    font-family: var(--content-font-family);
+    font-weight: 400;        /* Added font-weight for better hierarchy */
 }
 
-.markdown-content h1 { font-size: var(--h1-size); }
-.markdown-content h2 { font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 1)); }
-.markdown-content h3 { font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 2)); }
-.markdown-content h4 { font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 3)); }
-.markdown-content h5 { font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 4)); }
-.markdown-content h6 { font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 5)); }
+.markdown-content h1 {
+    font-family: var(--page-font-family);
+    font-weight: 700;
+    font-size: var(--h1-size);
+}
 
+.markdown-content h2 {
+    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 1));
+    border-bottom: 1px solid var(--border-color); /* Add the underline */
+    padding-bottom: 1rem;                        /* Add a little space between text and line */
+    margin-top: 3rem;                             /* Optional: slightly more space above underlined sections */
+}
 
+.markdown-content h3 {
+    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 2));
+}
+
+.markdown-content h4 {
+    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 3));
+}
+
+.markdown-content h5 {
+    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 4));
+}
+
+.markdown-content h6 {
+    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 5));
+}
 
 
 //.markdown-content pre {
@@ -51,32 +72,39 @@ html .markdown-content * {
 //}
 
 .markdown-content .code-wrapper {
-    overflow-x: scroll;
-    margin: 2rem 0 1rem 0;
+    margin: 0 0 1.25rem 0;
 }
 
 .markdown-content .codehilite {
     //padding: 0.25em 0em 0.25em 0em;
+    padding: 1rem 0 0 0;
+    display: grid;
     border: 1px solid grey;
-    border-radius: var(--border-radius); 
+    border-radius: var(--border-radius);
     border-color: var(--border-color);
     //background-color: var(--grey-0);
-    min-width: max-content;
+    //min-width: max-content;
+    overflow-x: scroll;
+    max-width: 100%;
 }
 
 .markdown-content .codehilite * {
     font-family: "Consolas", "Monaco", "Courier New", monospace;
     //letter-spacing: normal !important;  /* Fixed typo */
     //word-spacing: normal !important;    /* Fixed typo */
-    font-size: 0.9rem;         /* Fixed typo */
-    color: #f8f8f2;             /* Monokai light text color */
+    font-size: 0.9rem;
+    /* Fixed typo */
+    //color: #f8f8f2;             /* Monokai light text color */
 }
 
 
 .markdown-content .codehilite pre {
     margin-left: 0;
     text-indent: 0;
-    padding: 1.25em 1em 1.25em 1em;
+    padding: 0 1rem 0 1rem;
+    width: max-content;        /* Forces the pre to expand to the code's length */
+    min-width: 100%;           /* Ensures background spans the full width */
+    box-sizing: border-box;    /* Includes padding in the width */
 }
 
 //.markdown-content .codehilite pre::-webkit-scrollbar-thumb {
@@ -123,62 +151,78 @@ html .markdown-content * {
 
 
 .markdown-content table {
-  width: 100%;
-  min-width: 100%;
-  //width: max.markdown-content;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-width: var(--border-width);
-  border-style: solid;
-  border-color: var(--border-color);
-  border-radius: var(--border-radius); 
-  overflow: hidden;
-  table-layout: auto;
-  //overflow-x: scroll;
-  //min-width: 0;
+    width: 100%;
+    min-width: 100%;
+    //width: max.markdown-content;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-width: var(--border-width);
+    border-style: solid;
+    border-color: var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    table-layout: auto;
+    //overflow-x: scroll;
+    //min-width: 0;
 }
 
 
 .markdown-content .table-wrapper {
-    width: 100%; 
+    width: 100%;
     //background-color: pink;
-    overflow-x: scroll; 
+    overflow-x: scroll;
     max-width: 100%;
-    min-width: 0;  /* Important for grid/flex parents */
-    margin: 3rem 0 3rem 0;
+    min-width: 0;
+    /* Important for grid/flex parents */
+    margin: 2rem 0 2rem 0;
 }
 
 .markdown-content .img-wrapper {
-    width: 100%; 
+    width: 100%;
     //background-color: pink;
-    overflow-x: scroll; 
+    overflow-x: scroll;
     max-width: 100%;
-    min-width: 0;  /* Important for grid/flex parents */
+    min-width: 0;
+    /* Important for grid/flex parents */
     margin: 3rem 0 3rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.markdown-content .figure-label {
+    display: block;
+    text-align: center;
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    font-style: italic;
 }
 
 .markdown-content th,
 .markdown-content td {
-  padding: 0.75rem;
-  border-color: var(--border-color);
-  border-width: 0 var(--border-width) var(--border-width) 0;
-  text-align: left;
-  //min-width: 7.5rem;  /* Or whatever makes sense */
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;  /* Allow wrapping */
+    padding: 0.75rem;
+    border-color: var(--border-color);
+    border-width: 0 var(--border-width) var(--border-width) 0;
+    text-align: left;
+    //min-width: 7.5rem;  /* Or whatever makes sense */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    /* Allow wrapping */
 }
 
 
 /* Remove right border from last column */
 .markdown-content th:last-child,
 .markdown-content td:last-child {
-  border-right: none;
+    border-right: none;
 }
 
 /* Remove bottom border from last row */
 .markdown-content tr:last-child td {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .markdown-content th {
@@ -198,10 +242,10 @@ html .markdown-content * {
     //margin: 3rem auto 3rem auto;
     overflow-x: scroll;
     min-width: 0;
-  //margin: 0 auto;
-  //border: 1px solid grey;
-  //border-radius: var(--border-radius); 
-  //padding: ;
+    //margin: 0 auto;
+    //border: 1px solid grey;
+    //border-radius: var(--border-radius); 
+    //padding: ;
 }
 
 .grid-table {
@@ -215,14 +259,14 @@ html .markdown-content * {
     border-width: var(--border-width);
     border-style: solid;
     border-color: var(--border-color);
-    border-radius: var(--border-radius); 
+    border-radius: var(--border-radius);
     overflow: hidden;
     //overflow-x: scroll;
     //min-width: 0;
 }
 
-.grid-table > .grid-header,
-.grid-table > .grid-cell {
+.grid-table>.grid-header,
+.grid-table>.grid-cell {
     display: grid;
     padding: 0.75rem;
     border-color: var(--border-color);
@@ -231,7 +275,142 @@ html .markdown-content * {
     //min-width: 7.5rem;  /* Or whatever makes sense */
     word-wrap: break-word;
     overflow-wrap: break-word;
-    white-space: normal;  /* Allow wrapping */
+    white-space: normal;
+    /* Allow wrapping */
 }
 
 
+.markdown-content ul,
+.markdown-content ol {
+    padding: 0 0 0 2rem;
+    margin: 0 0 1.25rem 0;
+}
+
+.markdown-content li {
+    padding: 0.25rem 0 0.25rem 0.5rem; /* Reduced from 0.5rem to feel more compact */
+}
+
+.markdown-content li::marker {
+    margin-right: 2rem;
+    /* Doesn't work in all browsers */
+}
+
+.markdown-content code {
+    background-color: var(--grey-0);
+    padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+    border-radius: .25rem;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 0.8rem;
+    /* Fixed typo */
+    //color: var(--red-7); 
+    border-color: var(--grey-1);
+    border-width: 1px;
+}
+
+.markdown-content pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    border-width: 0;
+}
+
+///* Add padding to code blocks with labels */
+//.codehilite[data-lang] {
+//    padding-top: 2.5rem;
+//}
+
+/* Literal.Number.Integer.Long */
+
+/* Copy Button Styles */
+.code-wrapper {
+    position: relative;
+}
+
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: var(--grey-0);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 7px;
+    /* Reduced padding (9px * 0.75) */
+    //color: #666;
+    cursor: pointer;
+    z-index: 10;
+    //opacity: 0.5;
+    //transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Reduced button size (48px * 0.75 = 36px) */
+    width: 36px;
+    height: 36px;
+}
+
+.copy-button svg {
+    /* Reduced icon size (30px * 0.75 ~= 22px) */
+    width: 22px;
+    height: 22px;
+    stroke: var(--grey-5);
+}
+
+.copy-button:hover {
+    //background-color: rgba(200, 200, 200, 0.2);
+    /* grey-3 */
+    //background-color: rgba(208, 215, 222, 0.2);
+    background-color: var(--bg-color-hover);
+    /* grey-4 */
+    //background-color: rgb(140, 149, 159);
+    //color: #333;
+}
+
+.copy-button:hover svg {
+    stroke: var(--grey-7);
+}
+
+.copy-button.copied {
+    //background-color: #A5D6A7;
+    background-color: var(--bg-color-hover);
+}
+
+.copy-button.copied svg {
+    stroke: var(--grey-7);
+}
+
+
+/* Code Block Label Styles */
+.code-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(100, 100, 100, 0.15);
+    color: #666;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    z-index: 10;
+    font-family: var(--content-font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.markdown-content a {
+    color: var(--blue-5); /* or whatever color you want for links */
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.markdown-content a:hover {
+    color: var(--blue-5); /* darker shade on hover */
+    text-decoration: underline;
+}
+
+.markdown-content a:visited {
+    color: var(--purple-5); /* color for visited links */
+}
+
+.markdown-content a:active {
+    color: var(--blue-5); /* color when clicking */
+}

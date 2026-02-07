@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="Using the PLL - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Using the PLL | Bluejay Devices</title>
+        <link href="/images/logo.svg" rel="icon"/>
+        <link href="/css/styles.css" rel="stylesheet"/>
+        <link href="/css/content.css" rel="stylesheet"/>
+        <link href="/css/syntax.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/></head>
+    <body data-page-id="tutorials-using_the_pll">
+        <div class="header">
+            <a class="nav-logo" href="/index.html">
+                <img alt="logo" src="/images/bluejay_devices.svg"/>
+            </a>
+            <div class="header-right">
+                <div class="navbar">
+                    <a class="button navbar-button" href="/about/about.html">
+                        About
+                    </a>
+                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                        Docs
+                    </a>
+                    <a class="button navbar-button" href="/contact/contact.html">
+                        Contact
+                    </a>
+                </div>
+                <a aria-label="GitHub" class="icon-button" href="https://github.com/Bluejay-Devices" rel="noopener noreferrer" target="_blank">
+                        <svg fill="currentColor" height="2rem" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                        </svg>
+                </a>
+                <div class="nav-hamburger-button">
+                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="800px" stroke="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 0 24 24" width="800px" xmlns="http://www.w3.org/2000/svg"><path d="M20 7L4 7" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 12L4 12" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 17L4 17" stroke-linecap="round" stroke-width="1.5"></path></svg></div>
+            </div>
+        </div>
+        <div class="side-nav">
+            <div class="nav-item" data-page-id="" id="side-nav-">
+                <div class="nav-toggle">
+                    <div>
+                        Home
+                    </div>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="side-nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="getting_started" id="side-nav-getting_started">
+                    <div class="nav-toggle">
+                        <div>
+                            Getting Started
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-introduction" id="side-nav-getting_started-introduction">
+                        <div class="nav-button">
+                            <a href="/getting_started/introduction/introduction.html">
+                                Introduction
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-installing_the_tools" id="side-nav-getting_started-installing_the_tools">
+                        <div class="nav-button">
+                            <a href="/getting_started/installing_the_tools/installing_the_tools.html">
+                                Installing the Tools
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-creating_your_First_design" id="side-nav-getting_started-creating_your_First_design">
+                        <div class="nav-button">
+                            <a href="/getting_started/creating_your_First_design/creating_your_First_design.html">
+                                Creating Your First Design
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-building_the_bitstream" id="side-nav-getting_started-building_the_bitstream">
+                        <div class="nav-button">
+                            <a href="/getting_started/building_the_bitstream/building_the_bitstream.html">
+                                Building the Bitstream
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-programming_the_board" id="side-nav-getting_started-programming_the_board">
+                        <div class="nav-button">
+                            <a href="/getting_started/programming_the_board/programming_the_board.html">
+                                Programming the Board
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="docs" id="side-nav-docs">
+                    <div class="nav-toggle">
+                        <div>
+                            Docs
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_overview" id="side-nav-docs-board_overview">
+                        <div class="nav-button">
+                            <a href="/docs/board_overview/board_overview.html">
+                                Board Overview
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_io" id="side-nav-docs-board_io">
+                        <div class="nav-button">
+                            <a href="/docs/board_io/board_io.html">
+                                Board I/O
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-pin_mappings" id="side-nav-docs-pin_mappings">
+                        <div class="nav-button">
+                            <a href="/docs/pin_mappings/pin_mappings.html">
+                                Pin Mappings
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-power_delivery" id="side-nav-docs-power_delivery">
+                        <div class="nav-button">
+                            <a href="/docs/power_delivery/power_delivery.html">
+                                Power Delivery
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-configuration_and_programming" id="side-nav-docs-configuration_and_programming">
+                        <div class="nav-button">
+                            <a href="/docs/configuration_and_programming/configuration_and_programming.html">
+                                Configuration and Programming
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-status_leds" id="side-nav-docs-status_leds">
+                        <div class="nav-button">
+                            <a href="/docs/status_leds/status_leds.html">
+                                Status LEDs
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_topology" id="side-nav-docs-board_topology">
+                        <div class="nav-button">
+                            <a href="/docs/board_topology/board_topology.html">
+                                Board Topology
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-mechanical_info" id="side-nav-docs-mechanical_info">
+                        <div class="nav-button">
+                            <a href="/docs/mechanical_info/mechanical_info.html">
+                                Mechanical Info
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="tutorials" id="side-nav-tutorials">
+                    <div class="nav-toggle">
+                        <div>
+                            Tutorials
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_pll" id="side-nav-tutorials-using_the_pll">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_pll/using_the_pll.html">
+                                Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="contact" id="side-nav-contact">
+                    <div class="nav-button">
+                        <a href="/contact/contact.html">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="docs">
+                <div class="markdown-content">
+                    <h1>Using the PLL</h1>
+                    <h2>Overview</h2>
+                    <p>The iCE40LP8K includes two Phase-Locked Loops (PLLs) that can generate higher or lower frequency clocks from the board's 12 MHz oscillator. This tutorial demonstrates how to instantiate an iCE40 PLL primitive and configure its parameters to achieve desired frequencies.</p>
+                    <p>In this tutorial, we will reuse the blinky module from the <a href="/getting_started/introduction/introduction.html">Getting Started</a> tutorial. However, we will add a PLL to double the clock frequency from 12 MHz to 24 MHz. This will make the LED blink twice as fast—at 2 Hz instead of 1 Hz.</p>
+                    <h2>Top Module</h2>
+                    <p>First, we will create a top-level wrapper module to instantiate the PLL primitive and the blinky module. We will call this module <code>blinky_pll</code>. The code is shown below:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky_pll</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6000000</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="n">pllclk</span><span class="p">;</span>
+
+<span class="n">blinky</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="n">MAX_COUNT</span><span class="p">))</span><span class="w"> </span><span class="n">u_blinky</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="n">SB_PLL40_CORE</span>
+<span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FEEDBACK_PATH</span><span class="p">(</span><span class="s">"SIMPLE"</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVF</span><span class="p">(</span><span class="mh">7'h1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVQ</span><span class="p">(</span><span class="mh">3'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVR</span><span class="p">(</span><span class="mh">4'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FILTER_RANGE</span><span class="p">(</span><span class="mb">3'b001</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">u_sb_pll40_core</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">REFERENCECLK</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">PLLOUTCORE</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">LOCK</span><span class="p">(),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RESETB</span><span class="p">(</span><span class="mb">1'b1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">BYPASS</span><span class="p">(</span><span class="mb">1'b0</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <p>The <code>SB_PLL40_CORE</code> module is a hard macro primitive specific to the iCE40 FPGA. During synthesis, <code>yosys</code> recognizes this primitive and preserves it rather than synthesizing it into generic logic. <code>nextpnr-ice40</code> then maps this primitive to one of the two physical PLL blocks available on the iCE40LP8K during place-and-route. This ensures the PLL functionality is implemented using the dedicated hardware rather than being emulated in the FPGA fabric.</p>
+                    <h3>Understanding the PLL Configuration</h3>
+                    <p>The <code>SB_PLL40_CORE</code> primitive is configured using several parameters:</p>
+                    <ul>
+                    <li><strong>FEEDBACK_PATH</strong>: Set to "SIMPLE" for basic frequency multiplication</li>
+                    <li><strong>DIVF</strong>: Feedback divider (controls multiplication)</li>
+                    <li><strong>DIVQ</strong>: Output divider (divides by 2^DIVQ)</li>
+                    <li><strong>DIVR</strong>: Reference divider (divides input clock)</li>
+                    <li><strong>FILTER_RANGE</strong>: PLL filter range based on reference frequency</li>
+                    </ul>
+                    <p>The output frequency is calculated using the following equation:</p>
+                    <p><strong>F_out = (F_in × (DIVF + 1)) / (2^DIVQ × (DIVR + 1))</strong></p>
+                    <p>For this example:</p>
+                    <p><strong>F_out = (12 MHz × (1 + 1)) / (2^0 × (0 + 1)) = 24 MHz</strong></p>
+                    <h2>Blinky Module</h2>
+                    <p>The blinky module remains the same as in the <a href="/getting_started/introduction/introduction.html">Getting Started</a> tutorial. The code is replicated below for reference:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6000000</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="o">~</span><span class="n">out</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <h2>Pin Constraints</h2>
+                    <p>The pin constraints file maps the signals to physical pins and specifies the clock frequencies for timing analysis:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code>set_io clk C4
+set_io out E1
+set_frequency clk 12.0
+set_frequency pllclk 24.0
+</code></pre></div></div>
+
+                    <p>The first two lines connect <code>clk</code> to the 12 MHz oscillator (pin <code>C4</code>) and <code>out</code> to the <strong>USR</strong> LED (pin <code>E1</code>).</p>
+                    <p>The <code>set_frequency</code> constraints tell <code>nextpnr-ice40</code> the expected frequencies:
+                    - The input clock <code>clk</code> runs at 12.0 MHz
+                    - The PLL output clock <code>pllclk</code> runs at 24.0 MHz</p>
+                    <p>When you run place-and-route, <code>nextpnr-ice40</code> will perform timing analysis on both clock domains and report whether timing is met for each:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'pllclk_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">120.53</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">24.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
+
+                    <p>This confirms that your design can safely run at the specified frequencies. Note that in this case, you will not see <code>clk</code> in the timing report because it does not drive any sequential logic.</p>
+                    <h2>Building the Design</h2>
+                    <p>To streamline the build process, you can use the following Makefile:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
+<span class="nv">PROJECT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky_pll
+<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky_pll
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky_pll.sv<span class="w"> </span>blinky.sv
+<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky_pll.pcf
+
+<span class="c"># Output directory</span>
+<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
+
+<span class="c"># iCE40 device configuration</span>
+<span class="nv">DEVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>lp8k
+<span class="nv">PACKAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>cm81
+
+<span class="c"># Tool configuration</span>
+<span class="nv">YOSYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>yosys
+<span class="nv">NEXTPNR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>nextpnr-ice40
+<span class="nv">ICEPACK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>icepack
+<span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
+
+<span class="c"># Build targets</span>
+<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.json
+<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.asc
+<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.bin
+
+<span class="c"># Default target</span>
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+
+<span class="c"># Create build directory</span>
+<span class="nf">$(BUILD_DIR)</span><span class="o">:</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Synthesis</span>
+<span class="nf">$(JSON)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SOURCES</span><span class="k">)</span> <span class="p">|</span> <span class="k">$(</span><span class="nv">BUILD_DIR</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>YOSYS<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top </span><span class="k">$(</span>TOP_MODULE<span class="k">)</span><span class="s2"> -json </span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>SOURCES<span class="k">)</span>
+
+<span class="c"># Place and route</span>
+<span class="nf">$(ASC)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">JSON</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PCF</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>NEXTPNR<span class="k">)</span><span class="w"> </span>--<span class="k">$(</span>DEVICE<span class="k">)</span><span class="w"> </span>--package<span class="w"> </span><span class="k">$(</span>PACKAGE<span class="k">)</span><span class="w"> </span>--json<span class="w"> </span><span class="k">$(</span>JSON<span class="k">)</span><span class="w"> </span>--pcf<span class="w"> </span><span class="k">$(</span>PCF<span class="k">)</span><span class="w"> </span>--asc<span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Generate bitstream</span>
+<span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Program FPGA</span>
+<span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Program Flash (persistent)</span>
+<span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Clean build artifacts</span>
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Phony targets</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">prog</span> <span class="n">flash</span> <span class="n">clean</span>
+</code></pre></div></div>
+
+                    <p>Copy this Makefile into your project directory. You can then build and program the design with simple commands:</p>
+                    <p><strong>Build the bitstream:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
+</code></pre></div></div>
+
+                    <p><strong>Program the FPGA (</strong>SM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
+</code></pre></div></div>
+
+                    <p><strong>Program the flash (</strong>MM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>make<span class="w"> </span>flash
+</code></pre></div></div>
+
+                    <p><strong>Clean build artifacts:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>clean
+</code></pre></div></div>
+
+                    <h2>Adjusting the PLL Frequency</h2>
+                    <p>To change the output frequency, modify the <code>DIVF</code>, <code>DIVQ</code>, and <code>DIVR</code> parameters in the PLL instantiation.</p>
+                    <p>For example, to generate a 48 MHz clock, you can use the following configuration:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="c1">// F_out = (12 MHz × (7 + 1)) / (2^1 × (0 + 1)) = 48 MHz</span>
+<span class="n">SB_PLL40_CORE</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVF</span><span class="p">(</span><span class="mh">7'h7</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVQ</span><span class="p">(</span><span class="mh">3'h1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVR</span><span class="p">(</span><span class="mh">4'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FILTER_RANGE</span><span class="p">(</span><span class="mb">3'b001</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+                    <h2>Additional Resources</h2>
+                    <p>For more information on the iCE40 PLL, refer to the <a href="https://www.latticesemi.com/view_document?document_id=47778">iCE40 sysCLOCK PLL Design and Usage Guide</a>.</p>
+                    <h2>Next Steps</h2>
+                    <p>Now that you know how to use the PLL, you can:</p>
+                    <ul>
+                    <li>Experiment with different clock frequencies</li>
+                    <li>Use the PLL's <code>LOCK</code> signal to detect when the PLL has stabilized</li>
+                    <li>Explore using both PLLs simultaneously for multiple clock domains</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="nav-cross-button">
+                <svg fill="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"></path> </g></svg></div>
+            <div class="nav-item" data-page-id="" id="nav-">
+                <div class="nav-toggle">
+                    <div>
+                        Home
+                    </div>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="getting_started" id="nav-getting_started">
+                    <div class="nav-toggle">
+                        <div>
+                            Getting Started
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-introduction" id="nav-getting_started-introduction">
+                        <div class="nav-button">
+                            <a href="/getting_started/introduction/introduction.html">
+                                Introduction
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-installing_the_tools" id="nav-getting_started-installing_the_tools">
+                        <div class="nav-button">
+                            <a href="/getting_started/installing_the_tools/installing_the_tools.html">
+                                Installing the Tools
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-creating_your_First_design" id="nav-getting_started-creating_your_First_design">
+                        <div class="nav-button">
+                            <a href="/getting_started/creating_your_First_design/creating_your_First_design.html">
+                                Creating Your First Design
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-building_the_bitstream" id="nav-getting_started-building_the_bitstream">
+                        <div class="nav-button">
+                            <a href="/getting_started/building_the_bitstream/building_the_bitstream.html">
+                                Building the Bitstream
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="getting_started-programming_the_board" id="nav-getting_started-programming_the_board">
+                        <div class="nav-button">
+                            <a href="/getting_started/programming_the_board/programming_the_board.html">
+                                Programming the Board
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="docs" id="nav-docs">
+                    <div class="nav-toggle">
+                        <div>
+                            Docs
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_overview" id="nav-docs-board_overview">
+                        <div class="nav-button">
+                            <a href="/docs/board_overview/board_overview.html">
+                                Board Overview
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_io" id="nav-docs-board_io">
+                        <div class="nav-button">
+                            <a href="/docs/board_io/board_io.html">
+                                Board I/O
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-pin_mappings" id="nav-docs-pin_mappings">
+                        <div class="nav-button">
+                            <a href="/docs/pin_mappings/pin_mappings.html">
+                                Pin Mappings
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-power_delivery" id="nav-docs-power_delivery">
+                        <div class="nav-button">
+                            <a href="/docs/power_delivery/power_delivery.html">
+                                Power Delivery
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-configuration_and_programming" id="nav-docs-configuration_and_programming">
+                        <div class="nav-button">
+                            <a href="/docs/configuration_and_programming/configuration_and_programming.html">
+                                Configuration and Programming
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-status_leds" id="nav-docs-status_leds">
+                        <div class="nav-button">
+                            <a href="/docs/status_leds/status_leds.html">
+                                Status LEDs
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-board_topology" id="nav-docs-board_topology">
+                        <div class="nav-button">
+                            <a href="/docs/board_topology/board_topology.html">
+                                Board Topology
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-mechanical_info" id="nav-docs-mechanical_info">
+                        <div class="nav-button">
+                            <a href="/docs/mechanical_info/mechanical_info.html">
+                                Mechanical Info
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="tutorials" id="nav-tutorials">
+                    <div class="nav-toggle">
+                        <div>
+                            Tutorials
+                        </div>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_pll" id="nav-tutorials-using_the_pll">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_pll/using_the_pll.html">
+                                Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="contact" id="nav-contact">
+                    <div class="nav-button">
+                        <a href="/contact/contact.html">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-content">
+                <span>© 2026 Bluejay Devices</span>
+            </div>
+        </div>
+    <script src="/js/app.js"></script>
+    
+
+</body></html>

@@ -1,0 +1,139 @@
+@charset "UTF-8";
+
+/* BLUEJAY DEVICES - DOCUMENTATION STYLES 
+   Focus: Spacing and Header weight.
+*/
+
+html .markdown-content,
+html .markdown-content * {
+    font-family: var(--content-font-family);
+    color: var(--grey-9);
+}
+
+/* --- Block Spacing --- */
+
+.markdown-content p {
+    margin: 0 0 1.25rem 0; 
+    line-height: 1.6;
+    color: var(--grey-7);
+}
+
+.markdown-content > :first-child {
+    margin-top: 0 !important;
+}
+
+/* --- Typography Hierarchy --- */
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    margin: 2.5rem 0 1rem 0;
+    font-family: var(--page-font-family);
+    font-weight: 700;
+}
+
+.markdown-content h1 {
+    font-size: var(--h1-size);
+    font-weight: 800;
+}
+
+.markdown-content h2 {
+    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 1));
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+}
+
+/* --- Code Block Fixes --- */
+
+.markdown-content .code-wrapper {
+    position: relative;
+    margin: 0 0 1.5rem 0;
+}
+
+.markdown-content .codehilite {
+    padding: 0; 
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    max-width: 100%;
+    background-color: var(--grey-0);
+}
+
+.markdown-content .codehilite pre {
+    margin: 0;
+    padding: 1rem; 
+    width: max-content;
+    min-width: 100%;
+    box-sizing: border-box;
+    /* Ensure the pre block controls the font */
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 0.9rem;
+    background: transparent; /* Keep background clean */
+}
+
+/* Inline Code (e.g., inside paragraphs) */
+.markdown-content code {
+    background-color: var(--grey-0);
+    padding: 0.15rem 0.3rem;
+    border-radius: .25rem;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 0.85em;
+    border: 1px solid var(--grey-1);
+}
+
+/* THE FIX: Remove inline code styling when inside a code block */
+.markdown-content pre code {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    font-size: inherit !important;
+}
+
+/* --- Lists --- */
+
+.markdown-content ul,
+.markdown-content ol {
+    padding: 0 0 0 2rem;
+    margin: 0 0 1.25rem 0;
+}
+
+.markdown-content li {
+    padding: 0.25rem 0 0.25rem 0.5rem;
+}
+
+/* --- Tables & Images --- */
+
+.markdown-content .table-wrapper,
+.markdown-content .img-wrapper {
+    margin: 2rem 0; 
+}
+
+.markdown-content th,
+.markdown-content td {
+    padding: 0.75rem 1rem;
+    border-color: var(--border-color);
+    border-width: 0 var(--border-width) var(--border-width) 0;
+}
+
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.copy-button {
+    position: absolute;
+    top: 10px;    /* Adjust based on your visual preference */
+    right: 10px;
+    z-index: 20;  /* Ensures it sits ABOVE the code block */
+    /* Ensure display is grid or flex to center the icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--grey-0);
+    border: 1px solid var(--border-color);
+}

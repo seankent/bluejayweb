@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Configuring the FPGA | Bluejay Devices</title>
+        <link href="/images/logo.svg" rel="icon"/>
+        <link href="/css/styles.css" rel="stylesheet"/>
+        <link href="/css/content.css" rel="stylesheet"/>
+        <link href="/css/syntax.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/></head>
+    <body data-page-id="boards-bluejay-configuring_the_fpga">
+        <div class="header">
+            <a class="nav-logo" href="/index.html">
+                <img alt="logo" src="/images/bluejay_devices.svg"/>
+            </a>
+            <div class="navbar">
+                <a class="button navbar-button" href="/about/about.html">
+                    About
+                </a>
+                <a class="button navbar-button" href="/boards/boards.html">
+                    Boards
+                </a>
+            </div>
+            <div class="nav-hamburger-button">
+                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="800px" stroke="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 0 24 24" width="800px" xmlns="http://www.w3.org/2000/svg"><path d="M20 7L4 7" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 12L4 12" stroke-linecap="round" stroke-width="1.5"></path><path d="M20 17L4 17" stroke-linecap="round" stroke-width="1.5"></path></svg></div>
+        </div>
+        <div class="side-nav">
+            <div class="nav-item" data-page-id="" id="side-nav-">
+                <div class="nav-button">
+                    <a href="//index.html">
+                        Home
+                    </a>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="side-nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                        <a href="/about/about.html">
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="boards" id="side-nav-boards">
+                    <div class="nav-button">
+                        <a href="/boards/boards.html">
+                            Boards
+                        </a>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-jay40" id="side-nav-boards-jay40">
+                        <div class="nav-button">
+                            <a href="/boards/jay40/jay40.html">
+                                Jay40
+                            </a>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-input_output" id="side-nav-boards-jay40-input_output">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/input_output/input_output.html">
+                                    Input/Output
+                                </a>
+                                <a href="/boards/jay40/input_output/input_output.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-configuration" id="side-nav-boards-jay40-configuration">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/configuration/configuration.html">
+                                    Configuration
+                                </a>
+                                <a href="/boards/jay40/configuration/configuration.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-power" id="side-nav-boards-jay40-power">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/power/power.html">
+                                    Power
+                                </a>
+                                <a href="/boards/jay40/power/power.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-using_a_pll" id="side-nav-boards-jay40-using_a_pll">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/using_a_pll/using_a_pll.html">
+                                    Using a PLL
+                                </a>
+                                <a href="/boards/jay40/using_a_pll/using_a_pll.html">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-bluejay" id="side-nav-boards-bluejay">
+                        <div class="nav-button">
+                            <a href="/boards/bluejay/bluejay.html">
+                                Bluejay
+                            </a>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-software" id="side-nav-boards-bluejay-software">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/software/software.html">
+                                    Software
+                                </a>
+                                <a href="/boards/bluejay/software/software.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-board_information" id="side-nav-boards-bluejay-board_information">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/board_information/board_information.html">
+                                    Board Information
+                                </a>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_overview" id="side-nav-boards-bluejay-board_information-board_overview">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_overview/board_overview.html">
+                                        Board Overview
+                                    </a>
+                                    <a href="/boards/bluejay/board_information/board_overview/board_overview.html">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-board_io" id="side-nav-boards-bluejay-board_io">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/board_io/board_io.html">
+                                    Board I/O
+                                </a>
+                                <a href="/boards/bluejay/board_io/board_io.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-power_delivery" id="side-nav-boards-bluejay-power_delivery">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/power_delivery/power_delivery.html">
+                                    Power Delivery
+                                </a>
+                                <a href="/boards/bluejay/power_delivery/power_delivery.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-configuring_the_fpga" id="side-nav-boards-bluejay-configuring_the_fpga">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/configuring_the_fpga/configuring_the_fpga.html">
+                                    Configuring the FPGA
+                                </a>
+                                <a href="/boards/bluejay/configuring_the_fpga/configuring_the_fpga.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-status_leds" id="side-nav-boards-bluejay-status_leds">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/status_leds/status_leds.html">
+                                    Status LEDs
+                                </a>
+                                <a href="/boards/bluejay/status_leds/status_leds.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-getting_started" id="side-nav-boards-bluejay-getting_started">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/getting_started/getting_started.html">
+                                    Getting Started
+                                </a>
+                                <a href="/boards/bluejay/getting_started/getting_started.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-software_installation" id="side-nav-boards-bluejay-software_installation">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/software_installation/software_installation.html">
+                                    Software Installation
+                                </a>
+                                <a href="/boards/bluejay/software_installation/software_installation.html">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+                <div class="docs">
+                    <div class="markdown-content">
+                        <h1>Configuring the FPGA</h1>
+                        <h2>Overview</h2>
+                        <p>The iCE40LP8K is an SRAM-based FPGA, which means its configuration is stored in SRAM memory cells distributed throughout the chip. These cells are volatile and thus lose their contents when power is removed. While the use of SRAM cells allows the FPGA to be easily programmed, it also means the configuration must be reloaded each time the device is powered on. </p>
+                        <p>The board supports two configuration modes: Master Mode and Slave Mode. In Master Mode, the FPGA automatically loads its configuration from the onboard SPI flash chip when power is applied. In Slave Configuration Mode, an external programmer directly loads the configuration into the FPGA. The following sections explain how to set up and use both configuration modes. </p>
+                        <p>They also discuss how to program the flash chip, which allows the bitstream to be stored permanently on the board.</p>
+                        <h2>Configuration Modes</h2>
+                        <h3>Master Mode</h3>
+                        <p>In Master Mode, the FPGA automatically configures itself from the flash chip when power is applied or CRESET_B is de-asserted. In this mode, the FPGA acts as a SPI master and reads the configuration from the flash chip. By storing the FPGA’s configuration in an onboard, non-volatile memory the FPGA is able to configure itself and operate without having to be connected to an external programmer.</p>
+                        <p>To operate the board in Master Mode, the configuration jumper should be place in the "MM" position.</p>
+                        <h3>Programming the Flash</h3>
+                        <p>Before the FPGA can operate in Master Mode, a bitstream must be written into the boards flash’s memory chip. This can be done using an external programmer attached to the boards configuration interface.</p>
+                        <p>The boards flash chip has 2 Mbit capacity. The size of the bitstream image for an iCE40LP8K is 1,081,464 bits.</p>
+                        <p>When programming the flash, the configuration jumper must be placed in the "MM" position.</p>
+                        <h3>Slave Mode</h3>
+                        <p>In Slave Configuration Mode, an external programmer loads the configuration onto the FPGA. This mode allows the FPGA to be quickly programmed and reprogrammed, which can be useful when prototyping and debugging. Slave Configuration Mode can also be useful when the device is integrated into a larger system where an application processor can store and load the configuration.</p>
+                        <p>To operate the board in Slave Mode, the configuration jumper should be place in the "SM" position.</p>
+                        <h2>Configuration Jumper</h2>
+                        <p>The board includes a 3-pin header for selecting the configuration mode. To select Master Mode (MM), the jumper should be set to the MM position. In this mode, the FPGA acts as a SPI master and the flash chip acts as a SPI slave. To select Slave Mode (SM), the jumper should be set to the SM position. In this mode, the FPGA acts as a SPI slave and an external programmer acts a SPI master.</p>
+                        <p>The jumper must either be in the MM or SM position. It cannot be left disconnected.</p>
+                        <p></p><div class="img-wrapper"><img alt="Alt text" src="diag/config_modes.svg" style="width: 25rem;"/></div><p></p>
+                        <h2>Configuration Interface</h2>
+                        <p>The FPGA’s bitstream is loaded through a SPI interface. In addition, the FPGA has two dedicated configuration pins, CRESET_B and CDONE, which assist in the configuration process. CRESET_B is an active-low input that resets the FPGA’s configuration. CDONE is an output of the FPGA and is asserted when the configuration has been successfully loaded.</p>
+                        <p>The board's configuration interface is located at the bottom of the J1 header and is shown in the figure below. This interface includes the four SPI signals, as well as the two FPGA-specific configuration pins, CRESET_B and CDONE. These are abbreviated CRST and CDN on the board. The configuration interface can be used to program both the FPGA and the flash chip.</p>
+                        <p>When connecting an external programmer to the board, it is expected that both devices operate off of the same 3.3 V supply. This can be achieved by powering the Bluejay from the external programmer’s power supply through the 3V3 and GND pins.</p>
+                        <p></p><div class="img-wrapper"><img alt="Alt text" src="diag/config_interface.svg" style="width: 25rem;"/></div><p></p>
+                        <h2>Additional Information</h2>
+                        <p>The follow sections are not strictly necessary, but have been left in for a curious reader. The describe the Master Mode and Slave Modes setup and sequences in more detail. </p>
+                        <h3>Master Mode Circuit</h3>
+                        <p></p><div class="img-wrapper"><img alt="Alt text" src="diag/mode_select_circuit_mm.svg" style="width: 40rem;"/></div><p></p>
+                        <h3>Master Mode Sequence</h3>
+                        <h3>Slave Mode Circuit</h3>
+                        <p></p><div class="img-wrapper"><img alt="Alt text" src="diag/mode_select_circuit_sm.svg" style="width: 40rem;"/></div><p></p>
+                        <h3>Slave Mode Sequence</h3>
+                    </div>
+                </div>
+        </div>
+        <div class="nav">
+            <div class="nav-cross-button">
+                <svg fill="currentColor" style="width: 2.5rem; height: 2.5rem" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"></path> </g></svg></div>
+            <div class="nav-item" data-page-id="" id="nav-">
+                <div class="nav-button">
+                    <a href="//index.html">
+                        Home
+                    </a>
+                    <div class="nav-button-chevron">
+                        <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                </div>
+                <div class="nav-item" data-page-id="about" id="nav-about">
+                    <div class="nav-button">
+                        <a href="/about/about.html">
+                            About
+                        </a>
+                        <a href="/about/about.html">
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" data-page-id="boards" id="nav-boards">
+                    <div class="nav-button">
+                        <a href="/boards/boards.html">
+                            Boards
+                        </a>
+                        <div class="nav-button-chevron">
+                            <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-jay40" id="nav-boards-jay40">
+                        <div class="nav-button">
+                            <a href="/boards/jay40/jay40.html">
+                                Jay40
+                            </a>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-input_output" id="nav-boards-jay40-input_output">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/input_output/input_output.html">
+                                    Input/Output
+                                </a>
+                                <a href="/boards/jay40/input_output/input_output.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-configuration" id="nav-boards-jay40-configuration">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/configuration/configuration.html">
+                                    Configuration
+                                </a>
+                                <a href="/boards/jay40/configuration/configuration.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-power" id="nav-boards-jay40-power">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/power/power.html">
+                                    Power
+                                </a>
+                                <a href="/boards/jay40/power/power.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-jay40-using_a_pll" id="nav-boards-jay40-using_a_pll">
+                            <div class="nav-button">
+                                <a href="/boards/jay40/using_a_pll/using_a_pll.html">
+                                    Using a PLL
+                                </a>
+                                <a href="/boards/jay40/using_a_pll/using_a_pll.html">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="boards-bluejay" id="nav-boards-bluejay">
+                        <div class="nav-button">
+                            <a href="/boards/bluejay/bluejay.html">
+                                Bluejay
+                            </a>
+                            <div class="nav-button-chevron">
+                                <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-software" id="nav-boards-bluejay-software">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/software/software.html">
+                                    Software
+                                </a>
+                                <a href="/boards/bluejay/software/software.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-board_information" id="nav-boards-bluejay-board_information">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/board_information/board_information.html">
+                                    Board Information
+                                </a>
+                                <div class="nav-button-chevron">
+                                    <!--?xml version="1.0" encoding="utf-8"?--><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools --><svg fill="none" height="2rem" stroke="currentColor" viewBox="0 0 24 24" width="2rem" xmlns="http://www.w3.org/2000/svg"><path d="M17 9.5L12 14.5L7 9.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>    </div>
+                            </div>
+                            <div class="nav-item" data-page-id="boards-bluejay-board_information-board_overview" id="nav-boards-bluejay-board_information-board_overview">
+                                <div class="nav-button">
+                                    <a href="/boards/bluejay/board_information/board_overview/board_overview.html">
+                                        Board Overview
+                                    </a>
+                                    <a href="/boards/bluejay/board_information/board_overview/board_overview.html">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-board_io" id="nav-boards-bluejay-board_io">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/board_io/board_io.html">
+                                    Board I/O
+                                </a>
+                                <a href="/boards/bluejay/board_io/board_io.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-power_delivery" id="nav-boards-bluejay-power_delivery">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/power_delivery/power_delivery.html">
+                                    Power Delivery
+                                </a>
+                                <a href="/boards/bluejay/power_delivery/power_delivery.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-configuring_the_fpga" id="nav-boards-bluejay-configuring_the_fpga">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/configuring_the_fpga/configuring_the_fpga.html">
+                                    Configuring the FPGA
+                                </a>
+                                <a href="/boards/bluejay/configuring_the_fpga/configuring_the_fpga.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-status_leds" id="nav-boards-bluejay-status_leds">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/status_leds/status_leds.html">
+                                    Status LEDs
+                                </a>
+                                <a href="/boards/bluejay/status_leds/status_leds.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-getting_started" id="nav-boards-bluejay-getting_started">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/getting_started/getting_started.html">
+                                    Getting Started
+                                </a>
+                                <a href="/boards/bluejay/getting_started/getting_started.html">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item" data-page-id="boards-bluejay-software_installation" id="nav-boards-bluejay-software_installation">
+                            <div class="nav-button">
+                                <a href="/boards/bluejay/software_installation/software_installation.html">
+                                    Software Installation
+                                </a>
+                                <a href="/boards/bluejay/software_installation/software_installation.html">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            © 2025 Bluejay Devices
+        </div>
+    <script src="/js/app.js"></script>
+    
+
+</body></html>
