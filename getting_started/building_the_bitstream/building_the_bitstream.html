@@ -19,7 +19,7 @@
                     <a class="button navbar-button" href="/about/about.html">
                         About
                     </a>
-                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                    <a class="button navbar-button" href="/docs/board_overview/board_overview.html">
                         Docs
                     </a>
                     <a class="button navbar-button" href="/contact/contact.html">
@@ -175,6 +175,20 @@
                             </a>
                         </div>
                     </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="side-nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="side-nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page-id="contact" id="side-nav-contact">
                     <div class="nav-button">
@@ -200,59 +214,60 @@
                     <h2>Synthesis</h2>
                     <p>The first step is logic synthesis, which converts the high-level RTL into a netlist of FPGA primitives.</p>
                     <p>Run <code>yosys</code> with the following command:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>yosys<span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top blinky -json gen/blinky.json"</span><span class="w"> </span>blinky.sv
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>yosys<span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top top -json gen/top.json"</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
 </code></pre></div></div>
 
-                    <p>The <code>-top blinky</code> option specifies that the top module is named <code>blinky</code>. The <code>-json gen/blinky.json</code> option tells the tool to write the synthesized netlist to a JSON file of the given name. The source file containing the RTL design, <code>blinky.sv</code>, is provided as the final argument. Note, if there are multiple source files, add each as a space separated list. </p>
+                    <p>The <code>-top top</code> option specifies that the top module is named <code>top</code>. The <code>-json gen/top.json</code> option tells the tool to write the synthesized netlist to a JSON file of the given name. The source files containing the RTL design (<code>top.sv</code>, <code>blinky.sv</code>, and <code>reset_controller.sv</code>) are provided as space-separated arguments.</p>
                     <p><code>yosys</code> will output information about the synthesis process and report the resources used.</p>
                     <h2>Place and Route</h2>
                     <p>The next step is place-and-route, which maps the netlist to physical resources on the FPGA.</p>
                     <p>Run <code>nextpnr-ice40</code> with the following command:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>nextpnr-ice40<span class="w"> </span>--lp8k<span class="w"> </span>--package<span class="w"> </span>cm81<span class="w"> </span>--json<span class="w"> </span>gen/blinky.json<span class="w"> </span>--pcf<span class="w"> </span>blinky.pcf<span class="w"> </span>--asc<span class="w"> </span>gen/blinky.asc
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>nextpnr-ice40<span class="w"> </span>--lp8k<span class="w"> </span>--package<span class="w"> </span>cm81<span class="w"> </span>--json<span class="w"> </span>gen/top.json<span class="w"> </span>--pcf<span class="w"> </span>top.pcf<span class="w"> </span>--asc<span class="w"> </span>gen/top.asc
 </code></pre></div></div>
 
-                    <p>The <code>--lp8k</code> and <code>--package cm81</code> options specify the target FPGA (the iCE40LP8K-CM81). The <code>--json gen/blinky.json</code> option points the tool to the synthesized netlist. The <code>--pcf blinky.pcf</code> option points the tool to the pin constraints file. Finally, the <code>--asc gen/blinky.asc</code> option specifies where to write the placed-and-routed design.</p>
+                    <p>The <code>--lp8k</code> and <code>--package cm81</code> options specify the target FPGA (the iCE40LP8K-CM81). The <code>--json gen/top.json</code> option points the tool to the synthesized netlist. The <code>--pcf top.pcf</code> option points the tool to the pin constraints file. Finally, the <code>--asc gen/top.asc</code> option specifies where to write the placed-and-routed design.</p>
                     <p><code>nextpnr-ice40</code> will report timing information and confirm successful place-and-route.</p>
                     <h3>Understanding the Timing Report</h3>
                     <p>During place-and-route, <code>nextpnr-ice40</code> uses the <code>set_frequency</code> constraint from the pin constraints file to perform timing analysis. This constraint tells the tool that the <code>clk</code> signal runs at 12.0 MHz. The tool will analyze whether the design can meet timing at this frequency and report the maximum achievable frequency (Fmax).</p>
                     <p>You should see the following line printed in the output:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">118.30</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">12.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">105.54</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">12.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
 </code></pre></div></div>
 
                     <p>This confirms that the design meets timing with significant margin. If timing fails for whatever reason (e.g., if you set the clock frequency to 200 MHz), you will see something like this:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code><span class="n">ERROR</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">118.30</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">FAIL</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">200.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code><span class="n">ERROR</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">105.54</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">FAIL</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">200.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
 </code></pre></div></div>
 
                     <h2>Bitstream Packing</h2>
                     <p>The final step is to convert the placed design into a binary bitstream.</p>
                     <p>Run <code>icepack</code> with the following command:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>icepack<span class="w"> </span>gen/blinky.asc<span class="w"> </span>gen/blinky.bin
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>icepack<span class="w"> </span>gen/top.asc<span class="w"> </span>gen/top.bin
 </code></pre></div></div>
 
-                    <p>This creates <code>gen/blinky.bin</code>, which contains 1,081,464 bits of configuration data for the iCE40LP8K.</p>
+                    <p>This creates <code>gen/top.bin</code>, which contains 1,081,464 bits of configuration data for the iCE40LP8K.</p>
                     <h2>Project Structure</h2>
                     <p>After running the synthesis, place-and-route, and bitstream packing commands, your project directory should look like this:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>.
-├── blinky.pcf
 ├── blinky.sv
-└── gen
-   ├── blinky.asc
-   ├── blinky.bin
-   └── blinky.json
+├── gen
+│   ├── top.asc
+│   ├── top.bin
+│   └── top.json
+├── reset_controller.sv
+├── top.pcf
+└── top.sv
 </code></pre></div></div>
 
                     <p>The <code>gen/</code> directory now contains the intermediate and final output files from the bitstream generation process:
-                    - <code>blinky.json</code> - Synthesized netlist from Yosys
-                    - <code>blinky.asc</code> - Placed-and-routed design from NextPNR
-                    - <code>blinky.bin</code> - Final bitstream ready for programming</p>
+                    - <code>top.json</code> - Synthesized netlist from Yosys
+                    - <code>top.asc</code> - Placed-and-routed design from NextPNR
+                    - <code>top.bin</code> - Final bitstream ready for programming</p>
                     <h2>Using a Makefile (Optional)</h2>
                     <p>For larger projects or when iterating on designs, manually running these commands can become tedious. A Makefile automates the build process.</p>
                     <p>Create a file called <code>Makefile</code> in your project directory:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
-<span class="nv">PROJECT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky
-<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky
-<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky.sv
-<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>blinky.pcf
+<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
+<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.pcf
 
 <span class="c"># Output directory</span>
 <span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
@@ -268,9 +283,9 @@
 <span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
 
 <span class="c"># Build targets</span>
-<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.json
-<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.asc
-<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.bin
+<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.json
+<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.asc
+<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.bin
 
 <span class="c"># Default target</span>
 <span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
@@ -291,13 +306,13 @@
 <span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
 <span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
 
-<span class="c"># Program FPGA (volatile)</span>
+<span class="c"># Program FPGA (SM)</span>
 <span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
 <span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
 
-<span class="c"># Program flash (persistent)</span>
+<span class="c"># Program Flash (MM)</span>
 <span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
-<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
 
 <span class="c"># Clean build artifacts</span>
 <span class="nf">clean</span><span class="o">:</span>
@@ -477,6 +492,20 @@
                         <div class="nav-button">
                             <a href="/tutorials/using_the_pll/using_the_pll.html">
                                 Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>

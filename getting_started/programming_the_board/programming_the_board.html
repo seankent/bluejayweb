@@ -19,7 +19,7 @@
                     <a class="button navbar-button" href="/about/about.html">
                         About
                     </a>
-                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                    <a class="button navbar-button" href="/docs/board_overview/board_overview.html">
                         Docs
                     </a>
                     <a class="button navbar-button" href="/contact/contact.html">
@@ -172,6 +172,20 @@
                         <div class="nav-button">
                             <a href="/tutorials/using_the_pll/using_the_pll.html">
                                 Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="side-nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="side-nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>
@@ -410,7 +424,7 @@
                     <p></p><div class="img-wrapper"><img alt="Board setup diagram" src="diag/sm_mode.svg" style="width: 20rem;"/></div><p></p>
                     <h3>Programming Command</h3>
                     <p>Once the programmer is connected, run:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span>gen/blinky.bin
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span>gen/top.bin
 </code></pre></div></div>
 
                     <p>The <code>-S</code> flag tells <code>iceprog</code> to program the FPGA's SRAM directly.</p>
@@ -432,7 +446,7 @@
                     <p></p><div class="img-wrapper"><img alt="Board setup diagram" src="diag/mm_mode.svg" style="width: 20rem;"/></div><p></p>
                     <h3>Programming Command</h3>
                     <p>Run:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>gen/blinky.bin
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>gen/top.bin
 </code></pre></div></div>
 
                     <p>Note the absence of the <code>-S</code> flag. Without it, <code>iceprog</code> defaults to programming the flash chip.</p>
@@ -592,6 +606,20 @@
                         <div class="nav-button">
                             <a href="/tutorials/using_the_pll/using_the_pll.html">
                                 Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>

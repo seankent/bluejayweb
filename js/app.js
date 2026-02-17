@@ -43,6 +43,7 @@ function restore() {
     let config = load();
 
     for (let element of document.querySelectorAll(".nav-item")) {
+        // Expand all previously expanded nav-items
         if (element.id in config["nav"] && config["nav"][element.id] === "yes") {
             element.classList.add('show');
         }

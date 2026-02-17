@@ -19,7 +19,7 @@
                     <a class="button navbar-button" href="/about/about.html">
                         About
                     </a>
-                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                    <a class="button navbar-button" href="/docs/board_overview/board_overview.html">
                         Docs
                     </a>
                     <a class="button navbar-button" href="/contact/contact.html">
@@ -182,6 +182,13 @@
                             </a>
                         </div>
                     </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="side-nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page-id="contact" id="side-nav-contact">
                     <div class="nav-button">
@@ -197,157 +204,270 @@
                 <div class="markdown-content">
                     <h1>Using the Embedded Block RAM (EBR)</h1>
                     <h2>Overview</h2>
-                    <p>The iCE40LP8K includes 128 Kbits of Embedded Block RAM (EBR) organized as 32 blocks of 4 Kbit each. This tutorial demonstrates how to use the EBR to store and playback a Morse code pattern on the USR LED.</p>
-                    <h2>What You'll Learn</h2>
+                    <p>The iCE40LP8K includes 128 Kbits of Embedded Block RAM (EBR) organized as 32 blocks of 4 Kbit each. This tutorial demonstrates how to instantiate and use an iCE40 EBR primitive to create a custom LED blinking pattern.</p>
+                    <p>This design builds on the <a href="/getting_started/introduction/introduction.html">Getting Started</a> tutorial by replacing the simple blinky module with a version that reads an LED blinking pattern from the EBR. Instead of toggling at a fixed rate, the LED follows a custom pattern stored in memory. The design consists of three modules:</p>
                     <ul>
-                    <li>How to instantiate an iCE40 EBR primitive</li>
-                    <li>How to configure EBR read and write modes</li>
-                    <li>How to initialize EBR contents for read-only data</li>
+                    <li><code>blinky_ebr</code> - Reads a pattern from EBR and controls the LED (replaces the simple <code>blinky</code> module)</li>
+                    <li><code>reset_controller</code> - Generates a power-on reset signal (unchanged from Getting Started)</li>
+                    <li><code>top</code> - Instantiates the blinky_ebr and reset controller modules</li>
                     </ul>
-                    <h2>Design Overview</h2>
-                    <p>This example stores a Morse code message ("HELLO") in the EBR and plays it back on the USR LED. The design reads the timing pattern from memory and controls the LED accordingly. A dot is a short blink, a dash is a long blink, and spaces represent pauses between letters.</p>
-                    <h2>Design Files</h2>
-                    <h3>ebr_demo.sv</h3>
-                    <p>The top-level module instantiates the EBR primitive and implements the control logic:</p>
-                    <div class="code-wrapper"><span class="code-label">Systemverilog</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">ebr_demo</span><span class="w"> </span>
+                    <h2>Blinky EBR Module</h2>
+                    <p>The <code>blinky_ebr</code> module implements a state machine that reads 4-bit commands from the EBR and controls the LED accordingly.</p>
+                    <p>Create a file called <code>blinky_ebr.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky_ebr</span><span class="w"> </span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3000000</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">rst</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="k">localparam</span><span class="w"> </span><span class="n">COMMAND__END</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h0</span><span class="p">;</span><span class="w"> </span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">COMMAND__OFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h1</span><span class="p">;</span><span class="w"> </span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">COMMAND__ON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h2</span><span class="p">;</span><span class="w"> </span>
+
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__RESET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h0</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__READ_RAM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h1</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__BRANCH_ON_COMMAND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h2</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__LED_ON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h3</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__LED_OFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h4</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__WAIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h5</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__INCREMENT_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h6</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__RESET_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h7</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE__ERROR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4'h8</span><span class="p">;</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="n">rclk</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">rclke</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">re</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">raddr</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">rdata</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">wclk</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">wclke</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">we</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">waddr</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">mask</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">wdata</span><span class="p">;</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">state__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">9</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">idx</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">9</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">idx__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">rclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">wclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">wclke</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">waddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">7'h0</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">15'h0</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">wdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">15'h0</span><span class="p">;</span>
+
+<span class="k">always_comb</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">{</span><span class="mb">1'bx</span><span class="p">}};</span>
+<span class="w">    </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="n">idx__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idx</span><span class="p">;</span>
+<span class="w">    </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+<span class="w">    </span><span class="n">re</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rclke</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">raddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">8</span><span class="p">{</span><span class="mb">1'bx</span><span class="p">}};</span>
+
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="w">        </span><span class="nl">STATE__RESET:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">idx__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__READ_RAM</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__READ_RAM:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">re</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span><span class="w"> </span>
+<span class="w">            </span><span class="n">rclke</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">raddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idx</span><span class="p">[</span><span class="mi">9</span><span class="o">:</span><span class="mi">2</span><span class="p">];</span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__BRANCH_ON_COMMAND</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__BRANCH_ON_COMMAND:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">                </span><span class="p">(</span><span class="n">rdata</span><span class="p">[({</span><span class="mh">2'h0</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]}</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">COMMAND__ON</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">STATE__LED_ON</span><span class="w"> </span><span class="o">:</span>
+<span class="w">                </span><span class="p">(</span><span class="n">rdata</span><span class="p">[({</span><span class="mh">2'h0</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]}</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">COMMAND__OFF</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">STATE__LED_OFF</span><span class="w"> </span><span class="o">:</span>
+<span class="w">                </span><span class="p">(</span><span class="n">rdata</span><span class="p">[({</span><span class="mh">2'h0</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]}</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">COMMAND__END</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">STATE__RESET_IDX</span><span class="w"> </span><span class="o">:</span>
+<span class="w">                </span><span class="n">STATE__ERROR</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__LED_ON:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__WAIT</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__LED_OFF:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__WAIT</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__WAIT:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">                </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">STATE__INCREMENT_IDX</span><span class="w"> </span><span class="o">:</span><span class="w"> </span>
+<span class="w">                </span><span class="n">STATE__WAIT</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__INCREMENT_IDX:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">idx__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__READ_RAM</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__RESET_IDX:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">idx__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__READ_RAM</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="nl">STATE__ERROR:</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">state__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE__ERROR</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">endcase</span>
+<span class="k">end</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">STATE__RESET</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">state__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">idx__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="n">SB_RAM40_4K</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WRITE_MODE</span><span class="p">(</span><span class="mh">2'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">READ_MODE</span><span class="p">(</span><span class="mh">2'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_0</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000001112221112221212</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_1</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_2</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_3</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_4</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_5</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_6</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_7</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_8</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_9</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_A</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_B</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_C</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_D</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_E</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">INIT_F</span><span class="p">(</span><span class="mh">256'h0000000000000000000000000000000000000000000000000000000000000000</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">u_sb_ram40_4k</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RCLK</span><span class="p">(</span><span class="n">rclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RCLKE</span><span class="p">(</span><span class="n">rclke</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RE</span><span class="p">(</span><span class="n">re</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RADDR</span><span class="p">(</span><span class="n">raddr</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RDATA</span><span class="p">(</span><span class="n">rdata</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WCLK</span><span class="p">(</span><span class="n">wclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WCLKE</span><span class="p">(</span><span class="n">wclke</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WE</span><span class="p">(</span><span class="n">we</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WADDR</span><span class="p">(</span><span class="n">waddr</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">MASK</span><span class="p">(</span><span class="n">mask</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WDATA</span><span class="p">(</span><span class="n">wdata</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <h3>How It Works</h3>
+                    <p>The design stores a blinking pattern in the EBR as a sequence of 4-bit commands. Each command tells the state machine to either turn the LED on or off for one "beat" (a fixed time period), or signals the end of the pattern. The state machine continuously reads commands from memory, executes them, and loops back to the beginning when it reaches the end marker.</p>
+                    <p>The pattern is stored in the EBR, which is initialized using the <code>INIT_0</code> through <code>INIT_F</code> parameters. Each nibble (4 bits) represents one command:
+                    - <code>4'h0</code> (<code>COMMAND__END</code>): End of pattern, restart from beginning
+                    - <code>4'h1</code> (<code>COMMAND__OFF</code>): Turn LED off for one beat
+                    - <code>4'h2</code> (<code>COMMAND__ON</code>): Turn LED on for one beat</p>
+                    <p>Since each command is 4 bits and the EBR operates in 256×16 mode, each 16-bit word stores four commands. The module uses bit slicing to extract the correct 4-bit command based on <code>idx[1:0]</code>, while <code>idx[9:2]</code> selects which word to read from memory.</p>
+                    <p>The state machine operates as follows:</p>
+                    <ol>
+                    <li>
+                    <p><strong>Read a command</strong>: The state machine reads a 4-bit command from the EBR using the current index. The address calculation (<code>idx[9:2]</code>) selects the word, and bit slicing extracts the appropriate nibble.</p>
+                    </li>
+                    <li>
+                    <p><strong>Decode the command</strong>: Based on the command value, the LED is turned on (<code>COMMAND__ON</code>), turned off (<code>COMMAND__OFF</code>), or the pattern restarts (<code>COMMAND__END</code>).</p>
+                    </li>
+                    <li>
+                    <p><strong>Wait</strong>: After setting the LED state, the module waits for <code>MAX_COUNT</code> clock cycles (250 ms at 12 MHz). This wait period defines the length of one beat in the pattern.</p>
+                    </li>
+                    <li>
+                    <p><strong>Advance</strong>: The index increments to read the next command, and the cycle repeats.</p>
+                    </li>
+                    </ol>
+                    <p>The example pattern <code>256'h...1112221112221212</code> produces two fast blinks followed by two slow blinks, then repeats.</p>
+                    <h3>Understanding the EBR Primitive</h3>
+                    <p>The <code>SB_RAM40_4K</code> module is a hard macro primitive specific to the iCE40 FPGA. During synthesis, <code>yosys</code> recognizes this primitive and preserves it rather than synthesizing it into generic logic. <code>nextpnr-ice40</code> then maps this primitive to one of the 32 physical EBR blocks available on the iCE40LP8K during place-and-route.</p>
+                    <p>This design uses <strong>256×16 mode</strong> (configured with <code>WRITE_MODE = 2'h0</code> and <code>READ_MODE = 2'h0</code>), which provides 256 addressable locations with 16 bits of data each.</p>
+                    <p>The <code>INIT_0</code> through <code>INIT_F</code> parameters initialize the EBR contents at configuration time. Each parameter holds 256 bits of data. Together, they provide 4096 bits (4 Kbits) of initialization data for the entire EBR block. In 256×16 mode, <code>INIT_0</code> provides the first 16 words of memory (addresses 0-15), <code>INIT_1</code> provides the next 16 words (addresses 16-31), and so on. The pattern is stored LSB-first, meaning the rightmost nibble in the hex value corresponds to the first command in the sequence.</p>
+                    <h2>Top-Level Module</h2>
+                    <p>The top-level module is nearly identical to the Getting Started tutorial, just instantiating <code>blinky_ebr</code> instead of <code>blinky</code>.</p>
+                    <p>Create a file called <code>top.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
 <span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
 <span class="p">);</span>
 
-<span class="c1">// Timing constants (12 MHz clock)</span>
-<span class="k">localparam</span><span class="w"> </span><span class="n">UNIT_TIME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12_000_000</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="c1">// 100ms per unit</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">rst</span><span class="p">;</span>
 
-<span class="c1">// EBR signals</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">RCLK</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">RCLKE</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">RE</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">RADDR</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">RDATA</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">WCLK</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">WCLKE</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">WE</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">WADDR</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">WDATA</span><span class="p">;</span>
-
-<span class="c1">// Control signals</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">timer</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">pattern_bit</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">current_pattern</span><span class="p">;</span>
-
-<span class="c1">// Clock assignments</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">RCLK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">WCLK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
-
-<span class="c1">// Read-only operation</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">RCLKE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">RE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">RADDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">WCLKE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">WE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">WADDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">9'h0</span><span class="p">;</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">WDATA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">8'h0</span><span class="p">;</span>
-
-<span class="c1">// Morse code patterns (2 bits per symbol)</span>
-<span class="c1">// 00 = off, 01 = dot, 10 = dash, 11 = letter space</span>
-<span class="c1">// H: .... (4 dots)         = 01_01_01_01</span>
-<span class="c1">// E: . (1 dot)             = 01_00_00_00</span>
-<span class="c1">// L: .-.. (dot, dash, 2 dots) = 01_10_01_01</span>
-<span class="c1">// L: .-.. (dot, dash, 2 dots) = 01_10_01_01</span>
-<span class="c1">// O: --- (3 dashes)        = 10_10_10_00</span>
-<span class="c1">// Word space               = 11_11_11_11</span>
-
-<span class="c1">//==============================</span>
-<span class="c1">// EBR Instance (512x8 mode)</span>
-<span class="c1">//==============================</span>
-<span class="n">SB_RAM40_4K</span><span class="w"> </span><span class="p">#(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">WRITE_MODE</span><span class="p">(</span><span class="mh">2'h1</span><span class="p">),</span><span class="w">  </span><span class="c1">// 512x8 mode</span>
-<span class="w">    </span><span class="p">.</span><span class="n">READ_MODE</span><span class="p">(</span><span class="mh">2'h1</span><span class="p">),</span><span class="w">   </span><span class="c1">// 512x8 mode</span>
-<span class="w">    </span><span class="p">.</span><span class="n">INIT_0</span><span class="p">(</span><span class="mh">256'h55_00_55_55_AA_55_55_FF_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">INIT_1</span><span class="p">(</span><span class="mh">256'h00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00</span><span class="p">)</span>
-<span class="p">)</span><span class="w"> </span><span class="n">u_ebr</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">RCLK</span><span class="p">(</span><span class="n">RCLK</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">RCLKE</span><span class="p">(</span><span class="n">RCLKE</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">RE</span><span class="p">(</span><span class="n">RE</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">RADDR</span><span class="p">(</span><span class="n">RADDR</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">RDATA</span><span class="p">(</span><span class="n">RDATA</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">WCLK</span><span class="p">(</span><span class="n">WCLK</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">WCLKE</span><span class="p">(</span><span class="n">WCLKE</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">WE</span><span class="p">(</span><span class="n">WE</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">WADDR</span><span class="p">(</span><span class="n">WADDR</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">WDATA</span><span class="p">(</span><span class="n">WDATA</span><span class="p">)</span>
+<span class="n">blinky_ebr</span><span class="w"> </span><span class="n">u_blinky_ebr</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 <span class="p">);</span>
 
-<span class="c1">// Extract current pattern from memory (2 bits per pattern)</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">current_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RDATA</span><span class="p">[</span><span class="n">pattern_bit</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span>
-
-<span class="c1">// Control logic</span>
-<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">timer</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">UNIT_TIME</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">        </span><span class="n">timer</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">timer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">        </span><span class="n">timer</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="w">        </span><span class="c1">// Move to next pattern</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pattern_bit</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">            </span><span class="n">pattern_bit</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">pattern_bit</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">            </span><span class="n">pattern_bit</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">addr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span><span class="w">  </span><span class="c1">// 8 bytes total for the pattern</span>
-<span class="w">                </span><span class="n">addr</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">            </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">                </span><span class="n">addr</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Loop back to start</span>
-<span class="w">            </span><span class="k">end</span>
-<span class="w">        </span><span class="k">end</span>
-<span class="w">    </span><span class="k">end</span>
-<span class="k">end</span>
-
-<span class="c1">// LED output control</span>
-<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">current_pattern</span><span class="p">)</span>
-<span class="w">        </span><span class="mb">2'b00</span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span><span class="w">                    </span><span class="c1">// Off</span>
-<span class="w">        </span><span class="mb">2'b01</span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">(</span><span class="n">timer</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">UNIT_TIME</span><span class="p">);</span><span class="w">     </span><span class="c1">// Dot (1 unit)</span>
-<span class="w">        </span><span class="mb">2'b10</span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">(</span><span class="n">timer</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">UNIT_TIME</span><span class="o">/</span><span class="mi">4</span><span class="p">);</span><span class="w"> </span><span class="c1">// Dash (3 units)</span>
-<span class="w">        </span><span class="mb">2'b11</span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span><span class="w">                    </span><span class="c1">// Letter/word space</span>
-<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">endcase</span>
-<span class="k">end</span>
+<span class="n">reset_controller</span><span class="w"> </span><span class="n">u_reset_controller</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+<span class="p">);</span>
 
 <span class="k">endmodule</span>
 </code></pre></div></div>
 
-                    <p>The <code>SB_RAM40_4K</code> module is a hard macro primitive specific to the iCE40 FPGA. During synthesis, Yosys recognizes this primitive and preserves it rather than synthesizing it into generic logic. NextPNR then maps this primitive to one of the physical EBR blocks available on the iCE40LP8K during place-and-route. This ensures the memory functionality is implemented using the dedicated hardware rather than being emulated in the FPGA fabric.</p>
-                    <h3>Understanding the EBR Configuration</h3>
-                    <p>The <code>SB_RAM40_4K</code> primitive can be configured in different modes:</p>
-                    <p><strong>Write/Read Modes:</strong>
-                    - <code>2'h0</code>: 256×16 configuration (256 addresses, 16-bit data width)
-                    - <code>2'h1</code>: 512×8 configuration (512 addresses, 8-bit data width)
-                    - <code>2'h2</code>: 1024×4 configuration (1024 addresses, 4-bit data width)
-                    - <code>2'h3</code>: 2048×2 configuration (2048 addresses, 2-bit data width)</p>
-                    <p><strong>This design uses 512×8 mode (<code>2'h1</code>)</strong>, which provides 512 addressable locations with 8 bits of data each.</p>
-                    <p><strong>Initialization:</strong>
-                    The <code>INIT_0</code> through <code>INIT_F</code> parameters allow you to initialize the EBR contents. Each <code>INIT</code> parameter holds 256 bits of data. In this example, we store Morse code patterns where:
-                    - <code>2'b00</code> = Off
-                    - <code>2'b01</code> = Dot (short blink)
-                    - <code>2'b10</code> = Dash (long blink)
-                    - <code>2'b11</code> = Letter/word space</p>
-                    <p>Each byte holds four 2-bit patterns, allowing compact storage of the timing sequence.</p>
-                    <h3>ebr_demo.pcf</h3>
-                    <p>The pin constraints file maps the clock and LED:</p>
-                    <div class="code-wrapper"><span class="code-label">Makefile</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code>set_io clk C4
+                    <h2>Reset Controller Module</h2>
+                    <p>The reset controller module is reused from the Getting Started tutorial. The code for this module can be found on the <a href="/getting_started/creating_your_first_design/creating_your_first_design.html">Creating Your First Design</a> page.</p>
+                    <h2>Pin Constraints</h2>
+                    <p>The pin constraints file is the same as in the Getting Started tutorial.</p>
+                    <p>Create a file called <code>top.pcf</code> with the following contents:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code>set_io clk C4
 set_io out E1
 set_frequency clk 12.0
 </code></pre></div></div>
 
                     <h2>Building the Design</h2>
-                    <p>Use the following Makefile to build the design:</p>
-                    <h3>Makefile</h3>
-                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
-<span class="nv">PROJECT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ebr_demo
-<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ebr_demo
-<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ebr_demo.sv
-<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ebr_demo.pcf
+                    <p>To streamline the build process, you can use the following Makefile:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
+<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.sv<span class="w"> </span>blinky_ebr.sv<span class="w"> </span>reset_controller.sv
+<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.pcf
 
 <span class="c"># Output directory</span>
 <span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
@@ -363,9 +483,9 @@ set_frequency clk 12.0
 <span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
 
 <span class="c"># Build targets</span>
-<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.json
-<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.asc
-<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>PROJECT<span class="k">)</span>.bin
+<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.json
+<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.asc
+<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.bin
 
 <span class="c"># Default target</span>
 <span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
@@ -386,13 +506,13 @@ set_frequency clk 12.0
 <span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
 <span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
 
-<span class="c"># Program FPGA (volatile)</span>
+<span class="c"># Program FPGA (SM)</span>
 <span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
 <span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
 
-<span class="c"># Program flash (persistent)</span>
+<span class="c"># Program Flash (MM)</span>
 <span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
-<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
 
 <span class="c"># Clean build artifacts</span>
 <span class="nf">clean</span><span class="o">:</span>
@@ -402,27 +522,26 @@ set_frequency clk 12.0
 <span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">prog</span> <span class="n">flash</span> <span class="n">clean</span>
 </code></pre></div></div>
 
-                    <p>Copy this Makefile into your project directory. You can then build and program the design:</p>
+                    <p>Copy this Makefile into your project directory. You can then build and program the design with simple commands:</p>
                     <p><strong>Build the bitstream:</strong></p>
-                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
 </code></pre></div></div>
 
-                    <p><strong>Program the FPGA (volatile):</strong></p>
-                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
+                    <p><strong>Program the FPGA (</strong>SM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
 </code></pre></div></div>
 
-                    <p><strong>Program the flash (persistent):</strong></p>
-                    <div class="code-wrapper"><span class="code-label">Terminal</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>flash
+                    <p><strong>Program the flash (</strong>MM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>flash
 </code></pre></div></div>
 
                     <p><strong>Clean build artifacts:</strong></p>
-                    <div class="code-wrapper"><span class="code-label">Systemverilog</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>make<span class="w"> </span>clean
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>make<span class="w"> </span>clean
 </code></pre></div></div>
 
                     <h2>Simulation</h2>
-                    <p>If you would like to simulate the design using the EBR, you will need to create a functional model to emulate the behavior of the block:</p>
-                    <h3>sb_ram40_4k_model.sv</h3>
-                    <div class="code-wrapper"><span class="code-label">Systemverilog</span><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">SB_RAM40_4K</span>
+                    <p>If you plan to simulate this design, you'll need a behavioral model for the <code>SB_RAM40_4K</code> primitive. Create a file called <code>SB_RAM40_4K.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">SB_RAM40_4K</span>
 <span class="p">#(</span>
 <span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">WRITE_MODE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2'h0</span><span class="p">,</span>
 <span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">READ_MODE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2'h0</span><span class="p">,</span>
@@ -447,73 +566,41 @@ set_frequency clk 12.0
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">RCLK</span><span class="p">,</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">RCLKE</span><span class="p">,</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">RE</span><span class="p">,</span>
-<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nl">READ_MODE:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">RADDR</span><span class="p">,</span>
-<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[(</span><span class="mi">16</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">READ_MODE</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">RDATA</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">RADDR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">RDATA</span><span class="p">,</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">WCLK</span><span class="p">,</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">WCLKE</span><span class="p">,</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">WE</span><span class="p">,</span>
-<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nl">WRITE_MODE:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">WADDR</span><span class="p">,</span>
-<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[(</span><span class="mi">16</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">WRITE_MODE</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">WDATA</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">WADDR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">MASK</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">WDATA</span>
 <span class="p">);</span>
 
 <span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">4095</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">mem</span><span class="p">;</span>
 
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">11</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">raddr</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">11</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">waddr</span><span class="p">;</span>
-
-<span class="c1">// Initialize memory</span>
-<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="n">mem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">INIT_F</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_E</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_D</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_C</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_B</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_A</span><span class="p">,</span>
-<span class="w">           </span><span class="n">INIT_9</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_8</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_7</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_6</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_5</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_4</span><span class="p">,</span>
-<span class="w">           </span><span class="n">INIT_3</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_2</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_1</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_0</span><span class="p">};</span>
+<span class="k">initial</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">mem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">INIT_F</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_E</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_D</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_C</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_B</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_A</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_9</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_8</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_7</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_6</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_5</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_4</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_3</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_2</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_1</span><span class="p">,</span><span class="w"> </span><span class="n">INIT_0</span><span class="p">};</span>
 <span class="k">end</span>
 
-<span class="k">assign</span><span class="w"> </span><span class="n">raddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">RADDR</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">READ_MODE</span><span class="p">));</span>
-<span class="k">assign</span><span class="w"> </span><span class="n">waddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">WADDR</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WRITE_MODE</span><span class="p">));</span>
-
-<span class="c1">// Write logic</span>
 <span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">WCLK</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">WCLKE</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">WE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">        </span><span class="n">mem</span><span class="p">[</span><span class="n">waddr</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WRITE_MODE</span><span class="p">))]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">WDATA</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">WCLKE</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">WE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">mem</span><span class="p">[(</span><span class="n">WADDR</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">(</span><span class="n">WDATA</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">MASK</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">mem</span><span class="p">[</span><span class="n">WADDR</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">MASK</span><span class="p">);</span>
 <span class="w">    </span><span class="k">end</span>
 <span class="k">end</span>
 
-<span class="c1">// Read logic</span>
 <span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">RCLK</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RCLKE</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">RE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">        </span><span class="n">RDATA</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">mem</span><span class="p">[</span><span class="n">raddr</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">READ_MODE</span><span class="p">))];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RCLKE</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">RDATA</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">mem</span><span class="p">[(</span><span class="n">RADDR</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">+:</span><span class="w"> </span><span class="mi">16</span><span class="p">];</span>
 <span class="w">    </span><span class="k">end</span>
 <span class="k">end</span>
 
 <span class="k">endmodule</span>
 </code></pre></div></div>
 
-                    <p>This functional model can be used with simulation tools like Icarus Verilog or Verilator to verify your design before programming the FPGA.</p>
-                    <h2>Customizing the Pattern</h2>
-                    <p>To change the Morse code message, modify the <code>INIT_0</code> parameter. Each byte contains four 2-bit patterns:</p>
-                    <ul>
-                    <li><code>2'b00</code>: Off/pause</li>
-                    <li><code>2'b01</code>: Dot (short blink)</li>
-                    <li><code>2'b10</code>: Dash (long blink)  </li>
-                    <li><code>2'b11</code>: Letter/word space (longer pause)</li>
-                    </ul>
-                    <p>For example, to spell "SOS" (... --- ...):</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="c1">// S = ...  (3 dots)         = 01_01_01_00</span>
-<span class="c1">// O = ---  (3 dashes)       = 10_10_10_00</span>
-<span class="c1">// S = ...  (3 dots)         = 01_01_01_00</span>
-<span class="p">.</span><span class="n">INIT_0</span><span class="p">(</span><span class="mh">256'h54_AA_54_FF_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00</span><span class="p">)</span>
-</code></pre></div></div>
-
+                    <p><strong>Important:</strong> This behavioral model should <strong>only</strong> be used for simulation with tools like Icarus Verilog. Do <strong>not</strong> include <code>SB_RAM40_4K.sv</code> when synthesizing for hardware—Yosys has its own built-in primitive definition.</p>
                     <h2>Additional Resources</h2>
-                    <p>For more information on the iCE40 EBR:
-                    - <a href="https://www.latticesemi.com/view_document?document_id=47775">iCE40 Memory Usage Guide</a>
-                    - <a href="https://www.latticesemi.com/view_document?document_id=49312">iCE40 LP/HX Family Data Sheet</a></p>
-                    <h2>Next Steps</h2>
-                    <p>Now that you know how to use the EBR, you can:
-                    - Store lookup tables for mathematical operations
-                    - Implement FIFOs or circular buffers
-                    - Create ROM-based finite state machines
-                    - Build small data caches for processing pipelines</p>
+                    <p>For more information on the iCE40 EBR, refer to the <a href="https://www.latticesemi.com/view_document?document_id=47775">iCE40 Memory Usage Guide</a>.</p>
                 </div>
             </div>
         </div>
@@ -663,6 +750,13 @@ set_frequency clk 12.0
                         <div class="nav-button">
                             <a href="/tutorials/using_the_ebr/using_the_ebr.html">
                                 Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>

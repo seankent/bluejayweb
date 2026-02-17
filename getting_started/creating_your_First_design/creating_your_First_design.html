@@ -19,7 +19,7 @@
                     <a class="button navbar-button" href="/about/about.html">
                         About
                     </a>
-                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                    <a class="button navbar-button" href="/docs/board_overview/board_overview.html">
                         Docs
                     </a>
                     <a class="button navbar-button" href="/contact/contact.html">
@@ -175,6 +175,20 @@
                             </a>
                         </div>
                     </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="side-nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="side-nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page-id="contact" id="side-nav-contact">
                     <div class="nav-button">
@@ -190,13 +204,22 @@
                 <div class="markdown-content">
                     <h1>Creating Your First Design</h1>
                     <h2>Overview</h2>
-                    <p>In this section, you'll create a simple LED blinker design. This design will blink the Bluejay's <strong>USR</strong> LED on and off at 1 Hz, demonstrating the basics of writing RTL code and mapping signals to physical pins.</p>
-                    <h2>The Blinky Module</h2>
+                    <p>In this section, you'll create a simple LED blinker that will toggle the Bluejay's <strong>USR</strong> LED on and off at 1 Hz.</p>
+                    <p>The design consists of three modules:</p>
+                    <ul>
+                    <li><code>blinky</code> - Implements the core LED blinking logic</li>
+                    <li><code>reset_controller</code> - Generates a power-on reset signal</li>
+                    <li><code>top</code> - Instantiates and connects the blinky and reset controller modules</li>
+                    </ul>
+                    <h2>Blinky Module</h2>
+                    <p>We'll start by creating the blinky module, which implements the core LED blinking functionality.</p>
+                    <p>The module has two inputs, <code>clk</code> and <code>rst</code>. The <code>clk</code> input will be connected to the board's 12 MHz oscillator and <code>rst</code> will be connected to the output of the reset controller. The module has one output, <code>out</code>, which will be connected to the <strong>USR</strong> LED. Internally, the module uses a 24-bit counter to divide the 12 MHz clock down to achieve a 1 Hz toggle rate.</p>
                     <p>Create a file called <code>blinky.sv</code> with the following SystemVerilog code:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky</span>
 <span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6000000</span><span class="p">)</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">rst</span><span class="p">,</span>
 <span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
 <span class="p">);</span>
 
@@ -209,30 +232,84 @@
 
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
 <span class="k">begin</span>
-<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
 <span class="k">end</span>
 
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
 <span class="k">begin</span>
-<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
 <span class="k">end</span>
 
 <span class="k">endmodule</span>
 </code></pre></div></div>
 
-                    <p>The module has one input, <code>clk</code>, which connects to the board's 12 MHz oscillator, and one output, <code>out</code>, which connects to the <strong>USR</strong> LED.</p>
                     <h3>How It Works</h3>
-                    <p>To generate a 1 Hz square wave, the design uses a counter (<code>cnt</code>) that increments on each clock cycle. When the counter reaches <code>MAX_COUNT</code>, it resets to 0 and toggles the LED output.</p>
+                    <p>To generate a 1 Hz square wave, the design uses a counter (<code>cnt</code>) that increments on each clock cycle. When the counter reaches <code>MAX_COUNT</code>, it resets to 0 and toggles the LED output (<code>out</code>).</p>
                     <p>For a 12 MHz clock (83.33 ns period), <code>MAX_COUNT</code> is set to 6,000,000 so that the LED toggles every 0.5 seconds (once per second for a complete on/off cycle). The counter is 24 bits wide to accommodate this value.</p>
-                    <p>Note that this simple design doesn't include a reset signal. Instead, it relies on the FPGA's flip-flops being automatically initialized to <code>1'b0</code> during configuration. This choice was made so the design works without having to connect an external button or switch to drive a reset pin.</p>
+                    <h2>Reset Controller Module</h2>
+                    <p>Next, we'll create the reset controller to generate a power-on reset signal. This reset signal will be used by the blinky module to ensure all logic starts in a known state.</p>
+                    <p>Create a file called <code>reset_controller.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">reset_controller</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">rst</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">);</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <h3>How It Works</h3>
+                    <p>The reset controller uses an 8-bit counter that increments on each clock cycle until it reaches <code>MAX_COUNT</code> (255). While counting, the <code>rst</code> output remains high. Once the counter reaches <code>MAX_COUNT</code>, it stops incrementing and the <code>rst</code> output goes low.</p>
+                    <p>This creates a reset period of 256 clock cycles (approximately 21 µs at 12 MHz). During this time, the blinky module's registers are held in their reset state, ensuring a clean startup.</p>
+                    <p>Note that the reset controller does not include a reset input for the <code>cnt</code> register. Instead, it relies on the fact that flip-flops in iCE40 FPGAs are automatically initialized to 0 during configuration. As a result, <code>cnt</code> starts at zero when the configuration process completes, and the reset sequence begins automatically.</p>
+                    <h2>Top-Level Module</h2>
+                    <p>Finally, we'll create the top-level module to tie everything together.</p>
+                    <p>Create a file called <code>top.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="n">rst</span><span class="p">;</span>
+
+<span class="n">blinky</span><span class="w"> </span><span class="n">u_blinky</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="n">reset_controller</span><span class="w"> </span><span class="n">u_reset_controller</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <p>This module instantiates both the <code>blinky</code> and <code>reset_controller</code> modules. The <code>rst</code> signal generated by the reset controller is routed internally to the blinky module, while <code>clk</code> and <code>out</code> connect to external pins that we'll define in the next section.</p>
                     <h2>Pin Constraints</h2>
-                    <p>Next, we need to map the design's ports to physical pins on the FPGA using a pin constraints file.</p>
+                    <p>Now that we have created the design's RTL modules, we need to map the top-level ports to physical pins on the FPGA using a pin constraints file.</p>
                     <p>Pin constraints files are simple—each line maps a signal in the design to a physical pin on the FPGA package. The basic format is:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="n">set_io</span><span class="w"> </span><span class="o">&lt;</span><span class="n">signal_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pin_number</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
                     <p>Additionally, we can specify timing constraints such as clock frequencies.</p>
-                    <p>Create a file called <code>blinky.pcf</code> with the following contents:</p>
+                    <p>Create a file called <code>top.pcf</code> with the following contents:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>set_io clk C4
 set_io out E1
 set_frequency clk 12.0
@@ -242,10 +319,12 @@ set_frequency clk 12.0
                     <p>For the complete board pinout, see the <a href="/docs/pin_mappings/pin_mappings.html">Pin Mappings</a> page.</p>
                     <p>The <code>set_frequency</code> constraint tells the place-and-route tool that the <code>clk</code> signal will run at 12.0 MHz.</p>
                     <h2>Project Structure</h2>
-                    <p>At this point, your project directory should contain two files:</p>
+                    <p>At this point, your project directory should contain four files:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>.
-├── blinky.pcf
-└── blinky.sv
+├── blinky.sv
+├── reset_controller.sv
+├── top.pcf
+└── top.sv
 </code></pre></div></div>
 
                     <h2>Next Steps</h2>
@@ -400,6 +479,20 @@ set_frequency clk 12.0
                         <div class="nav-button">
                             <a href="/tutorials/using_the_pll/using_the_pll.html">
                                 Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>

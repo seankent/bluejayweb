@@ -2,14 +2,14 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Using the PLL - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Using the PLL | Bluejay Devices</title>
+        <meta content="Simulating Your Design - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Simulating Your Design | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
         <link href="/css/syntax.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/></head>
-    <body data-page-id="tutorials-using_the_pll">
+    <body data-page-id="tutorials-simulating_your_design">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -202,196 +202,247 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Using the PLL</h1>
+                    <h1>Simulating Your Design</h1>
                     <h2>Overview</h2>
-                    <p>The iCE40LP8K includes two Phase-Locked Loops (PLLs) that can generate higher or lower frequency clocks from the board's 12 MHz oscillator. This tutorial demonstrates how to instantiate an iCE40 PLL primitive and configure its parameters to achieve desired frequencies.</p>
-                    <p>This design builds on the <a href="/getting_started/introduction/introduction.html">Getting Started</a> tutorial by adding a PLL to generate a 24 MHz clock from the board's 12 MHz oscillator. The design consists of the same three modules:</p>
+                    <p>Before programming your design onto the FPGA, it's helpful to simulate it to verify correct behavior. This tutorial demonstrates how to use Icarus Verilog to simulate a design and GTKWave to view the resulting waveforms.</p>
+                    <p>We'll use the simple blinky module from the <a href="/getting_started/creating_your_first_design/creating_your_first_design.html">Getting Started</a> tutorial as our design under test (DUT).</p>
+                    <h2>What You'll Need</h2>
+                    <p>You'll need the following tools installed:</p>
                     <ul>
-                    <li><code>blinky</code> - Implements the core LED blinking logic (unchanged from Getting Started)</li>
-                    <li><code>reset_controller</code> - Generates a power-on reset signal (unchanged from Getting Started)</li>
-                    <li><code>top</code> - Instantiates the blinky, reset controller, and PLL primitive</li>
+                    <li><strong>Icarus Verilog</strong> (<code>iverilog</code>) - Verilog simulator</li>
+                    <li><strong>GTKWave</strong> - Waveform viewer</li>
                     </ul>
-                    <p>The key difference is that the top-level module now includes a PLL primitive to generate a faster clock. By doubling the clock frequency from 12 MHz to 24 MHz, the LED will blink twice as fast—at 2 Hz instead of 1 Hz.</p>
-                    <h2>Top-Level Module</h2>
-                    <p>The top-level module instantiates the PLL primitive alongside the blinky and reset controller modules.</p>
-                    <p>Create a file called <code>top.sv</code> with the following SystemVerilog code:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="w"> </span>
+                    <p>Both tools are included in the OSS CAD Suite from the <a href="/getting_started/installing_the_tools/installing_the_tools.html">Getting Started</a> tutorial.</p>
+                    <h2>Design Files</h2>
+                    <p>For this tutorial, we'll work with two files: the design module and a testbench.</p>
+                    <h3>blinky.sv</h3>
+                    <p>This is the same blinky module from the Getting Started tutorial:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6000000</span><span class="p">)</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">rst</span><span class="p">,</span>
 <span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
 <span class="p">);</span>
 
-<span class="kt">logic</span><span class="w"> </span><span class="n">pllclk</span><span class="p">;</span>
-<span class="kt">logic</span><span class="w"> </span><span class="n">rst</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
 
-<span class="n">blinky</span><span class="w"> </span><span class="n">u_blinky</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="p">);</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="o">~</span><span class="n">out</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
 
-<span class="n">reset_controller</span><span class="w"> </span><span class="n">u_reset_controller</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
-<span class="p">);</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
 
-<span class="n">SB_PLL40_CORE</span>
-<span class="p">#(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">FEEDBACK_PATH</span><span class="p">(</span><span class="s">"SIMPLE"</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">DIVF</span><span class="p">(</span><span class="mh">7'h1</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">DIVQ</span><span class="p">(</span><span class="mh">3'h0</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">DIVR</span><span class="p">(</span><span class="mh">4'h0</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">FILTER_RANGE</span><span class="p">(</span><span class="mb">3'b001</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">u_sb_pll40_core</span>
-<span class="p">(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">REFERENCECLK</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">PLLOUTCORE</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">LOCK</span><span class="p">(),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">RESETB</span><span class="p">(</span><span class="mb">1'b1</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">BYPASS</span><span class="p">(</span><span class="mb">1'b0</span><span class="p">)</span>
-<span class="p">);</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+<span class="k">end</span>
 
 <span class="k">endmodule</span>
 </code></pre></div></div>
 
-                    <p>The <code>clk</code> input connects to the 12 MHz oscillator and feeds the PLL's reference clock. The PLL outputs a 24 MHz clock on <code>pllclk</code>, which is then used to clock both the blinky and reset controller modules.</p>
-                    <p>The <code>SB_PLL40_CORE</code> module is a hard macro primitive specific to the iCE40 FPGA. During synthesis, <code>yosys</code> recognizes this primitive and preserves it rather than synthesizing it into generic logic. <code>nextpnr-ice40</code> then maps this primitive to one of the two physical PLL blocks available on the iCE40LP8K during place-and-route. This ensures the PLL functionality is implemented using the dedicated hardware rather than being emulated in the FPGA fabric.</p>
-                    <h3>Understanding the PLL Configuration</h3>
-                    <p>The <code>SB_PLL40_CORE</code> primitive is configured using several parameters:</p>
-                    <ul>
-                    <li><strong>FEEDBACK_PATH</strong>: Set to "SIMPLE" for basic frequency multiplication</li>
-                    <li><strong>DIVF</strong>: Feedback divider (controls multiplication)</li>
-                    <li><strong>DIVQ</strong>: Output divider (divides by 2^DIVQ)</li>
-                    <li><strong>DIVR</strong>: Reference divider (divides input clock)</li>
-                    <li><strong>FILTER_RANGE</strong>: PLL filter range based on reference frequency</li>
-                    </ul>
-                    <p>The output frequency is calculated using the following equation:</p>
-                    <p><strong>F_out = (F_in × (DIVF + 1)) / (2^DIVQ × (DIVR + 1))</strong></p>
-                    <p>For this example:</p>
-                    <p><strong>F_out = (12 MHz × (1 + 1)) / (2^0 × (0 + 1)) = 24 MHz</strong></p>
-                    <h2>Supporting Modules</h2>
-                    <p>The blinky and reset controller modules are reused from the Getting Started tutorial. The code for these modules can be found on the <a href="/getting_started/creating_your_first_design/creating_your_first_design.html">Creating Your First Design</a> page.</p>
-                    <h2>Pin Constraints</h2>
-                    <p>The pin constraints file maps the signals to physical pins and specifies the clock frequencies for timing analysis.</p>
-                    <p>Create a file called <code>top.pcf</code> with the following contents:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code>set_io clk C4
-set_io out E1
-set_frequency clk 12.0
-set_frequency pllclk 24.0
+                    <h3>tb_blinky.sv</h3>
+                    <p>The testbench instantiates the blinky module and provides stimulus:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mi">1</span><span class="n">ns</span><span class="o">/</span><span class="mi">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_blinky</span><span class="p">;</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">rst</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="n">blinky</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="n">dut</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">initial</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="p">$</span><span class="n">dumpfile</span><span class="p">(</span><span class="s">"tb_blinky.vcd"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">$</span><span class="n">dumpvars</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">tb_blinky</span><span class="p">);</span>
+<span class="k">end</span>
+
+<span class="k">initial</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="p">#</span><span class="mi">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">initial</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">#</span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">#</span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">$</span><span class="n">finish</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
 </code></pre></div></div>
 
-                    <p>The first two lines connect <code>clk</code> to the 12 MHz oscillator (pin <code>C4</code>) and <code>out</code> to the <strong>USR</strong> LED (pin <code>E1</code>).</p>
-                    <p>The <code>set_frequency</code> constraints tell <code>nextpnr-ice40</code> the expected frequencies:</p>
-                    <ul>
-                    <li>The input clock <code>clk</code> runs at 12.0 MHz</li>
-                    <li>The PLL output clock <code>pllclk</code> runs at 24.0 MHz</li>
-                    </ul>
-                    <p>When you run place-and-route, <code>nextpnr-ice40</code> will perform timing analysis on both clock domains and report whether timing is met for each:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'pllclk_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">115.06</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">24.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+                    <h3>How the Testbench Works</h3>
+                    <p>The testbench sets up the simulation environment:</p>
+                    <ol>
+                    <li>
+                    <p><strong>Timescale</strong>: The <code>`timescale 1ns/1ps</code> directive sets the time unit to 1 nanosecond with 1 picosecond precision</p>
+                    </li>
+                    <li>
+                    <p><strong>Clock generation</strong>: The <code>always</code> block toggles <code>clk</code> every 5 ns, creating a 100 MHz clock (10 ns period)</p>
+                    </li>
+                    <li>
+                    <p><strong>Reset sequence</strong>: The reset signal starts high, then goes low after 10 ns to initialize the design</p>
+                    </li>
+                    <li>
+                    <p><strong>Parameter override</strong>: <code>MAX_COUNT</code> is set to 2 (instead of 6,000,000) to make the simulation run faster. This means the output toggles every 3 clock cycles instead of every 6 million.</p>
+                    </li>
+                    <li>
+                    <p><strong>Waveform dumping</strong>: The <code>$dumpfile</code> and <code>$dumpvars</code> system tasks create a VCD (Value Change Dump) file that records all signal transitions</p>
+                    </li>
+                    <li>
+                    <p><strong>Simulation end</strong>: The <code>$finish</code> task stops the simulation after 1000 ns</p>
+                    </li>
+                    </ol>
+                    <h2>Running the Simulation</h2>
+                    <p>You can run the simulation manually or use a Makefile to automate the process.</p>
+                    <h3>Manual Simulation</h3>
+                    <p>To compile and run the simulation manually:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c1"># Create output directory</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>gen
+
+<span class="c1"># Compile the design and testbench</span>
+iverilog<span class="w"> </span>-g2012<span class="w"> </span>-o<span class="w"> </span>gen/tb_blinky.vvp<span class="w"> </span>tb_blinky.sv<span class="w"> </span>blinky.sv
+
+<span class="c1"># Run the simulation</span>
+<span class="nb">cd</span><span class="w"> </span>gen<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>vvp<span class="w"> </span>tb_blinky.vvp
 </code></pre></div></div>
 
-                    <p>This confirms that your design can safely run at the specified frequencies. Note that in this case, you will not see <code>clk</code> in the timing report because it only feeds the PLL reference input and does not drive any sequential logic directly.</p>
-                    <h2>Building the Design</h2>
-                    <p>To streamline the build process, you can use the following Makefile:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
-<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top
-<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
-<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.pcf
-
-<span class="c"># Output directory</span>
-<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
-
-<span class="c"># iCE40 device configuration</span>
-<span class="nv">DEVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>lp8k
-<span class="nv">PACKAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>cm81
+                    <p>This generates a <code>gen/tb_blinky.vcd</code> file containing the waveform data.</p>
+                    <h3>Using a Makefile</h3>
+                    <p>To streamline the simulation workflow, you can use the following Makefile:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code><span class="c"># Simulation configuration</span>
+<span class="nv">TB_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>tb_blinky
+<span class="nv">TB_SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>tb_blinky.sv<span class="w"> </span>blinky.sv
+<span class="nv">SIM_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
 
 <span class="c"># Tool configuration</span>
-<span class="nv">YOSYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>yosys
-<span class="nv">NEXTPNR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>nextpnr-ice40
-<span class="nv">ICEPACK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>icepack
-<span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
+<span class="nv">IVERILOG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iverilog
+<span class="nv">VVP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>vvp
+<span class="nv">GTKWAVE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gtkwave
 
-<span class="c"># Build targets</span>
-<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.json
-<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.asc
-<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.bin
+<span class="c"># Simulation targets</span>
+<span class="nv">VVP_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>SIM_DIR<span class="k">)</span>/<span class="k">$(</span>TB_MODULE<span class="k">)</span>.vvp
+<span class="nv">VCD_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>SIM_DIR<span class="k">)</span>/<span class="k">$(</span>TB_MODULE<span class="k">)</span>.vcd
 
-<span class="c"># Default target</span>
-<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="c"># Create simulation directory</span>
+<span class="nf">$(SIM_DIR)</span><span class="o">:</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>SIM_DIR<span class="k">)</span>
 
-<span class="c"># Create build directory</span>
-<span class="nf">$(BUILD_DIR)</span><span class="o">:</span>
-<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+<span class="c"># Compile simulation</span>
+<span class="nf">$(VVP_FILE)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TB_SOURCES</span><span class="k">)</span> <span class="p">|</span> <span class="k">$(</span><span class="nv">SIM_DIR</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>IVERILOG<span class="k">)</span><span class="w"> </span>-g2012<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span><span class="k">$(</span>TB_SOURCES<span class="k">)</span>
 
-<span class="c"># Synthesis</span>
-<span class="nf">$(JSON)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SOURCES</span><span class="k">)</span> <span class="p">|</span> <span class="k">$(</span><span class="nv">BUILD_DIR</span><span class="k">)</span>
-<span class="w">    </span><span class="k">$(</span>YOSYS<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top </span><span class="k">$(</span>TOP_MODULE<span class="k">)</span><span class="s2"> -json </span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>SOURCES<span class="k">)</span>
+<span class="c"># Run simulation</span>
+<span class="nf">$(VCD_FILE)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">VVP_FILE</span><span class="k">)</span>
+<span class="w">    </span><span class="nb">cd</span><span class="w"> </span><span class="k">$(</span>SIM_DIR<span class="k">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">$(</span>VVP<span class="k">)</span><span class="w"> </span><span class="k">$(</span>notdir<span class="w"> </span><span class="k">$(</span>VVP_FILE<span class="k">))</span>
 
-<span class="c"># Place and route</span>
-<span class="nf">$(ASC)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">JSON</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PCF</span><span class="k">)</span>
-<span class="w">    </span><span class="k">$(</span>NEXTPNR<span class="k">)</span><span class="w"> </span>--<span class="k">$(</span>DEVICE<span class="k">)</span><span class="w"> </span>--package<span class="w"> </span><span class="k">$(</span>PACKAGE<span class="k">)</span><span class="w"> </span>--json<span class="w"> </span><span class="k">$(</span>JSON<span class="k">)</span><span class="w"> </span>--pcf<span class="w"> </span><span class="k">$(</span>PCF<span class="k">)</span><span class="w"> </span>--asc<span class="w"> </span><span class="nv">$@</span>
+<span class="c"># Simulation target</span>
+<span class="nf">sim</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">VCD_FILE</span><span class="k">)</span>
+<span class="w">    </span>@echo<span class="w"> </span><span class="s2">"Simulation complete. Waveform saved to </span><span class="k">$(</span>VCD_FILE<span class="k">)</span><span class="s2">"</span>
 
-<span class="c"># Generate bitstream</span>
-<span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
-<span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
+<span class="c"># Open waveforms in GTKWave</span>
+<span class="nf">waves</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">VCD_FILE</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>GTKWAVE<span class="k">)</span><span class="w"> </span><span class="k">$(</span>VCD_FILE<span class="k">)</span>
 
-<span class="c"># Program FPGA (SM)</span>
-<span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
-<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
-
-<span class="c"># Program Flash (MM)</span>
-<span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
-<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6014<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
-
-<span class="c"># Clean build artifacts</span>
+<span class="c"># Clean simulation artifacts</span>
 <span class="nf">clean</span><span class="o">:</span>
-<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="k">$(</span>SIM_DIR<span class="k">)</span>
 
 <span class="c"># Phony targets</span>
-<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">prog</span> <span class="n">flash</span> <span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">sim</span> <span class="n">waves</span> <span class="n">clean</span>
 </code></pre></div></div>
 
-                    <p>Copy this Makefile into your project directory. You can then build and program the design with simple commands:</p>
-                    <p><strong>Build the bitstream:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
+                    <p>With the Makefile in place, you can run:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c1"># Run simulation</span>
+make<span class="w"> </span>sim
+
+<span class="c1"># View waveforms</span>
+make<span class="w"> </span>waves
+
+<span class="c1"># Clean up</span>
+make<span class="w"> </span>clean
 </code></pre></div></div>
 
-                    <p><strong>Program the FPGA (</strong>SM<strong> mode):</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
+                    <h2>Viewing Waveforms with GTKWave</h2>
+                    <p>After running the simulation, open the waveform viewer:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>gtkwave<span class="w"> </span>gen/tb_blinky.vcd
 </code></pre></div></div>
 
-                    <p><strong>Program the flash (</strong>MM<strong> mode):</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>make<span class="w"> </span>flash
+                    <p>Or if using the Makefile:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>waves
 </code></pre></div></div>
 
-                    <p><strong>Clean build artifacts:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>clean
+                    <h3>Navigating GTKWave</h3>
+                    <p>When GTKWave opens:</p>
+                    <ol>
+                    <li><strong>Select signals</strong>: In the left panel under "SST" (Signal Selection Tree), expand <code>tb_blinky</code> to see all signals</li>
+                    <li><strong>Add to waveform</strong>: Select signals (<code>clk</code>, <code>rst</code>, <code>out</code>, <code>dut.cnt</code>) and click "Append" or press Insert</li>
+                    <li><strong>Zoom to fit</strong>: Click the "Zoom Fit" button or press Shift+Alt+F to see the entire simulation</li>
+                    <li><strong>Zoom in/out</strong>: Use the + and - keys or scroll wheel to adjust the time scale</li>
+                    <li><strong>Measure time</strong>: Click and drag to measure time intervals between events</li>
+                    </ol>
+                    <h3>What to Look For</h3>
+                    <p>In the waveform, you should observe:</p>
+                    <ul>
+                    <li><strong>Reset behavior</strong>: <code>rst</code> starts high, then goes low at 10 ns</li>
+                    <li><strong>Counter operation</strong>: <code>cnt</code> increments from 0→1→2, then resets to 0</li>
+                    <li><strong>Output toggling</strong>: <code>out</code> toggles each time <code>cnt</code> reaches <code>MAX_COUNT</code> (2)</li>
+                    <li><strong>Clock relationship</strong>: All transitions occur on rising edges of <code>clk</code></li>
+                    </ul>
+                    <h2>Modifying the Simulation</h2>
+                    <p>To run longer simulations or test different scenarios, modify the testbench:</p>
+                    <p><strong>Longer simulation time:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="p">#</span><span class="mi">10000</span><span class="p">;</span><span class="w">  </span><span class="c1">// Run for 10,000 ns instead of 1,000 ns</span>
+<span class="p">$</span><span class="n">finish</span><span class="p">;</span>
 </code></pre></div></div>
 
-                    <h2>Adjusting the PLL Frequency</h2>
-                    <p>To change the output frequency, modify the <code>DIVF</code>, <code>DIVQ</code>, and <code>DIVR</code> parameters in the PLL instantiation.</p>
-                    <p>For example, to generate a 48 MHz clock, you can use the following configuration:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="c1">// F_out = (12 MHz × (7 + 1)) / (2^1 × (0 + 1)) = 48 MHz</span>
-<span class="n">SB_PLL40_CORE</span><span class="w"> </span><span class="p">#(</span>
-<span class="w">    </span><span class="p">.</span><span class="n">DIVF</span><span class="p">(</span><span class="mh">7'h7</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">DIVQ</span><span class="p">(</span><span class="mh">3'h1</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">DIVR</span><span class="p">(</span><span class="mh">4'h0</span><span class="p">),</span>
-<span class="w">    </span><span class="p">.</span><span class="n">FILTER_RANGE</span><span class="p">(</span><span class="mb">3'b001</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="p">...</span>
+                    <p><strong>Different MAX_COUNT value:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="n">blinky</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="n">dut</span><span class="w"> </span><span class="p">(</span><span class="w">  </span><span class="c1">// Toggle every 6 cycles instead of 3</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+                    <p><strong>Test multiple resets:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">initial</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">#</span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">#</span><span class="mi">200</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// Second reset</span>
+<span class="w">    </span><span class="p">#</span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">#</span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">    </span><span class="p">$</span><span class="n">finish</span><span class="p">;</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
                     <h2>Additional Resources</h2>
-                    <p>For more information on the iCE40 PLL, refer to the <a href="https://www.latticesemi.com/view_document?document_id=47778">iCE40 sysCLOCK PLL Design and Usage Guide</a>.</p>
-                    <h2>Next Steps</h2>
-                    <p>Now that you know how to use the PLL, you can:</p>
+                    <p>For more information on simulation and waveform viewing:</p>
                     <ul>
-                    <li>Experiment with different clock frequencies</li>
-                    <li>Use the PLL's <code>LOCK</code> signal to detect when the PLL has stabilized</li>
-                    <li>Explore using both PLLs simultaneously for multiple clock domains</li>
+                    <li><a href="https://steveicarus.github.io/iverilog/">Icarus Verilog Documentation</a></li>
+                    <li><a href="https://gtkwave.github.io/gtkwave/">GTKWave Documentation</a></li>
                     </ul>
                 </div>
             </div>

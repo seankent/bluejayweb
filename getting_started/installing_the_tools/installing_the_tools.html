@@ -19,7 +19,7 @@
                     <a class="button navbar-button" href="/about/about.html">
                         About
                     </a>
-                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                    <a class="button navbar-button" href="/docs/board_overview/board_overview.html">
                         Docs
                     </a>
                     <a class="button navbar-button" href="/contact/contact.html">
@@ -175,6 +175,20 @@
                             </a>
                         </div>
                     </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="side-nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="side-nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page-id="contact" id="side-nav-contact">
                     <div class="nav-button">
@@ -190,19 +204,10 @@
                 <div class="markdown-content">
                     <h1>Installing the Tools</h1>
                     <h2>Overview</h2>
-                    <p>To use the Bluejay, you'll need to install a set of tools to convert your RTL design into a bitstream and load that bitstream onto the FPGA. The good news is that the entire toolchain is completely free and open-source.</p>
-                    <h2>Required Tools</h2>
-                    <p>The process of generating and loading a bitstream requires four main tools:</p>
-                    <ul>
-                    <li><strong>Yosys</strong> - Synthesizes Verilog/SystemVerilog code into a netlist</li>
-                    <li><strong>NextPNR</strong> - Maps the netlist to physical FPGA resources (place-and-route)</li>
-                    <li><strong>IcePack</strong> - Converts the placed design into a binary bitstream</li>
-                    <li><strong>IceProg</strong> - Programs the bitstream onto the iCE40 FPGA via an FTDI-based programmer</li>
-                    </ul>
-                    <p>Together, these tools form a complete RTL-to-bitstream toolchain.</p>
+                    <p>To use the Bluejay, you'll need a set of command line tools which convert your RTL design into a bitstream and load that bitstream onto the FPGA. These are all free and open-source. While some of the tools can be installed separately, the recommended method is to use the OSS CAD Suite from YosysHQ which installs all the tools at once.</p>
                     <h2>Installation</h2>
                     <h3>OSS CAD Suite (Recommended)</h3>
-                    <p>The OSS CAD Suite from YosysHQ includes all the required tools pre-built for Linux, macOS, and Windows.</p>
+                    <p>The OSS CAD Suite from YosysHQ includes the tools pre-built for Linux, macOS, and Windows.</p>
                     <p><strong>Download the OSS CAD Suite:</strong></p>
                     <p>Visit the <a href="https://github.com/YosysHQ/oss-cad-suite-build/releases">OSS CAD Suite releases page</a> and download the appropriate package for your operating system.</p>
                     <p><strong>Extract and Configure:</strong></p>
@@ -213,15 +218,21 @@
 
                     <p>To make the tools available in every new terminal session, add the export command to your shell configuration file (<code>.bashrc</code>, <code>.zshrc</code>, etc.).</p>
                     <h2>Verifying the Installation</h2>
-                    <p>To confirm that all tools are correctly installed and accessible, run the following commands:</p>
-                    <p><strong>On Linux/macOS:</strong></p>
+                    <p>We need to check that we have the following tools installed:</p>
+                    <ul>
+                    <li><strong>Yosys</strong> - Synthesizes Verilog/SystemVerilog code into a netlist</li>
+                    <li><strong>NextPNR</strong> - Maps the netlist to physical FPGA resources (place-and-route)</li>
+                    <li><strong>IcePack</strong> - Converts the placed design into a binary bitstream</li>
+                    <li><strong>IceProg</strong> - Programs the bitstream onto the iCE40 FPGA via an FTDI-based programmer</li>
+                    </ul>
+                    <p><strong>Linux/macOS:</strong></p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>which<span class="w"> </span>yosys
 which<span class="w"> </span>nextpnr-ice40
 which<span class="w"> </span>icepack
 which<span class="w"> </span>iceprog
 </code></pre></div></div>
 
-                    <p><strong>On Windows:</strong></p>
+                    <p><strong>Windows:</strong></p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>where<span class="w"> </span>yosys
 where<span class="w"> </span>nextpnr-ice40
 where<span class="w"> </span>icepack
@@ -389,6 +400,20 @@ where<span class="w"> </span>iceprog
                         <div class="nav-button">
                             <a href="/tutorials/using_the_pll/using_the_pll.html">
                                 Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>

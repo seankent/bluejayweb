@@ -19,7 +19,7 @@
                     <a class="button navbar-button" href="/about/about.html">
                         About
                     </a>
-                    <a class="button navbar-button" href="/docs/overview/overview.html">
+                    <a class="button navbar-button" href="/docs/board_overview/board_overview.html">
                         Docs
                     </a>
                     <a class="button navbar-button" href="/contact/contact.html">
@@ -175,6 +175,20 @@
                             </a>
                         </div>
                     </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="side-nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="side-nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page-id="contact" id="side-nav-contact">
                     <div class="nav-button">
@@ -187,40 +201,62 @@
         </div>
         <div class="main">
                 <div class="main-product">
-                    <div class="main-product-body">
-                    <div class="markdown-content">
-                        <h1>Bluejay FPGA Development Board</h1>
-                    </div>
-                    </div>
-                    <div class="product-gallery">
-                        <div class="product-gallery-image">
-                            <img alt="" src="img/bluejay_edited_4x3.png"/>
+                    <div class="main-product-head">
+                        <div class="product-gallery">
+                            <div class="product-gallery-image">
+                                <img alt="" src="img/bluejay_edited_4x3.png"/>
+                            </div>
+                            <div class="product-gallery-thumbnail-wrapper">
+                                   <div class="product-gallery-thumbnail">
+                                       <img alt="" src="img/bluejay_edited_4x3.png"/>
+                                   </div>
+                                   <div class="product-gallery-thumbnail">
+                                       <img alt="" src="img/bluejay_angle_edited_4x3.png"/>
+                                   </div>
+                                   <div class="product-gallery-thumbnail">
+                                       <img alt="" src="img/bluejay_blinky_edited_4x3.png"/>
+                                   </div>
+                                   <div class="product-gallery-thumbnail">
+                                       <img alt="" src="diag/bluejay_callouts_4x3.svg"/>
+                                   </div>
+                            </div>
                         </div>
-                        <div class="product-gallery-thumbnail-wrapper">
-                               <div class="product-gallery-thumbnail">
-                                   <img alt="" src="img/bluejay_edited_4x3.png"/>
-                               </div>
-                               <div class="product-gallery-thumbnail">
-                                   <img alt="" src="img/bluejay_angle_edited_4x3.png"/>
-                               </div>
-                               <div class="product-gallery-thumbnail">
-                                   <img alt="" src="img/bluejay_blinky_edited_4x3.png"/>
-                               </div>
-                               <div class="product-gallery-thumbnail">
-                                   <img alt="" src="diag/bluejay_callouts_4x3.svg"/>
-                               </div>
+                        <div class="main-product-head-text">
+                            <div class="markdown-content">
+                                <h1>Bluejay FPGA Development Board</h1>
+                                <ul>
+                                <li><strong>FPGA</strong>: Lattice iCE40LP8K (7,680 LUTs)</li>
+                                <li><strong>Memory on FPGA</strong>: 128 Kbits Embedded Block RAM</li>
+                                <li><strong>I/O</strong>: 39 Programmable I/O Pins</li>
+                                <li><strong>Clock</strong>: 12 MHz Oscillator + 2x PLLs on FPGA</li>
+                                <li><strong>Power</strong>: USB-C or 3.3V/5V pins</li>
+                                <li><strong>Configuration Storage</strong>: 2 Mbit SPI Flash</li>
+                                <li><strong>Configuration Modes</strong>: Master/Slave</li>
+                                <li><strong>Dimensions</strong>: 47mm x 50mm (1.85in x 1.97in)</li>
+                                </ul>
+                                <p><strong>Other highlights</strong>: Open source toolchain (Yosys, NextPNR, Project IceStorm), ready-to-go labs, great for teaching FPGA design and low-power applications</p>
+                            </div>
                         </div>
                     </div>
                     <div class="main-product-body">
                     <div class="markdown-content">
                         <h2>Overview</h2>
-                        <p>The Bluejay is a low-power FPGA development board built around the iCE40LP8K from Lattice Semiconductor.</p>
-                        <p>The iCE40LP8K is part of the iCE40 LP/HX family of ultra-low-power FPGAs. It is the largest FPGA in the family, featuring 7,680 Look-Up Tables (LUTs), 128 Kbits of Embedded Block RAM, and two Phase-Locked Loops for on-chip clock generation. Its combination of logic capacity and energy efficiency makes it well-suited for battery-powered and energy-constrained applications.</p>
+                        <p>The Bluejay is a low-power FPGA development board built around the iCE40LP8K FPGA from Lattice Semiconductor.</p>
+                        <p>The iCE40LP8K is part of the iCE40 LP/HX family of ultra-low-power FPGAs. It is the largest FPGA in the family, featuring 7,680 Look-Up Tables (LUTs), 128 Kbits of Embedded Block RAM, and two Phase-Locked Loops (PLLs) for on-chip clock generation. Its combination of logic capacity and energy efficiency makes it well-suited for battery-powered and energy-constrained applications.</p>
                         <p>The Bluejay provides a convenient, flexible platform for working with the iCE40LP8K. The board includes 39 digital I/O pins, a 12 MHz oscillator, and a 2 Mbit flash chip for persistent bitstream storage. The board's I/O operates at 3.3V logic levels, though the board can be powered from either a 5V or 3.3V supply. When idle, the board consumes just 2 mW of power.</p>
                         <p>The board maximizes the logic and I/O resources available to the designer while keeping onboard features to a minimum. Additional functionality, such as sensors or displays, can be connected through the board's I/O pins as needed. This approach allows designers to include only what's required for their specific application, keeping designs lean and power-efficient.</p>
                         <p>The Bluejay works seamlessly with completely free and open-source software that runs on Linux, macOS, and Windows. This includes a complete RTL-to-bitstream toolchain as well as tools for programming the FPGA and onboard flash.</p>
+                        <h2>For Educators &amp; Students</h2>
+                        <p>The Bluejay is a great board for digital systems and embedded engineering courses.</p>
+                        <ul>
+                        <li><strong>Easy-to-Install Development Tools</strong>: All tools are open-source, free, and quick to install on most laptops (Windows, Mac, or Linux). There are no licenses or installer files needed.</li>
+                        <li><strong>Battery Friendly</strong>: With an idle power draw of 2mW (&lt;1mA as compared to ~50mA for standard Arduinos), the Bluejay is great for battery-powered projects such as wearables and remote sensors.</li>
+                        <li><strong>Lab Friendly</strong>: The Bluejay can be easily connected via jumper wires to breadboards, sensors, displays, buttons, and more.</li>
+                        <li><strong>MCU Companion</strong>: The Bluejay is a great companion for microcontrollers like an Arduino. Use the Bluejay to handle high-speed data acquisition from sensors, matrix multiplication, custom communication protocols, or precise timing generation, while your MCU handles system management.</li>
+                        <li><strong>Ready-to-Go Labs</strong>: See <a href="/tutorials/using_the_pll/using_the_pll.html">tutorials</a> for examples of how to use the Bluejay and iCE40LP8K.</li>
+                        </ul>
                         <h2>Getting Started</h2>
-                        <p>Ready to start developing? Check out our <a href="/getting_started/introduction/introduction.html">Getting Started</a> guide to install the toolchain, build your first design, and program the board. Additional tutorials, including examples of how to use the ICE40LP8K's on-chip resources (e.g. the PLL and Embedded Block RAM,), can be found <a href="/tutorials/using_the_pll/using_the_pll.html">here</a>.</p>
+                        <p>Ready to start developing? Check out our <a href="/getting_started/introduction/introduction.html">Getting Started</a> guide to install the toolchain, build your first design, and program the board. Additional tutorials, including examples of how to use the ICE40LP8K's on-chip resources (e.g. the PLL and Embedded Block RAM), can be found <a href="/tutorials/using_the_pll/using_the_pll.html">here</a>.</p>
                         <h2>Technical Specs</h2>
                         <div class="table-wrapper"><table>
                             <tbody>
@@ -312,14 +348,14 @@
                             </tbody>
                         </table></div>
 
-                        <h2>Additional Resource</h2>
+                        <h2>Additional Resources</h2>
                         <ul>
                         <li><strong><a href="/getting_started/introduction/introduction.html">Getting Started</a></strong> - Build and program your first design</li>
-                        <li><strong><a href="/docs/board_overview/board_overview.html">Docs</a></strong> Complete technical documentation</li>
-                        <li><strong><a href="/tutorials/using_the_pll/using_the_pll.html">Tutorials</a>:</strong> Learn to use the Bluejay and iCE40LP8K with additional example projects </li>
+                        <li><strong><a href="/docs/board_overview/board_overview.html">Docs</a></strong> - Complete technical documentation</li>
+                        <li><strong><a href="/tutorials/using_the_pll/using_the_pll.html">Tutorials</a></strong> - Learn to use the Bluejay and iCE40LP8K with additional example projects</li>
                         </ul>
                         <h2>Need Help?</h2>
-                        <p>For questions, reach out to our support team at support@bluejaydevices.com.</p>
+                        <p>For questions, please email <a href="mailto:sean@bluejaydevices.com">sean@bluejaydevices.com</a>.</p>
                     </div>
                     </div>
                 </div>
@@ -463,6 +499,20 @@
                         <div class="nav-button">
                             <a href="/tutorials/using_the_pll/using_the_pll.html">
                                 Using the PLL
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-using_the_ebr" id="nav-tutorials-using_the_ebr">
+                        <div class="nav-button">
+                            <a href="/tutorials/using_the_ebr/using_the_ebr.html">
+                                Using the EBR
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="tutorials-simulating_your_design" id="nav-tutorials-simulating_your_design">
+                        <div class="nav-button">
+                            <a href="/tutorials/simulating_your_design/simulating_your_design.html">
+                                Simulating Your Design
                             </a>
                         </div>
                     </div>
