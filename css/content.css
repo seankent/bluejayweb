@@ -10,7 +10,7 @@ html .markdown-content,
 html .markdown-content * {
     font-family: var(--content-font-family);
     justify.markdown-content: left;
-    color: var(--grey-9);
+    color: var(--grey-7);
 }
 
 .markdown-content {}
@@ -18,7 +18,6 @@ html .markdown-content * {
 .markdown-content p {
     margin: 0 0 1.25rem 0; /* Switched to bottom margin, slightly increased gap */
     line-height: 1.6;
-    color: var(--grey-7);
 }
 
 .markdown-content> :first-child {
@@ -35,6 +34,7 @@ html .markdown-content * {
     //font-family: var(--page-font-family);
     font-family: var(--content-font-family);
     font-weight: 400;        /* Added font-weight for better hierarchy */
+    //color: var(--grey-9);
 }
 
 .markdown-content h1 {
@@ -280,20 +280,54 @@ html .markdown-content * {
 }
 
 
+//.markdown-content ul,
+//.markdown-content ol {
+//    padding: 0 0 0 2rem;
+//    margin: 0 0 1.25rem 0;
+//}
+//
+//.markdown-content li {
+//    padding: 0.25rem 0 0.25rem 0.5rem; /* Reduced from 0.5rem to feel more compact */
+//    //margin-bottom: 0.5rem;
+//}
+//
+//.markdown-content li:last-child {
+//    margin-bottom: 0;
+//}
+//
+//.markdown-content li > ul,
+//.markdown-content li > ol {
+//    margin-top: 0.5rem;
+//    margin-bottom: 0.5rem;
+//}
+
 .markdown-content ul,
 .markdown-content ol {
     padding: 0 0 0 2rem;
     margin: 0 0 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Space between all list items */
+    line-height: 1.6;
+}
+
+/* Nested lists */
+.markdown-content li > ul,
+.markdown-content li > ol {
+    margin-top: 0.5rem; /* Space before nested list starts */
+    margin-bottom: 0;   /* No extra space after nested list */
 }
 
 .markdown-content li {
-    padding: 0.25rem 0 0.25rem 0.5rem; /* Reduced from 0.5rem to feel more compact */
+    padding: 0 0 0 0.5rem;
 }
+
 
 .markdown-content li::marker {
     margin-right: 2rem;
     /* Doesn't work in all browsers */
 }
+
 
 .markdown-content code {
     background-color: var(--grey-0);
@@ -358,19 +392,6 @@ html .markdown-content * {
     background-color: transparent; 
 }
 
-.copy-button:hover {
-    //background-color: rgba(200, 200, 200, 0.2);
-    /* grey-3 */
-    background-color: rgba(208, 215, 222, 0.5);
-    //background-color: var(--bg-color-hover);
-    /* grey-4 */
-    //background-color: rgb(140, 149, 159);
-    //color: #333;
-}
-
-.copy-button:hover svg {
-    stroke: var(--grey-7);
-}
 
 .copy-button.copied {
     //background-color: #A5D6A7;
@@ -418,3 +439,31 @@ html .markdown-content * {
 .markdown-content a:active {
     color: var(--blue-5); /* color when clicking */
 }
+
+
+.markdown-content .codehilite,
+.markdown-content .codehilite *,
+.markdown-content code,
+.markdown-content pre {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+    .copy-button:hover {
+        //background-color: rgba(200, 200, 200, 0.2);
+        /* grey-3 */
+        background-color: rgba(208, 215, 222, 0.5);
+        //background-color: var(--bg-color-hover);
+        /* grey-4 */
+        //background-color: rgb(140, 149, 159);
+        //color: #333;
+    }
+    
+    .copy-button:hover svg {
+        stroke: var(--grey-7);
+    }
+
+}
+

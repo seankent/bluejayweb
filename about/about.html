@@ -159,6 +159,13 @@
                             </a>
                         </div>
                     </div>
+                    <div class="nav-item" data-page-id="docs-schematic" id="side-nav-docs-schematic">
+                        <div class="nav-button">
+                            <a href="/docs/schematic/schematic.html">
+                                Schematic
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page-id="tutorials" id="side-nav-tutorials">
                     <div class="nav-toggle">
@@ -201,6 +208,11 @@
         </div>
         <div class="main">
                 <div class="main-product">
+                    <div class="main-product-body">
+                    <div class="markdown-content">
+                        <h1>Bluejay FPGA Development Board</h1>
+                    </div>
+                    </div>
                     <div class="main-product-head">
                         <div class="product-gallery">
                             <div class="product-gallery-image">
@@ -223,40 +235,52 @@
                         </div>
                         <div class="main-product-head-text">
                             <div class="markdown-content">
-                                <h1>Bluejay FPGA Development Board</h1>
+                                <p><strong>Description</strong></p>
+                                <p>The Bluejay is a small, low-power development board for the Lattice iCE40LP8K FPGA.</p>
+                                <p><strong>Highlights</strong></p>
                                 <ul>
-                                <li><strong>FPGA</strong>: Lattice iCE40LP8K (7,680 LUTs)</li>
-                                <li><strong>Memory on FPGA</strong>: 128 Kbits Embedded Block RAM</li>
-                                <li><strong>I/O</strong>: 39 Programmable I/O Pins</li>
-                                <li><strong>Clock</strong>: 12 MHz Oscillator + 2x PLLs on FPGA</li>
-                                <li><strong>Power</strong>: USB-C or 3.3V/5V pins</li>
-                                <li><strong>Configuration Storage</strong>: 2 Mbit SPI Flash</li>
-                                <li><strong>Configuration Modes</strong>: Master/Slave</li>
-                                <li><strong>Dimensions</strong>: 47mm x 50mm (1.85in x 1.97in)</li>
+                                <li>Lattice iCE40LP8K FPGA<ul>
+                                <li>7,680 Look-Up Tables (LUTs)</li>
+                                <li>128 Kbits of Embedded Block RAM (EBR)</li>
+                                <li>2 Phase-Locked Loops (PLLs)</li>
                                 </ul>
-                                <p><strong>Other highlights</strong>: Open source toolchain (Yosys, NextPNR, Project IceStorm), ready-to-go labs, great for teaching FPGA design and low-power applications</p>
+                                </li>
+                                <li>39 programmable I/O pins</li>
+                                <li>12 MHz on-board oscillator</li>
+                                <li>2 Mbit SPI flash for persistent bitstream storage</li>
+                                <li>Ultra-low idle power (2 mW)</li>
+                                <li>Flexible power input options (USB-C or 3.3V/5V pins)</li>
+                                <li>Support for master and slave configuration modes</li>
+                                <li>Small form factor (47mm × 50mm / 1.85in × 1.97in)</li>
+                                <li>Compatible with free and open-source development tools</li>
+                                </ul>
+                                <p><strong>Interested?</strong></p>
+                                <p>We're just getting started — if you're interested in getting a board, please reach out to <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>.</p>
                             </div>
                         </div>
                     </div>
                     <div class="main-product-body">
                     <div class="markdown-content">
                         <h2>Overview</h2>
-                        <p>The Bluejay is a low-power FPGA development board built around the iCE40LP8K FPGA from Lattice Semiconductor.</p>
-                        <p>The iCE40LP8K is part of the iCE40 LP/HX family of ultra-low-power FPGAs. It is the largest FPGA in the family, featuring 7,680 Look-Up Tables (LUTs), 128 Kbits of Embedded Block RAM, and two Phase-Locked Loops (PLLs) for on-chip clock generation. Its combination of logic capacity and energy efficiency makes it well-suited for battery-powered and energy-constrained applications.</p>
+                        <p>The Bluejay is a small, low-power FPGA development board built around the iCE40LP8K FPGA from Lattice Semiconductor.</p>
+                        <p>The iCE40LP8K is part of the iCE40 LP/HX family of ultra-low-power FPGAs. It is the largest FPGA in the family, featuring 7,680 Look-Up Tables (LUTs), 128 Kbits of Embedded Block RAM, and two Phase-Locked Loops (PLLs). Its combination of logic capacity and energy efficiency makes it well-suited for battery-powered and energy-constrained applications.</p>
                         <p>The Bluejay provides a convenient, flexible platform for working with the iCE40LP8K. The board includes 39 digital I/O pins, a 12 MHz oscillator, and a 2 Mbit flash chip for persistent bitstream storage. The board's I/O operates at 3.3V logic levels, though the board can be powered from either a 5V or 3.3V supply. When idle, the board consumes just 2 mW of power.</p>
                         <p>The board maximizes the logic and I/O resources available to the designer while keeping onboard features to a minimum. Additional functionality, such as sensors or displays, can be connected through the board's I/O pins as needed. This approach allows designers to include only what's required for their specific application, keeping designs lean and power-efficient.</p>
                         <p>The Bluejay works seamlessly with completely free and open-source software that runs on Linux, macOS, and Windows. This includes a complete RTL-to-bitstream toolchain as well as tools for programming the FPGA and onboard flash.</p>
-                        <h2>For Educators &amp; Students</h2>
-                        <p>The Bluejay is a great board for digital systems and embedded engineering courses.</p>
-                        <ul>
-                        <li><strong>Easy-to-Install Development Tools</strong>: All tools are open-source, free, and quick to install on most laptops (Windows, Mac, or Linux). There are no licenses or installer files needed.</li>
-                        <li><strong>Battery Friendly</strong>: With an idle power draw of 2mW (&lt;1mA as compared to ~50mA for standard Arduinos), the Bluejay is great for battery-powered projects such as wearables and remote sensors.</li>
-                        <li><strong>Lab Friendly</strong>: The Bluejay can be easily connected via jumper wires to breadboards, sensors, displays, buttons, and more.</li>
-                        <li><strong>MCU Companion</strong>: The Bluejay is a great companion for microcontrollers like an Arduino. Use the Bluejay to handle high-speed data acquisition from sensors, matrix multiplication, custom communication protocols, or precise timing generation, while your MCU handles system management.</li>
-                        <li><strong>Ready-to-Go Labs</strong>: See <a href="/tutorials/using_the_pll/using_the_pll.html">tutorials</a> for examples of how to use the Bluejay and iCE40LP8K.</li>
-                        </ul>
                         <h2>Getting Started</h2>
                         <p>Ready to start developing? Check out our <a href="/getting_started/introduction/introduction.html">Getting Started</a> guide to install the toolchain, build your first design, and program the board. Additional tutorials, including examples of how to use the ICE40LP8K's on-chip resources (e.g. the PLL and Embedded Block RAM), can be found <a href="/tutorials/using_the_pll/using_the_pll.html">here</a>.</p>
+                        <!---
+                        ## For Educators & Students
+
+                        The Bluejay is a great option for digital design and embedded systems courses.
+
+                        - **Easy-to-Install Development Tools**: All tools are open-source, free, and quick to install on most laptops (Windows, Mac, or Linux).
+                        - **Battery Friendly**: With an idle power draw of just 2 mW, the Bluejay is great for battery-powered projects.
+                        - **Lab Friendly**: The Bluejay can be easily connected via jumper wires to breadboards, sensors, displays, buttons, and more.
+                        - **MCU Companion**: The Bluejay is a great companion for microcontrollers like an Arduino. Use the Bluejay to handle high-speed data acquisition from sensors, matrix multiplication, custom communication protocols, or precise timing generation, while your MCU handles system management.
+                        - **Ready-to-Go Labs**: See [tutorials](/tutorials/using_the_pll/using_the_pll.html) for examples of how to use the Bluejay and iCE40LP8K.
+                        -->
+
                         <h2>Technical Specs</h2>
                         <div class="table-wrapper"><table>
                             <tbody>
@@ -324,6 +348,10 @@
                                     <td>USB-C</td>
                                 </tr>
                                 <tr>
+                                    <td>Idle Power</td>
+                                    <td>2 mW</td>
+                                </tr>
+                                <tr>
                                     <th colspan="2">Additional Features</th>
                                 </tr>
                                 <tr>
@@ -355,7 +383,7 @@
                         <li><strong><a href="/tutorials/using_the_pll/using_the_pll.html">Tutorials</a></strong> - Learn to use the Bluejay and iCE40LP8K with additional example projects</li>
                         </ul>
                         <h2>Need Help?</h2>
-                        <p>For questions, please email <a href="mailto:sean@bluejaydevices.com">sean@bluejaydevices.com</a>.</p>
+                        <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>.</p>
                     </div>
                     </div>
                 </div>
@@ -483,6 +511,13 @@
                         <div class="nav-button">
                             <a href="/docs/mechanical_info/mechanical_info.html">
                                 Mechanical Info
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-page-id="docs-schematic" id="nav-docs-schematic">
+                        <div class="nav-button">
+                            <a href="/docs/schematic/schematic.html">
+                                Schematic
                             </a>
                         </div>
                     </div>
