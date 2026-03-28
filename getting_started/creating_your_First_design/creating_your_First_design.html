@@ -223,7 +223,7 @@
                     <p>The module has two inputs, <code>clk</code> and <code>rst</code>. The <code>clk</code> input will be connected to the board's 12 MHz oscillator and <code>rst</code> will be connected to the output of the reset controller. The module has one output, <code>out</code>, which will be connected to the <strong>USR</strong> LED. Internally, the module uses a 24-bit counter to divide the 12 MHz clock down to achieve a 1 Hz toggle rate.</p>
                     <p>Create a file called <code>blinky.sv</code> with the following SystemVerilog code:</p>
                     <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky</span>
-<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6000000</span><span class="p">)</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5999999</span><span class="p">)</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">rst</span><span class="p">,</span>
@@ -252,7 +252,10 @@
 
                     <h3>How It Works</h3>
                     <p>To generate a 1 Hz square wave, the design uses a counter (<code>cnt</code>) that increments on each clock cycle. When the counter reaches <code>MAX_COUNT</code>, it resets to 0 and toggles the LED output (<code>out</code>).</p>
-                    <p>For a 12 MHz clock (83.33 ns period), <code>MAX_COUNT</code> is set to 6,000,000 so that the LED toggles every 0.5 seconds (once per second for a complete on/off cycle). The counter is 24 bits wide to accommodate this value.</p>
+                    <p>For a 12 MHz clock (83.33 ns period), <code>MAX_COUNT</code> is set to 5,999,999 so that the LED toggles every 0.5 seconds (once per second for a complete on/off cycle). The counter is 24 bits wide to accommodate this value.</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>T_toggle = T_clk*(MAX_COUNT + 1) -&gt; MAX_COUNT = T_toggle/T_clk - 1 = 5,999,999
+</code></pre></div></div>
+
                     <h2>Reset Controller Module</h2>
                     <p>Next, we'll create the reset controller to generate a power-on reset signal. This reset signal will be used by the blinky module to ensure all logic starts in a known state.</p>
                     <p>Create a file called <code>reset_controller.sv</code> with the following SystemVerilog code:</p>
@@ -284,7 +287,7 @@
                     <h2>Top-Level Module</h2>
                     <p>Finally, we'll create the top-level module to tie everything together.</p>
                     <p>Create a file called <code>top.sv</code> with the following SystemVerilog code:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
 <span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
