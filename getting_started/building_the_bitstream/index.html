@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="About - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>About | Bluejay Devices</title>
+        <meta content="Building the Bitstream - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Building the Bitstream | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="about">
+    <body data-page-id="getting_started-building_the_bitstream">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -227,183 +227,160 @@
         </div>
 
         <div class="main">
-                <div class="main-product">
-                    <div class="main-product-body">
-                    <div class="markdown-content">
-                        <h1>Bluejay FPGA Development Board</h1></div>
-                    </div>
-                    <div class="main-product-head">
-                        <div class="product-gallery">
-                            <div class="product-gallery-image">
-                                <img alt="" src="img/bluejay_edited_4x3.png"/>
-                            </div>
-                            <div class="product-gallery-thumbnail-wrapper">
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="img/bluejay_edited_4x3.png"/>
-                                </div>
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="img/bluejay_angle_edited_4x3.png"/>
-                                </div>
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="img/bluejay_blinky_edited_4x3.png"/>
-                                </div>
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="diag/bluejay_callouts_4x3.svg"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="main-product-head-text">
-                            <div class="markdown-content">
-                                <p><strong>Description</strong></p>
-                                <p>The Bluejay is a small, low-power development board for the Lattice iCE40LP8K FPGA.</p>
-                                <p><strong>Highlights</strong></p>
-                                <ul>
-                                <li>Lattice iCE40LP8K FPGA<ul>
-                                <li>7,680 Look-Up Tables (LUTs)</li>
-                                <li>128 Kbits of Embedded Block RAM (EBR)</li>
-                                <li>2 Phase-Locked Loops (PLLs)</li>
-                                </ul>
-                                </li>
-                                <li>39 programmable I/O pins</li>
-                                <li>12 MHz on-board oscillator</li>
-                                <li>2 Mbit SPI flash for persistent bitstream storage</li>
-                                <li>Ultra-low idle power (2 mW)</li>
-                                <li>Flexible power input options (USB-C or 3.3V/5V pins)</li>
-                                <li>Support for master and slave configuration modes</li>
-                                <li>Small form factor (47mm × 50mm / 1.85in × 1.97in)</li>
-                                <li>Compatible with free and open-source development tools</li>
-                                </ul>
-                                <p><strong>Interested?</strong></p>
-                                <p>We're just getting started — if you're interested in getting a board, please reach out to <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>.</p></div>
-                        </div>
-                    </div>
-                    <div class="main-product-body">
-                    <div class="markdown-content">
-                        <h2>Overview</h2>
-                        <p>The Bluejay is a small, low-power FPGA development board built around the iCE40LP8K FPGA from Lattice Semiconductor.</p>
-                        <p>The iCE40LP8K is part of the iCE40 LP/HX family of ultra-low-power FPGAs. It is the largest FPGA in the family, featuring 7,680 Look-Up Tables (LUTs), 128 Kbits of Embedded Block RAM, and two Phase-Locked Loops (PLLs). Its combination of logic capacity and energy efficiency makes it well-suited for battery-powered and energy-constrained applications.</p>
-                        <p>The Bluejay provides a convenient, flexible platform for working with the iCE40LP8K. The board includes 39 digital I/O pins, a 12 MHz oscillator, and a 2 Mbit flash chip for persistent bitstream storage. The board's I/O operates at 3.3V logic levels, though the board can be powered from either a 5V or 3.3V supply. When idle, the board consumes just 2 mW of power.</p>
-                        <p>The board maximizes the logic and I/O resources available to the designer while keeping onboard features to a minimum. Additional functionality, such as sensors or displays, can be connected through the board's I/O pins as needed. This approach allows designers to include only what's required for their specific application, keeping designs lean and power-efficient.</p>
-                        <p>The Bluejay works seamlessly with completely free and open-source software that runs on Linux, macOS, and Windows. This includes a complete RTL-to-bitstream toolchain as well as tools for programming the FPGA and onboard flash.</p>
-                        <h2>Getting Started</h2>
-                        <p>Ready to start developing? Check out our <a href="/getting_started/index.html">Getting Started</a> guide to install the toolchain, build your first design, and program the board. Additional tutorials, including examples of how to use the ICE40LP8K's on-chip resources (e.g. the PLL and Embedded Block RAM), can be found <a href="/tutorials/index.html">here</a>.</p>
-                        <!---
-                        ## For Educators & Students
+            <div class="docs">
+                <div class="markdown-content">
+                    <h1>Building the Bitstream</h1>
+                    <h2>Overview</h2>
+                    <p>With your design files created, it is now time to generate the bitstream. This process involves three steps: synthesis, place-and-route, and bitstream packing.</p>
+                    <h2>Workspace Setup</h2>
+                    <p>To keep your workspace organized, create a <code>gen/</code> subdirectory to store all generated files:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>mkdir<span class="w"> </span>gen/
+</code></pre></div></div>
 
-                        The Bluejay is a great option for digital design and embedded systems courses.
+                    <p>This keeps the design files separate from the outputs created by the bitstream tools.</p>
+                    <h2>Synthesis</h2>
+                    <p>The first step is logic synthesis, which converts the high-level RTL into a netlist of FPGA primitives.</p>
+                    <p>Run <code>yosys</code> with the following command:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>yosys<span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top top -json gen/top.json"</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
+</code></pre></div></div>
 
-                        - **Easy-to-Install Development Tools**: All tools are open-source, free, and quick to install on most laptops (Windows, Mac, or Linux).
-                        - **Battery Friendly**: With an idle power draw of just 2 mW, the Bluejay is great for battery-powered projects.
-                        - **Lab Friendly**: The Bluejay can be easily connected via jumper wires to breadboards, sensors, displays, buttons, and more.
-                        - **MCU Companion**: The Bluejay is a great companion for microcontrollers like an Arduino. Use the Bluejay to handle high-speed data acquisition from sensors, matrix multiplication, custom communication protocols, or precise timing generation, while your MCU handles system management.
-                        - **Ready-to-Go Labs**: See [tutorials](/tutorials/index.html) for examples of how to use the Bluejay and iCE40LP8K.
-                        -->
+                    <p>The <code>-top top</code> option specifies that the top module is named <code>top</code>. The <code>-json gen/top.json</code> option tells the tool to write the synthesized netlist to a JSON file of the given name. The source files containing the RTL design (<code>top.sv</code>, <code>blinky.sv</code>, and <code>reset_controller.sv</code>) are provided as space-separated arguments.</p>
+                    <p><code>yosys</code> will output information about the synthesis process and report the resources used.</p>
+                    <h2>Place and Route</h2>
+                    <p>The next step is place-and-route, which maps the netlist to physical resources on the FPGA.</p>
+                    <p>Run <code>nextpnr-ice40</code> with the following command:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>nextpnr-ice40<span class="w"> </span>--lp8k<span class="w"> </span>--package<span class="w"> </span>cm81<span class="w"> </span>--json<span class="w"> </span>gen/top.json<span class="w"> </span>--pcf<span class="w"> </span>top.pcf<span class="w"> </span>--asc<span class="w"> </span>gen/top.asc
+</code></pre></div></div>
 
-                        <h2>Technical Specs</h2>
-                        <div class="table-wrapper"><table>
-                            <tbody>
-                                <tr>
-                                    <th colspan="2">FPGA</th>
-                                </tr>
-                                <tr>
-                                    <td>Device</td>
-                                    <td>iCE40LP8K-CM81</td>
-                                </tr>
-                                <tr>
-                                    <td>Look-Up Tables (LUTs)</td>
-                                    <td>7,680</td>
-                                </tr>
-                                <tr>
-                                    <td>Embedded Block RAM (EBR)</td>
-                                    <td>128 Kbits</td>
-                                </tr>
-                                <tr>
-                                    <td>Phase-Locked Loops (PLLs)</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Board I/O</th>
-                                </tr>
-                                <tr>
-                                    <td>Programmable I/O Pins</td>
-                                    <td>39</td>
-                                </tr>
-                                <tr>
-                                    <td>Power Pins</td>
-                                    <td>5x GND, 5x 3V3, 1x 5V</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Clock</th>
-                                </tr>
-                                <tr>
-                                    <td>Frequency</td>
-                                    <td>12 MHz</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Configuration</th>
-                                </tr>
-                                <tr>
-                                    <td>Flash</td>
-                                    <td>2 Mbit SPI Flash (AT25DF021A)</td>
-                                </tr>
-                                <tr>
-                                    <td>Configuration Modes</td>
-                                    <td>Master Mode, Slave Mode</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Power</th>
-                                </tr>
-                                <tr>
-                                    <td>I/O Voltage</td>
-                                    <td>3.3V</td>
-                                </tr>
-                                <tr>
-                                    <td>Input Voltage</td>
-                                    <td>5V (USB-C, 5V Pin) or 3.3V (3V3 Pin)</td>
-                                </tr>
-                                <tr>
-                                    <td>Power Supply Connector</td>
-                                    <td>USB-C</td>
-                                </tr>
-                                <tr>
-                                    <td>Idle Power</td>
-                                    <td>2 mW</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Additional Features</th>
-                                </tr>
-                                <tr>
-                                    <td>Status LEDs</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Dimensions</th>
-                                </tr>
-                                <tr>
-                                    <td>Width</td>
-                                    <td>47 mm</td>
-                                </tr>
-                                <tr>
-                                    <td>Length</td>
-                                    <td>50 mm</td>
-                                </tr>
-                                <tr>
-                                    <td>Weight</td>
-                                    <td>11 g</td>
-                                </tr>
-                            </tbody>
-                        </table></div>
+                    <p>The <code>--lp8k</code> and <code>--package cm81</code> options specify the target FPGA (the iCE40LP8K-CM81). The <code>--json gen/top.json</code> option points the tool to the synthesized netlist. The <code>--pcf top.pcf</code> option points the tool to the pin constraints file. Finally, the <code>--asc gen/top.asc</code> option specifies where to write the placed-and-routed design.</p>
+                    <p><code>nextpnr-ice40</code> will report timing information and confirm successful place-and-route.</p>
+                    <h3>Understanding the Timing Report</h3>
+                    <p>During place-and-route, <code>nextpnr-ice40</code> uses the <code>set_frequency</code> constraint from the pin constraints file to perform timing analysis. This constraint tells the tool that the <code>clk</code> signal runs at 12.0 MHz. The tool will analyze whether the design can meet timing at this frequency and report the maximum achievable frequency (Fmax).</p>
+                    <p>You should see the following line printed in the output:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">105.54</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">12.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
 
-                        <h2>Additional Resources</h2>
-                        <ul>
-                        <li><strong><a href="/getting_started/index.html">Getting Started</a></strong> - Build and program your first design</li>
-                        <li><strong><a href="/docs/index.html">Docs</a></strong> - Complete technical documentation</li>
-                        <li><strong><a href="/tutorials/index.html">Tutorials</a></strong> - Learn to use the Bluejay and iCE40LP8K with additional example projects</li>
-                        </ul>
-                        <h2>Need Help?</h2>
-                        <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>.</p></div>
-                    </div>
+                    <p>This confirms that the design meets timing with significant margin. If timing fails for whatever reason (e.g., if you set the clock frequency to 200 MHz), you will see something like this:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code><span class="n">ERROR</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">105.54</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">FAIL</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">200.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
+
+                    <h2>Bitstream Packing</h2>
+                    <p>The final step is to convert the placed design into a binary bitstream.</p>
+                    <p>Run <code>icepack</code> with the following command:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>icepack<span class="w"> </span>gen/top.asc<span class="w"> </span>gen/top.bin
+</code></pre></div></div>
+
+                    <p>This creates <code>gen/top.bin</code>, which contains 1,081,464 bits of configuration data for the iCE40LP8K.</p>
+                    <h2>Project Structure</h2>
+                    <p>After running the synthesis, place-and-route, and bitstream packing commands, your project directory should look like this:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>.
+├── blinky.sv
+├── gen
+│   ├── top.asc
+│   ├── top.bin
+│   └── top.json
+├── reset_controller.sv
+├── top.pcf
+└── top.sv
+</code></pre></div></div>
+
+                    <p>The <code>gen/</code> directory now contains the intermediate and final output files from the bitstream generation process:
+                    - <code>top.json</code> - Synthesized netlist from Yosys
+                    - <code>top.asc</code> - Placed-and-routed design from NextPNR
+                    - <code>top.bin</code> - Final bitstream ready for programming</p>
+                    <h2>Using a Makefile (Optional)</h2>
+                    <p>For larger projects or when iterating on designs, manually running these commands can become tedious. A Makefile automates the build process.</p>
+                    <p>Create a file called <code>Makefile</code> in your project directory:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
+<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
+<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.pcf
+
+<span class="c"># Output directory</span>
+<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
+
+<span class="c"># iCE40 device configuration</span>
+<span class="nv">DEVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>lp8k
+<span class="nv">PACKAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>cm81
+
+<span class="c"># Tool configuration</span>
+<span class="nv">YOSYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>yosys
+<span class="nv">NEXTPNR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>nextpnr-ice40
+<span class="nv">ICEPACK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>icepack
+<span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
+
+<span class="c"># FTDI device selection: FT2232H = i:0x0403:0x6010, FT232H = i:0x0403:0x6014</span>
+<span class="nv">ICEPROG_DEVICE</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>i:0x0403:0x6010
+
+<span class="c"># Build targets</span>
+<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.json
+<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.asc
+<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.bin
+
+<span class="c"># Default target</span>
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+
+<span class="c"># Create build directory</span>
+<span class="nf">$(BUILD_DIR)</span><span class="o">:</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Synthesis</span>
+<span class="nf">$(JSON)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SOURCES</span><span class="k">)</span> <span class="p">|</span> <span class="k">$(</span><span class="nv">BUILD_DIR</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>YOSYS<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top </span><span class="k">$(</span>TOP_MODULE<span class="k">)</span><span class="s2"> -json </span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>SOURCES<span class="k">)</span>
+
+<span class="c"># Place and route</span>
+<span class="nf">$(ASC)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">JSON</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PCF</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>NEXTPNR<span class="k">)</span><span class="w"> </span>--<span class="k">$(</span>DEVICE<span class="k">)</span><span class="w"> </span>--package<span class="w"> </span><span class="k">$(</span>PACKAGE<span class="k">)</span><span class="w"> </span>--json<span class="w"> </span><span class="k">$(</span>JSON<span class="k">)</span><span class="w"> </span>--pcf<span class="w"> </span><span class="k">$(</span>PCF<span class="k">)</span><span class="w"> </span>--asc<span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Generate bitstream</span>
+<span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Program FPGA (SM)</span>
+<span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>ICEPROG_DEVICE<span class="k">)</span><span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Program Flash (MM)</span>
+<span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>ICEPROG_DEVICE<span class="k">)</span><span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Clean build artifacts</span>
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Phony targets</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">prog</span> <span class="n">flash</span> <span class="n">clean</span>
+</code></pre></div></div>
+
+                    <p>With the Makefile in place, you can build and program your design with these commands:</p>
+                    <p><strong>Build the bitstream:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
+</code></pre></div></div>
+
+                    <p><strong>Program the FPGA (</strong>SM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>prog
+</code></pre></div></div>
+
+                    <p><strong>Program the flash (</strong>MM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>flash
+</code></pre></div></div>
+
+                    <p><strong>Clean build artifacts:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>clean
+</code></pre></div></div>
+
+                    <p>The Makefile automatically handles dependencies, so if you modify your source files and run <code>make</code>, it will rebuild only what's necessary.</p>
+                    <h2>Next Steps</h2>
+                    <p>With your bitstream generated, you're ready to program the board!</p></div>
+                <div class="main-navbar">
+                    <a class="button navbar-button" href="/getting_started/creating_your_first_design/index.html">
+                        Back
+                    </a>
+                    <a class="button navbar-button" href="/getting_started/programming_the_board/index.html">
+                        Next
+                    </a>
                 </div>
+            </div>
         </div>
 
         <div class="nav">

@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="About - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>About | Bluejay Devices</title>
+        <meta content="Board I/O - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Board I/O | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="about">
+    <body data-page-id="docs-board_io">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -227,183 +227,287 @@
         </div>
 
         <div class="main">
-                <div class="main-product">
-                    <div class="main-product-body">
-                    <div class="markdown-content">
-                        <h1>Bluejay FPGA Development Board</h1></div>
-                    </div>
-                    <div class="main-product-head">
-                        <div class="product-gallery">
-                            <div class="product-gallery-image">
-                                <img alt="" src="img/bluejay_edited_4x3.png"/>
-                            </div>
-                            <div class="product-gallery-thumbnail-wrapper">
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="img/bluejay_edited_4x3.png"/>
-                                </div>
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="img/bluejay_angle_edited_4x3.png"/>
-                                </div>
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="img/bluejay_blinky_edited_4x3.png"/>
-                                </div>
-                                <div class="product-gallery-thumbnail">
-                                    <img alt="" src="diag/bluejay_callouts_4x3.svg"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="main-product-head-text">
-                            <div class="markdown-content">
-                                <p><strong>Description</strong></p>
-                                <p>The Bluejay is a small, low-power development board for the Lattice iCE40LP8K FPGA.</p>
-                                <p><strong>Highlights</strong></p>
-                                <ul>
-                                <li>Lattice iCE40LP8K FPGA<ul>
-                                <li>7,680 Look-Up Tables (LUTs)</li>
-                                <li>128 Kbits of Embedded Block RAM (EBR)</li>
-                                <li>2 Phase-Locked Loops (PLLs)</li>
-                                </ul>
-                                </li>
-                                <li>39 programmable I/O pins</li>
-                                <li>12 MHz on-board oscillator</li>
-                                <li>2 Mbit SPI flash for persistent bitstream storage</li>
-                                <li>Ultra-low idle power (2 mW)</li>
-                                <li>Flexible power input options (USB-C or 3.3V/5V pins)</li>
-                                <li>Support for master and slave configuration modes</li>
-                                <li>Small form factor (47mm × 50mm / 1.85in × 1.97in)</li>
-                                <li>Compatible with free and open-source development tools</li>
-                                </ul>
-                                <p><strong>Interested?</strong></p>
-                                <p>We're just getting started — if you're interested in getting a board, please reach out to <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>.</p></div>
-                        </div>
-                    </div>
-                    <div class="main-product-body">
-                    <div class="markdown-content">
-                        <h2>Overview</h2>
-                        <p>The Bluejay is a small, low-power FPGA development board built around the iCE40LP8K FPGA from Lattice Semiconductor.</p>
-                        <p>The iCE40LP8K is part of the iCE40 LP/HX family of ultra-low-power FPGAs. It is the largest FPGA in the family, featuring 7,680 Look-Up Tables (LUTs), 128 Kbits of Embedded Block RAM, and two Phase-Locked Loops (PLLs). Its combination of logic capacity and energy efficiency makes it well-suited for battery-powered and energy-constrained applications.</p>
-                        <p>The Bluejay provides a convenient, flexible platform for working with the iCE40LP8K. The board includes 39 digital I/O pins, a 12 MHz oscillator, and a 2 Mbit flash chip for persistent bitstream storage. The board's I/O operates at 3.3V logic levels, though the board can be powered from either a 5V or 3.3V supply. When idle, the board consumes just 2 mW of power.</p>
-                        <p>The board maximizes the logic and I/O resources available to the designer while keeping onboard features to a minimum. Additional functionality, such as sensors or displays, can be connected through the board's I/O pins as needed. This approach allows designers to include only what's required for their specific application, keeping designs lean and power-efficient.</p>
-                        <p>The Bluejay works seamlessly with completely free and open-source software that runs on Linux, macOS, and Windows. This includes a complete RTL-to-bitstream toolchain as well as tools for programming the FPGA and onboard flash.</p>
-                        <h2>Getting Started</h2>
-                        <p>Ready to start developing? Check out our <a href="/getting_started/index.html">Getting Started</a> guide to install the toolchain, build your first design, and program the board. Additional tutorials, including examples of how to use the ICE40LP8K's on-chip resources (e.g. the PLL and Embedded Block RAM), can be found <a href="/tutorials/index.html">here</a>.</p>
-                        <!---
-                        ## For Educators & Students
+            <div class="docs">
+                <div class="markdown-content">
+                    <h1>Board I/O</h1>
+                    <h2>Header Pins</h2>
+                    <p>The Bluejay provides access to 39 of the iCE40's programmable I/O (PIO) pins. These pins are exposed through two 24-pin headers, <strong>J1</strong> and <strong>J2</strong>, and are labeled <strong>D0</strong>–<strong>D38</strong>. Each PIO can be configured as an input, output, or tri-state buffer.</p>
+                    <p>In addition to the PIO pins, the board includes a configuration interface for programming the iCE40 and flash chip. This interface consists of an SPI bus (<code>CS</code>, <code>SCK</code>, <code>MOSI</code>, and <code>MISO</code>) and two dedicated iCE40 configuration pins (<code>CRST</code> and <code>CDN</code>).</p>
+                    <p>The <strong>J1</strong> and <strong>J2</strong> headers also include several <strong>3V3</strong> and <strong>GND</strong> pins, as well as a <strong>5V</strong> pin. Depending on the power delivery method, these pins can act as either power inputs or outputs.</p>
+                    <p>Aside from the <strong>5V</strong> power pin, all of the board's I/O operates at 3.3V logic levels.</p>
+                    <p></p><div class="img-wrapper"><img alt="Board pinout diagram" src="diag/bluejay_pinout.svg" style="width: 30rem;"/></div><p></p>
+                    <h2>J1 Pinout</h2>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 10%;"/>
+                            <col style="width: 15%;"/>
+                            <col style="width: 25%;"/>
+                            <col style="width: 10%;"/>
+                            <col style="width: 15%;"/>
+                            <col style="width: 25%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Pin</th>
+                              <th>Pin Name</th>
+                              <th>Description</th>
+                              <th>Pin</th>
+                              <th>Pin Name</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>3V3</td>
+                                <td>3.3 V Power</td>
+                                <td>15</td>
+                                <td>3V3</td>
+                                <td>3.3 V Power</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>GND</td>
+                                <td>Ground</td>
+                                <td>16</td>
+                                <td>GND</td>
+                                <td>Ground</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>D0</td>
+                                <td>Programmable I/O</td>
+                                <td>17</td>
+                                <td>D8</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>D1</td>
+                                <td>Programmable I/O</td>
+                                <td>18</td>
+                                <td>D9</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>D2</td>
+                                <td>Programmable I/O</td>
+                                <td>19</td>
+                                <td>D10</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>D3</td>
+                                <td>Programmable I/O</td>
+                                <td>20</td>
+                                <td>D11</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>D4</td>
+                                <td>Programmable I/O</td>
+                                <td>21</td>
+                                <td>D12</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>D5</td>
+                                <td>Programmable I/O</td>
+                                <td>22</td>
+                                <td>D13</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>D6</td>
+                                <td>Programmable I/O</td>
+                                <td>23</td>
+                                <td>D14</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>D7</td>
+                                <td>Programmable I/O</td>
+                                <td>24</td>
+                                <td>D15</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>MOSI</td>
+                                <td>SPI Master Out Slave In</td>
+                                <td>25</td>
+                                <td>CS</td>
+                                <td>SPI Chip Select</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>MISO</td>
+                                <td>SPI Master In Slave Out</td>
+                                <td>26</td>
+                                <td>SCK</td>
+                                <td>SPI Serial Clock</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>GND</td>
+                                <td>Ground</td>
+                                <td>27</td>
+                                <td>CDN</td>
+                                <td>Configuration Done</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>3V3</td>
+                                <td>3.3 V Power</td>
+                                <td>28</td>
+                                <td>CRST</td>
+                                <td>Configuration Reset</td>
+                            </tr>
+                        </tbody>
+                    </table></div>
 
-                        The Bluejay is a great option for digital design and embedded systems courses.
-
-                        - **Easy-to-Install Development Tools**: All tools are open-source, free, and quick to install on most laptops (Windows, Mac, or Linux).
-                        - **Battery Friendly**: With an idle power draw of just 2 mW, the Bluejay is great for battery-powered projects.
-                        - **Lab Friendly**: The Bluejay can be easily connected via jumper wires to breadboards, sensors, displays, buttons, and more.
-                        - **MCU Companion**: The Bluejay is a great companion for microcontrollers like an Arduino. Use the Bluejay to handle high-speed data acquisition from sensors, matrix multiplication, custom communication protocols, or precise timing generation, while your MCU handles system management.
-                        - **Ready-to-Go Labs**: See [tutorials](/tutorials/index.html) for examples of how to use the Bluejay and iCE40LP8K.
-                        -->
-
-                        <h2>Technical Specs</h2>
-                        <div class="table-wrapper"><table>
-                            <tbody>
-                                <tr>
-                                    <th colspan="2">FPGA</th>
-                                </tr>
-                                <tr>
-                                    <td>Device</td>
-                                    <td>iCE40LP8K-CM81</td>
-                                </tr>
-                                <tr>
-                                    <td>Look-Up Tables (LUTs)</td>
-                                    <td>7,680</td>
-                                </tr>
-                                <tr>
-                                    <td>Embedded Block RAM (EBR)</td>
-                                    <td>128 Kbits</td>
-                                </tr>
-                                <tr>
-                                    <td>Phase-Locked Loops (PLLs)</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Board I/O</th>
-                                </tr>
-                                <tr>
-                                    <td>Programmable I/O Pins</td>
-                                    <td>39</td>
-                                </tr>
-                                <tr>
-                                    <td>Power Pins</td>
-                                    <td>5x GND, 5x 3V3, 1x 5V</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Clock</th>
-                                </tr>
-                                <tr>
-                                    <td>Frequency</td>
-                                    <td>12 MHz</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Configuration</th>
-                                </tr>
-                                <tr>
-                                    <td>Flash</td>
-                                    <td>2 Mbit SPI Flash (AT25DF021A)</td>
-                                </tr>
-                                <tr>
-                                    <td>Configuration Modes</td>
-                                    <td>Master Mode, Slave Mode</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Power</th>
-                                </tr>
-                                <tr>
-                                    <td>I/O Voltage</td>
-                                    <td>3.3V</td>
-                                </tr>
-                                <tr>
-                                    <td>Input Voltage</td>
-                                    <td>5V (USB-C, 5V Pin) or 3.3V (3V3 Pin)</td>
-                                </tr>
-                                <tr>
-                                    <td>Power Supply Connector</td>
-                                    <td>USB-C</td>
-                                </tr>
-                                <tr>
-                                    <td>Idle Power</td>
-                                    <td>2 mW</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Additional Features</th>
-                                </tr>
-                                <tr>
-                                    <td>Status LEDs</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Dimensions</th>
-                                </tr>
-                                <tr>
-                                    <td>Width</td>
-                                    <td>47 mm</td>
-                                </tr>
-                                <tr>
-                                    <td>Length</td>
-                                    <td>50 mm</td>
-                                </tr>
-                                <tr>
-                                    <td>Weight</td>
-                                    <td>11 g</td>
-                                </tr>
-                            </tbody>
-                        </table></div>
-
-                        <h2>Additional Resources</h2>
-                        <ul>
-                        <li><strong><a href="/getting_started/index.html">Getting Started</a></strong> - Build and program your first design</li>
-                        <li><strong><a href="/docs/index.html">Docs</a></strong> - Complete technical documentation</li>
-                        <li><strong><a href="/tutorials/index.html">Tutorials</a></strong> - Learn to use the Bluejay and iCE40LP8K with additional example projects</li>
-                        </ul>
-                        <h2>Need Help?</h2>
-                        <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>.</p></div>
-                    </div>
-                </div>
+                    <h2>J2 Pinout</h2>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 10%;"/>
+                            <col style="width: 15%;"/>
+                            <col style="width: 25%;"/>
+                            <col style="width: 10%;"/>
+                            <col style="width: 15%;"/>
+                            <col style="width: 25%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Pin</th>
+                                <th>Pin Name</th>
+                                <th>Description</th>
+                                <th>Pin</th>
+                                <th>Pin Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>D16</td>
+                                <td>Programmable I/O</td>
+                                <td>15</td>
+                                <td>5V</td>
+                                <td>5 V Power</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>D17</td>
+                                <td>Programmable I/O</td>
+                                <td>16</td>
+                                <td>D28</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>D18</td>
+                                <td>Programmable I/O</td>
+                                <td>17</td>
+                                <td>D29</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>D19</td>
+                                <td>Programmable I/O</td>
+                                <td>18</td>
+                                <td>D30</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>D20</td>
+                                <td>Programmable I/O</td>
+                                <td>19</td>
+                                <td>D31</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>D21</td>
+                                <td>Programmable I/O</td>
+                                <td>20</td>
+                                <td>D32</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>D22</td>
+                                <td>Programmable I/O</td>
+                                <td>21</td>
+                                <td>D33</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>D23</td>
+                                <td>Programmable I/O</td>
+                                <td>22</td>
+                                <td>D34</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>D24</td>
+                                <td>Programmable I/O</td>
+                                <td>23</td>
+                                <td>D35</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>D25</td>
+                                <td>Programmable I/O</td>
+                                <td>24</td>
+                                <td>D36</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>D26</td>
+                                <td>Programmable I/O</td>
+                                <td>25</td>
+                                <td>D37</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>D27</td>
+                                <td>Programmable I/O</td>
+                                <td>26</td>
+                                <td>D38</td>
+                                <td>Programmable I/O</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>GND</td>
+                                <td>Ground</td>
+                                <td>27</td>
+                                <td>GND</td>
+                                <td>Ground</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>3V3</td>
+                                <td>3.3 V Power</td>
+                                <td>28</td>
+                                <td>3V3</td>
+                                <td>3.3 V Power</td>
+                            </tr>
+                        </tbody>
+                    </table></div></div>
+            </div>
         </div>
 
         <div class="nav">

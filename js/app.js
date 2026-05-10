@@ -77,7 +77,7 @@ function removeNavMenuExpanded() {
 }
 
 function toggleNavExpanded() {
-    this.parentElement.classList.toggle('show');
+    this.parentElement.parentElement.classList.toggle('show');
 }
 
 function navButtonClick() {
@@ -134,7 +134,7 @@ for (let element of document.querySelectorAll('.nav-cross-button')) {
     element.addEventListener('click', removeNavMenuExpanded);
 }
 
-for (let element of document.querySelectorAll('.nav-toggle')) {
+for (let element of document.querySelectorAll('.nav-toggle-chevron')) {
     element.addEventListener('click', toggleNavExpanded);
 }
 
