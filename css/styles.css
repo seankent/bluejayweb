@@ -1008,9 +1008,8 @@ hr {
 
 /* Only apply hover on devices with a mouse */
 @media (hover: hover) and (pointer: fine) {
-    .nav-toggle > a:hover {
+    .nav-toggle:has(> a:hover) {
         background-color: var(--bg-color-hover);
-        border-radius: var(--border-radius);
     }
 
     .nav-toggle-chevron:hover {
