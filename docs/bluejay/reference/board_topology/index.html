@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Board Topology - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Board Topology | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-bluejay-reference-board_topology">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,59 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
-
-                    # Contact Us
-
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
-
-                    ## General Inquiries
-
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
-
-                    ## Support
-
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <h1>Board Topology</h1>
+                    <p></p><div class="img-wrapper"><img alt="Alt text" src="diag/board_topology.svg" style="width: 30rem;"/></div><p></p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 15%;"/>
+                            <col style="width: 35%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Reference</th>
+                              <th>Value</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>U1</td>
+                                <td>ICE40LP8K-CM81</td>
+                                <td>FPGA</td>
+                            </tr>
+                            <tr>
+                                <td>U2</td>
+                                <td>AT25DF021A-SSHN-T</td>
+                                <td>2 Mbit SPI Flash Memory</td>
+                            </tr>
+                            <tr>
+                                <td>U3</td>
+                                <td>TMUX1574DYYR</td>
+                                <td>2:1 (SPDT) 4-Channel Analog Switch</td>
+                            </tr>
+                            <tr>
+                                <td>U4</td>
+                                <td>MIC5504-1.2YM5-TR</td>
+                                <td>LDO 1.2V 300 mA</td>
+                            </tr>
+                            <tr>
+                                <td>U5</td>
+                                <td>MIC5504-3.3YM5-TR</td>
+                                <td>LDO 3.3V 300 mA</td>
+                            </tr>
+                            <tr>
+                                <td>U6</td>
+                                <td>MAX40200AUK+T</td>
+                                <td>Ideal Diode 1.5V-5.5V 1A</td>
+                            </tr>
+                            <tr>
+                                <td>Y1</td>
+                                <td>SIT8021AI-J4-XXS-12.000000</td>
+                                <td>12.0 MHz Oscillator</td>
+                            </tr>
+                        </tbody>
+                    </table></div></div>
             </div>
         </div>
 

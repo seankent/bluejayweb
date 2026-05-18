@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Alternative Programmers - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Alternative Programmers | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-bluejay-reference-alternative_programmers">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,99 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
+                    <h1>Alternative Programmers</h1>
+                    <p>If you don't have a JayProg, you can use any FT232H-based USB programmer to configure the Bluejay. Two common options are the FTDI C232HM USB-to-serial cable and the Adafruit FT232H breakout board.</p>
+                    <p>Both use the device ID <code>i:0x0403:0x6014</code> with <code>iceprog</code>. Refer to the <a href="/docs/bluejay/getting_started/programming_the_board/index.html">Programming the Board</a> page for the full programming workflow — just substitute <code>i:0x0403:0x6014</code> for <code>i:0x0403:0x6010</code> in the commands.</p>
+                    <h2>Understanding the Configuration Interface</h2>
+                    <p>Bitstreams are loaded onto the iCE40 using a SPI interface (<code>CS</code>, <code>SCK</code>, <code>MOSI</code>, <code>MISO</code>) and two dedicated configuration signals:</p>
+                    <ul>
+                    <li><code>CRST</code> (an abbreviation for <code>CRESET_B</code>) - Configuration reset</li>
+                    <li><code>CDN</code> (an abbreviation for <code>CDONE</code>) - Configuration done</li>
+                    </ul>
+                    <p>The Bluejay's <strong>CONFIG</strong> interface (located at the bottom of header <strong>J1</strong>) provides access to these signals, along with power and ground.</p>
+                    <h2>FTDI C232HM USB-to-Serial Cable</h2>
+                    <p>The FTDI C232HM cable has a USB Type-A connector on one end and 10 color-coded wires with female headers on the other.</p>
+                    <p>The following table shows how to connect the FTDI cable to the Bluejay:</p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 50%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Bluejay Pin Name</th>
+                              <th>FTDI Cable Pin Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>3V3</td><td>VCC</td></tr>
+                            <tr><td>GND</td><td>GND</td></tr>
+                            <tr><td>CS</td><td>GPIOL0</td></tr>
+                            <tr><td>SCK</td><td>TCK/SK</td></tr>
+                            <tr><td>MOSI</td><td>TDI/DO</td></tr>
+                            <tr><td>MISO</td><td>TDO/DI</td></tr>
+                            <tr><td>CRST</td><td>GPIOL3</td></tr>
+                            <tr><td>CDN</td><td>GPIOL2</td></tr>
+                        </tbody>
+                    </table></div>
 
-                    # Contact Us
+                    <p>Unfortunately, the cables are not labeled, so connections must be made based on wire color. For reference, the complete cable pinout is shown below:</p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 10%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 30%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Pin</th>
+                              <th>Pin Name</th>
+                              <th>Pin Color</th>
+                              <th>Type</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>VCC</td><td>Red</td><td>Output</td><td>3.3V power output</td></tr>
+                            <tr><td>2</td><td>TCK/SK</td><td>Orange</td><td>Output</td><td>Serial clock</td></tr>
+                            <tr><td>3</td><td>TDI/DO</td><td>Yellow</td><td>Output</td><td>Serial data output</td></tr>
+                            <tr><td>4</td><td>TDO/DI</td><td>Green</td><td>Input</td><td>Serial data input</td></tr>
+                            <tr><td>5</td><td>TMS/CS</td><td>Brown</td><td>Output</td><td>Serial chip select</td></tr>
+                            <tr><td>6</td><td>GPIOL0</td><td>Gray</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>7</td><td>GPIOL1</td><td>Purple</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>8</td><td>GPIOL2</td><td>White</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>9</td><td>GPIOL3</td><td>Blue</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>10</td><td>GND</td><td>Black</td><td>GND</td><td>Ground</td></tr>
+                        </tbody>
+                    </table></div>
 
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
-
-                    ## General Inquiries
-
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
-
-                    ## Support
-
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <h2>Adafruit FT232H Breakout Board</h2>
+                    <p>The Adafruit FT232H breakout board connects to your computer via USB-C and breaks out the FT232H I/O on two 11-pin headers.</p>
+                    <p>The following table shows how to connect the FT232H breakout board to the Bluejay:</p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 50%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Bluejay Pin Name</th>
+                              <th>FT232H Breakout Board Pin Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>3V3</td><td>3V</td></tr>
+                            <tr><td>GND</td><td>GND</td></tr>
+                            <tr><td>CS</td><td>D4</td></tr>
+                            <tr><td>SCK</td><td>D0</td></tr>
+                            <tr><td>MOSI</td><td>D1</td></tr>
+                            <tr><td>MISO</td><td>D2</td></tr>
+                            <tr><td>CDN</td><td>D6</td></tr>
+                            <tr><td>CRST</td><td>D7</td></tr>
+                        </tbody>
+                    </table></div></div>
             </div>
         </div>
 

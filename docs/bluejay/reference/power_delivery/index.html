@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Power Delivery - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Power Delivery | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-bluejay-reference-power_delivery">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,26 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
-
-                    # Contact Us
-
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
-
-                    ## General Inquiries
-
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
-
-                    ## Support
-
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <h1>Power Delivery</h1>
+                    <h2>Overview</h2>
+                    <p>The Bluejay primarily operates at 3.3V logic levels. This includes the iCE40's I/O, flash chip, and oscillator. All header pins (except the <strong>5V</strong> pin) operate at 3.3V.</p>
+                    <p>To accommodate a variety of use cases, the board supports multiple power input options: the <strong>3V3</strong> pins, the <strong>5V</strong> pin, or the <strong>USB-C</strong> connector. When powered from either the <strong>5V</strong> pin or <strong>USB-C</strong> connector, an onboard LDO regulates the 5V input down to 3.3V. A second LDO then steps the 3.3V rail down to 1.2V for the iCE40's core logic.</p>
+                    <p>The power tree diagram below shows the power distribution architecture. Each power input option is described in detail in the following sections.</p>
+                    <p></p><div class="img-wrapper"><img alt="Power tree diagram" src="diag/power_tree.svg" style="width: 30rem;"/></div><p></p>
+                    <h2>Power Through the 3V3 Pins</h2>
+                    <p>The board can be powered directly from one of the <strong>3V3</strong> pins. This allows the board to be easily integrated into larger systems that already have a regulated 3.3V supply. It also simplifies the configuration setup by allowing the board and the host programmer to operate off the same supply.</p>
+                    <p>When powering the board from a <strong>3V3</strong> pin, the <strong>5V</strong> pin and the <strong>USB-C</strong> connector should be disconnected.</p>
+                    <p></p><div class="img-wrapper"><img alt="Power tree diagram - 3V3 input" src="diag/power_tree_3v3.svg" style="width: 30rem;"/></div><p></p>
+                    <h2>Power Through the 5V Pin</h2>
+                    <p>The board can also be powered from the <strong>5V</strong> pin. This can be a convenient option when only a 5V supply is available. The 5V input is stepped down to 3.3V by an LDO for use by the rest of the board.</p>
+                    <p>When powering the board from the <strong>5V</strong> pin, the <strong>3V3</strong> pins are driven from the output of the LDO and can be used as power outputs. The <strong>USB-C</strong> connector should be disconnected.</p>
+                    <p></p><div class="img-wrapper"><img alt="Power tree diagram - 5V input" src="diag/power_tree_5v.svg" style="width: 30rem;"/></div><p></p>
+                    <h2>Power Through the USB-C Connector</h2>
+                    <p>In addition to the <strong>3V3</strong> and <strong>5V</strong> pins, the board can be powered from the <strong>USB-C</strong> connector. The <strong>USB-C</strong> connector provides the board with a 5V supply.</p>
+                    <p>When power is supplied through the <strong>USB-C</strong> connector, both the <strong>5V</strong> and <strong>3V3</strong> pins can be used as power outputs (at their respective voltages).</p>
+                    <p>Note that the <strong>USB-C</strong> connector is for power only. Data cannot be transferred to or from the device through the connector.</p>
+                    <!-- width = 1.27 * 30rem  -->
+                    <p></p><div class="img-wrapper"><img alt="Power tree diagram - USB-C input" src="diag/power_tree_usb_c.svg" style="width: 38rem;"/></div><p></p></div>
             </div>
         </div>
 

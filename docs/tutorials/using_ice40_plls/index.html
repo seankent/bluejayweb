@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Using iCE40 PLLs - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Using iCE40 PLLs | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-tutorials-using_ice40_plls">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,200 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
+                    <h1>Using iCE40 PLLs</h1>
+                    <h2>Overview</h2>
+                    <p>The iCE40LP8K includes two Phase-Locked Loops (PLLs) that can generate higher or lower frequency clocks from the board's 12 MHz oscillator. This tutorial demonstrates how to instantiate an iCE40 PLL primitive and configure its parameters to achieve desired frequencies.</p>
+                    <p>This design builds on the <a href="/docs/bluejay/getting_started/overview/index.html">Getting Started</a> tutorial by adding a PLL to generate a 24 MHz clock from the board's 12 MHz oscillator. The design consists of the same three modules:</p>
+                    <ul>
+                    <li><code>blinky</code> - Implements the core LED blinking logic (unchanged from Getting Started)</li>
+                    <li><code>reset_controller</code> - Generates a power-on reset signal (unchanged from Getting Started)</li>
+                    <li><code>top</code> - Instantiates the blinky, reset controller, and PLL primitive</li>
+                    </ul>
+                    <p>The key difference is that the top-level module now includes a PLL primitive to generate a faster clock. By doubling the clock frequency from 12 MHz to 24 MHz, the LED will blink twice as fast—at 2 Hz instead of 1 Hz.</p>
+                    <h2>Top-Level Module</h2>
+                    <p>The top-level module instantiates the PLL primitive alongside the blinky and reset controller modules.</p>
+                    <p>Create a file called <code>top.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="w"> </span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
 
-                    # Contact Us
+<span class="kt">logic</span><span class="w"> </span><span class="n">pllclk</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">rst</span><span class="p">;</span>
 
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
+<span class="n">blinky</span><span class="w"> </span><span class="n">u_blinky</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">);</span>
 
-                    ## General Inquiries
+<span class="n">reset_controller</span><span class="w"> </span><span class="n">u_reset_controller</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+<span class="p">);</span>
 
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
+<span class="n">SB_PLL40_CORE</span>
+<span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FEEDBACK_PATH</span><span class="p">(</span><span class="s">"SIMPLE"</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVF</span><span class="p">(</span><span class="mh">7'h1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVQ</span><span class="p">(</span><span class="mh">3'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVR</span><span class="p">(</span><span class="mh">4'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FILTER_RANGE</span><span class="p">(</span><span class="mb">3'b001</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">u_sb_pll40_core</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">REFERENCECLK</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">PLLOUTCORE</span><span class="p">(</span><span class="n">pllclk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">LOCK</span><span class="p">(),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RESETB</span><span class="p">(</span><span class="mb">1'b1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">BYPASS</span><span class="p">(</span><span class="mb">1'b0</span><span class="p">)</span>
+<span class="p">);</span>
 
-                    ## Support
+<span class="k">endmodule</span>
+</code></pre></div></div>
 
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <p>The <code>clk</code> input connects to the 12 MHz oscillator and feeds the PLL's reference clock. The PLL outputs a 24 MHz clock on <code>pllclk</code>, which is then used to clock both the blinky and reset controller modules.</p>
+                    <p>The <code>SB_PLL40_CORE</code> module is a hard macro primitive specific to the iCE40 FPGA. During synthesis, <code>yosys</code> recognizes this primitive and preserves it rather than synthesizing it into generic logic. <code>nextpnr-ice40</code> then maps this primitive to one of the two physical PLL blocks available on the iCE40LP8K during place-and-route. This ensures the PLL functionality is implemented using the dedicated hardware rather than being emulated in the FPGA fabric.</p>
+                    <h3>Understanding the PLL Configuration</h3>
+                    <p>The <code>SB_PLL40_CORE</code> primitive is configured using several parameters:</p>
+                    <ul>
+                    <li><strong>FEEDBACK_PATH</strong>: Set to "SIMPLE" for basic frequency multiplication</li>
+                    <li><strong>DIVF</strong>: Feedback divider (controls multiplication)</li>
+                    <li><strong>DIVQ</strong>: Output divider (divides by 2^DIVQ)</li>
+                    <li><strong>DIVR</strong>: Reference divider (divides input clock)</li>
+                    <li><strong>FILTER_RANGE</strong>: PLL filter range based on reference frequency</li>
+                    </ul>
+                    <p>The output frequency is calculated using the following equation:</p>
+                    <p><strong>F_out = (F_in × (DIVF + 1)) / (2^DIVQ × (DIVR + 1))</strong></p>
+                    <p>For this example:</p>
+                    <p><strong>F_out = (12 MHz × (1 + 1)) / (2^0 × (0 + 1)) = 24 MHz</strong></p>
+                    <h2>Supporting Modules</h2>
+                    <p>The blinky and reset controller modules are reused from the Getting Started tutorial. The code for these modules can be found on the <a href="/docs/bluejay/getting_started/creating_your_first_design/index.html">Creating Your First Design</a> page.</p>
+                    <h2>Pin Constraints</h2>
+                    <p>The pin constraints file maps the signals to physical pins and specifies the clock frequencies for timing analysis.</p>
+                    <p>Create a file called <code>top.pcf</code> with the following contents:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code>set_io clk C4
+set_io out E1
+set_frequency clk 12.0
+set_frequency pllclk 24.0
+</code></pre></div></div>
+
+                    <p>The first two lines connect <code>clk</code> to the 12 MHz oscillator (pin <code>C4</code>) and <code>out</code> to the <strong>USR</strong> LED (pin <code>E1</code>).</p>
+                    <p>The <code>set_frequency</code> constraints tell <code>nextpnr-ice40</code> the expected frequencies:</p>
+                    <ul>
+                    <li>The input clock <code>clk</code> runs at 12.0 MHz</li>
+                    <li>The PLL output clock <code>pllclk</code> runs at 24.0 MHz</li>
+                    </ul>
+                    <p>When you run place-and-route, <code>nextpnr-ice40</code> will perform timing analysis on both clock domains and report whether timing is met for each:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'pllclk_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">115.06</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">24.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
+
+                    <p>This confirms that your design can safely run at the specified frequencies. Note that in this case, you will not see <code>clk</code> in the timing report because it only feeds the PLL reference input and does not drive any sequential logic directly.</p>
+                    <h2>Building the Design</h2>
+                    <p>To streamline the build process, you can use the following Makefile:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
+<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
+<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.pcf
+
+<span class="c"># Output directory</span>
+<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
+
+<span class="c"># iCE40 device configuration</span>
+<span class="nv">DEVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>lp8k
+<span class="nv">PACKAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>cm81
+
+<span class="c"># Tool configuration</span>
+<span class="nv">YOSYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>yosys
+<span class="nv">NEXTPNR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>nextpnr-ice40
+<span class="nv">ICEPACK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>icepack
+<span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
+
+<span class="c"># FTDI device selection: FT2232H = i:0x0403:0x6010, FT232H = i:0x0403:0x6014</span>
+<span class="nv">ICEPROG_DEVICE</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>i:0x0403:0x6010
+
+<span class="c"># Build targets</span>
+<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.json
+<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.asc
+<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.bin
+
+<span class="c"># Default target</span>
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+
+<span class="c"># Create build directory</span>
+<span class="nf">$(BUILD_DIR)</span><span class="o">:</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Synthesis</span>
+<span class="nf">$(JSON)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SOURCES</span><span class="k">)</span> <span class="p">|</span> <span class="k">$(</span><span class="nv">BUILD_DIR</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>YOSYS<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top </span><span class="k">$(</span>TOP_MODULE<span class="k">)</span><span class="s2"> -json </span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>SOURCES<span class="k">)</span>
+
+<span class="c"># Place and route</span>
+<span class="nf">$(ASC)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">JSON</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PCF</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>NEXTPNR<span class="k">)</span><span class="w"> </span>--<span class="k">$(</span>DEVICE<span class="k">)</span><span class="w"> </span>--package<span class="w"> </span><span class="k">$(</span>PACKAGE<span class="k">)</span><span class="w"> </span>--json<span class="w"> </span><span class="k">$(</span>JSON<span class="k">)</span><span class="w"> </span>--pcf<span class="w"> </span><span class="k">$(</span>PCF<span class="k">)</span><span class="w"> </span>--asc<span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Generate bitstream</span>
+<span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Program FPGA (SM)</span>
+<span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>ICEPROG_DEVICE<span class="k">)</span><span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Program Flash (MM)</span>
+<span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>ICEPROG_DEVICE<span class="k">)</span><span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Clean build artifacts</span>
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Phony targets</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">prog</span> <span class="n">flash</span> <span class="n">clean</span>
+</code></pre></div></div>
+
+                    <p>Copy this Makefile into your project directory. You can then build and program the design with simple commands:</p>
+                    <p><strong>Build the bitstream:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
+</code></pre></div></div>
+
+                    <p><strong>Program the FPGA (</strong>SM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
+</code></pre></div></div>
+
+                    <p><strong>Program the flash (</strong>MM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>make<span class="w"> </span>flash
+</code></pre></div></div>
+
+                    <p><strong>Clean build artifacts:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>clean
+</code></pre></div></div>
+
+                    <h2>Adjusting the PLL Frequency</h2>
+                    <p>To change the output frequency, modify the <code>DIVF</code>, <code>DIVQ</code>, and <code>DIVR</code> parameters in the PLL instantiation.</p>
+                    <p>For example, to generate a 48 MHz clock, you can use the following configuration:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="c1">// F_out = (12 MHz × (7 + 1)) / (2^1 × (0 + 1)) = 48 MHz</span>
+<span class="n">SB_PLL40_CORE</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVF</span><span class="p">(</span><span class="mh">7'h7</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVQ</span><span class="p">(</span><span class="mh">3'h1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">DIVR</span><span class="p">(</span><span class="mh">4'h0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">FILTER_RANGE</span><span class="p">(</span><span class="mb">3'b001</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+                    <h2>Additional Resources</h2>
+                    <p>For more information on the iCE40 PLL, refer to the <a href="https://www.latticesemi.com/view_document?document_id=47778">iCE40 sysCLOCK PLL Design and Usage Guide</a>.</p>
+                    <h2>Next Steps</h2>
+                    <p>Now that you know how to use the PLL, you can:</p>
+                    <ul>
+                    <li>Experiment with different clock frequencies</li>
+                    <li>Use the PLL's <code>LOCK</code> signal to detect when the PLL has stabilized</li>
+                    <li>Explore using both PLLs simultaneously for multiple clock domains</li>
+                    </ul></div>
             </div>
         </div>
 

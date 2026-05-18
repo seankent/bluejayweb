@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Building the Bitstream - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Building the Bitstream | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-bluejay-getting_started-building_the_bitstream">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,157 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
+                    <h1>Building the Bitstream</h1>
+                    <h2>Overview</h2>
+                    <p>With your design files created, it is now time to generate the bitstream. This process involves three steps: synthesis, place-and-route, and bitstream packing.</p>
+                    <h2>Workspace Setup</h2>
+                    <p>To keep your workspace organized, create a <code>gen/</code> subdirectory to store all generated files:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>mkdir<span class="w"> </span>gen/
+</code></pre></div></div>
 
-                    # Contact Us
+                    <p>This keeps the design files separate from the outputs created by the bitstream tools.</p>
+                    <h2>Synthesis</h2>
+                    <p>The first step is logic synthesis, which converts the high-level RTL into a netlist of FPGA primitives.</p>
+                    <p>Run <code>yosys</code> with the following command:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>yosys<span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top top -json gen/top.json"</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
+</code></pre></div></div>
 
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
+                    <p>The <code>-top top</code> option specifies that the top module is named <code>top</code>. The <code>-json gen/top.json</code> option tells the tool to write the synthesized netlist to a JSON file of the given name. The source files containing the RTL design (<code>top.sv</code>, <code>blinky.sv</code>, and <code>reset_controller.sv</code>) are provided as space-separated arguments.</p>
+                    <p><code>yosys</code> will output information about the synthesis process and report the resources used.</p>
+                    <h2>Place and Route</h2>
+                    <p>The next step is place-and-route, which maps the netlist to physical resources on the FPGA.</p>
+                    <p>Run <code>nextpnr-ice40</code> with the following command:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>nextpnr-ice40<span class="w"> </span>--lp8k<span class="w"> </span>--package<span class="w"> </span>cm81<span class="w"> </span>--json<span class="w"> </span>gen/top.json<span class="w"> </span>--pcf<span class="w"> </span>top.pcf<span class="w"> </span>--asc<span class="w"> </span>gen/top.asc
+</code></pre></div></div>
 
-                    ## General Inquiries
+                    <p>The <code>--lp8k</code> and <code>--package cm81</code> options specify the target FPGA (the iCE40LP8K-CM81). The <code>--json gen/top.json</code> option points the tool to the synthesized netlist. The <code>--pcf top.pcf</code> option points the tool to the pin constraints file. Finally, the <code>--asc gen/top.asc</code> option specifies where to write the placed-and-routed design.</p>
+                    <p><code>nextpnr-ice40</code> will report timing information and confirm successful place-and-route.</p>
+                    <h3>Understanding the Timing Report</h3>
+                    <p>During place-and-route, <code>nextpnr-ice40</code> uses the <code>set_frequency</code> constraint from the pin constraints file to perform timing analysis. This constraint tells the tool that the <code>clk</code> signal runs at 12.0 MHz. The tool will analyze whether the design can meet timing at this frequency and report the maximum achievable frequency (Fmax).</p>
+                    <p>You should see the following line printed in the output:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="n">Info</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">105.54</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">PASS</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">12.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
 
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
+                    <p>This confirms that the design meets timing with significant margin. If timing fails for whatever reason (e.g., if you set the clock frequency to 200 MHz), you will see something like this:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Makefile"><pre><span></span><code><span class="n">ERROR</span><span class="o">:</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="s1">'clk$SB_IO_IN_$glb_clk'</span><span class="o">:</span><span class="w"> </span><span class="mf">105.54</span><span class="w"> </span><span class="n">MHz</span><span class="w"> </span><span class="o">(</span><span class="n">FAIL</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">200.00</span><span class="w"> </span><span class="n">MHz</span><span class="o">)</span>
+</code></pre></div></div>
 
-                    ## Support
+                    <h2>Bitstream Packing</h2>
+                    <p>The final step is to convert the placed design into a binary bitstream.</p>
+                    <p>Run <code>icepack</code> with the following command:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>icepack<span class="w"> </span>gen/top.asc<span class="w"> </span>gen/top.bin
+</code></pre></div></div>
 
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <p>This creates <code>gen/top.bin</code>, which contains 1,081,464 bits of configuration data for the iCE40LP8K.</p>
+                    <h2>Project Structure</h2>
+                    <p>After running the synthesis, place-and-route, and bitstream packing commands, your project directory should look like this:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>.
+├── blinky.sv
+├── gen
+│   ├── top.asc
+│   ├── top.bin
+│   └── top.json
+├── reset_controller.sv
+├── top.pcf
+└── top.sv
+</code></pre></div></div>
+
+                    <p>The <code>gen/</code> directory now contains the intermediate and final output files from the bitstream generation process:
+                    - <code>top.json</code> - Synthesized netlist from Yosys
+                    - <code>top.asc</code> - Placed-and-routed design from NextPNR
+                    - <code>top.bin</code> - Final bitstream ready for programming</p>
+                    <h2>Using a Makefile (Optional)</h2>
+                    <p>For larger projects or when iterating on designs, manually running these commands can become tedious. A Makefile automates the build process.</p>
+                    <p>Create a file called <code>Makefile</code> in your project directory:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="c"># Project configuration</span>
+<span class="nv">TOP_MODULE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.sv<span class="w"> </span>blinky.sv<span class="w"> </span>reset_controller.sv
+<span class="nv">PCF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>top.pcf
+
+<span class="c"># Output directory</span>
+<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gen
+
+<span class="c"># iCE40 device configuration</span>
+<span class="nv">DEVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>lp8k
+<span class="nv">PACKAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>cm81
+
+<span class="c"># Tool configuration</span>
+<span class="nv">YOSYS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>yosys
+<span class="nv">NEXTPNR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>nextpnr-ice40
+<span class="nv">ICEPACK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>icepack
+<span class="nv">ICEPROG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iceprog
+
+<span class="c"># FTDI device selection: FT2232H = i:0x0403:0x6010, FT232H = i:0x0403:0x6014</span>
+<span class="nv">ICEPROG_DEVICE</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>i:0x0403:0x6010
+
+<span class="c"># Build targets</span>
+<span class="nv">JSON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.json
+<span class="nv">ASC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.asc
+<span class="nv">BIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/<span class="k">$(</span>TOP_MODULE<span class="k">)</span>.bin
+
+<span class="c"># Default target</span>
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+
+<span class="c"># Create build directory</span>
+<span class="nf">$(BUILD_DIR)</span><span class="o">:</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Synthesis</span>
+<span class="nf">$(JSON)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SOURCES</span><span class="k">)</span> <span class="p">|</span> <span class="k">$(</span><span class="nv">BUILD_DIR</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>YOSYS<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"synth_ice40 -top </span><span class="k">$(</span>TOP_MODULE<span class="k">)</span><span class="s2"> -json </span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>SOURCES<span class="k">)</span>
+
+<span class="c"># Place and route</span>
+<span class="nf">$(ASC)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">JSON</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PCF</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>NEXTPNR<span class="k">)</span><span class="w"> </span>--<span class="k">$(</span>DEVICE<span class="k">)</span><span class="w"> </span>--package<span class="w"> </span><span class="k">$(</span>PACKAGE<span class="k">)</span><span class="w"> </span>--json<span class="w"> </span><span class="k">$(</span>JSON<span class="k">)</span><span class="w"> </span>--pcf<span class="w"> </span><span class="k">$(</span>PCF<span class="k">)</span><span class="w"> </span>--asc<span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Generate bitstream</span>
+<span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">ASC</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>ICEPACK<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ASC<span class="k">)</span><span class="w"> </span><span class="nv">$@</span>
+
+<span class="c"># Program FPGA (SM)</span>
+<span class="nf">prog</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>ICEPROG_DEVICE<span class="k">)</span><span class="w"> </span>-S<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Program Flash (MM)</span>
+<span class="nf">flash</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">BIN</span><span class="k">)</span>
+<span class="w">    </span>sudo<span class="w"> </span><span class="k">$(</span>ICEPROG<span class="k">)</span><span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>ICEPROG_DEVICE<span class="k">)</span><span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span>
+
+<span class="c"># Clean build artifacts</span>
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>
+
+<span class="c"># Phony targets</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">prog</span> <span class="n">flash</span> <span class="n">clean</span>
+</code></pre></div></div>
+
+                    <p>With the Makefile in place, you can build and program your design with these commands:</p>
+                    <p><strong>Build the bitstream:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make
+</code></pre></div></div>
+
+                    <p><strong>Program the FPGA (</strong>SM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>prog
+</code></pre></div></div>
+
+                    <p><strong>Program the flash (</strong>MM<strong> mode):</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>flash
+</code></pre></div></div>
+
+                    <p><strong>Clean build artifacts:</strong></p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>make<span class="w"> </span>clean
+</code></pre></div></div>
+
+                    <p>The Makefile automatically handles dependencies, so if you modify your source files and run <code>make</code>, it will rebuild only what's necessary.</p>
+                    <h2>Next Steps</h2>
+                    <p>With your bitstream generated, you're ready to program the board!</p></div>
+                <div class="main-navbar">
+                    <a class="button navbar-button" href="/docs/bluejay/getting_started/creating_your_first_design/index.html">
+                        Back
+                    </a>
+                    <a class="button navbar-button" href="/docs/bluejay/getting_started/programming_the_board/index.html">
+                        Next
+                    </a>
+                </div>
             </div>
         </div>
 

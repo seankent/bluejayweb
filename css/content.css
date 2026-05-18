@@ -16,13 +16,22 @@ html .markdown-content * {
 .markdown-content {}
 
 .markdown-content p {
-    margin: 0 0 1.25rem 0; /* Switched to bottom margin, slightly increased gap */
     line-height: 1.6;
 }
 
-.markdown-content> :first-child {
+.markdown-content > :first-child {
     margin-top: 0;
 }
+
+/* Flow spacing: single margin-top per element pair, no margin-bottom */
+.markdown-content > * + *             { margin-top: 1.25rem; }
+.markdown-content > * + h2            { margin-top: 3.5rem;  }
+.markdown-content > * + h3            { margin-top: 2.5rem;  }
+.markdown-content > * + h4            { margin-top: 1.5rem;  }
+.markdown-content > * + .table-wrapper { margin-top: 2rem;    }
+.markdown-content > .table-wrapper + * { margin-top: 2rem;    }
+.markdown-content > * + .img-wrapper   { margin-top: 4rem;    }
+.markdown-content > .img-wrapper + *   { margin-top: 4rem;    }
 
 .markdown-content h1,
 .markdown-content h2,
@@ -30,40 +39,37 @@ html .markdown-content * {
 .markdown-content h4,
 .markdown-content h5,
 .markdown-content h6 {
-    margin: 2.5rem 0 1.25rem 0; /* Increased top margin for better sectioning */
-    //font-family: var(--page-font-family);
-    font-family: var(--content-font-family);
-    font-weight: 400;        /* Added font-weight for better hierarchy */
-    //color: var(--grey-9);
+    font-family: var(--page-font-family);
+    font-weight: 700;
 }
 
 .markdown-content h1 {
     font-family: var(--page-font-family);
     font-weight: 700;
     font-size: var(--h1-size);
+    padding-bottom: 1.25rem;
+    border-bottom-width: var(--border-width);
+    border-color: var(--border-color);
 }
 
 .markdown-content h2 {
-    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 1));
-    border-bottom: 1px solid var(--border-color); /* Add the underline */
-    padding-bottom: 1rem;                        /* Add a little space between text and line */
-    margin-top: 3rem;                             /* Optional: slightly more space above underlined sections */
+    font-size: 2.15rem;
 }
 
 .markdown-content h3 {
-    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 2));
+    font-size: 1.75rem;
 }
 
 .markdown-content h4 {
-    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 3));
+    font-size: 1.2rem;
 }
 
 .markdown-content h5 {
-    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 4));
+    font-size: 1.2rem;
 }
 
 .markdown-content h6 {
-    font-size: calc(var(--h1-size) / pow(var(--scale-ratio), 5));
+    font-size: 1.2rem;
 }
 
 
@@ -72,7 +78,6 @@ html .markdown-content * {
 //}
 
 .markdown-content .code-wrapper {
-    margin: 0 0 1.25rem 0;
 }
 
 .markdown-content .codehilite {
@@ -173,8 +178,6 @@ html .markdown-content * {
     overflow-x: scroll;
     max-width: 100%;
     min-width: 0;
-    /* Important for grid/flex parents */
-    margin: 2rem 0 2rem 0;
 }
 
 .markdown-content .img-wrapper {
@@ -183,8 +186,6 @@ html .markdown-content * {
     overflow-x: scroll;
     max-width: 100%;
     min-width: 0;
-    /* Important for grid/flex parents */
-    margin: 3rem 0 3rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -304,7 +305,6 @@ html .markdown-content * {
 .markdown-content ul,
 .markdown-content ol {
     padding: 0 0 0 2rem;
-    margin: 0 0 1.25rem 0;
     display: flex;
     flex-direction: column;
     gap: 0.5rem; /* Space between all list items */

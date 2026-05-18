@@ -87,6 +87,10 @@ function navButtonClick() {
 function setDisplayImage() {
     let element = document.querySelector('.product-gallery-image img');
     element.src = this.querySelector('img').src;
+    for (let thumb of document.querySelectorAll('.product-gallery-thumbnail')) {
+        thumb.classList.remove('active');
+    }
+    this.classList.add('active');
 }
 
 //function showScrollbar(e) {
@@ -134,16 +138,22 @@ for (let element of document.querySelectorAll('.nav-cross-button')) {
     element.addEventListener('click', removeNavMenuExpanded);
 }
 
-for (let element of document.querySelectorAll('.nav-toggle-chevron')) {
-    element.addEventListener('click', toggleNavExpanded);
+for (let element of document.querySelectorAll('.nav-toggle')) {
+    element.addEventListener('click', function() {
+        this.parentElement.classList.toggle('show');
+    });
 }
 
 for (let element of document.querySelectorAll('.nav-button')) {
     element.addEventListener('click', navButtonClick);
 }
 
-for (let element of document.querySelectorAll('.product-gallery-thumbnail')) {
+const thumbnails = document.querySelectorAll('.product-gallery-thumbnail');
+for (let element of thumbnails) {
     element.addEventListener('click', setDisplayImage);
+}
+if (thumbnails.length > 0) {
+    thumbnails[0].classList.add('active');
 }
 
 // Save state whenever leaving page

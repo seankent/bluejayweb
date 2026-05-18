@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Programming the Board - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Programming the Board | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-bluejay-getting_started-programming_the_board">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,69 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
+                    <h1>Programming the Board</h1>
+                    <h2>Overview</h2>
+                    <p>With your bitstream generated, it's time to load the design onto the FPGA. This page covers how to connect the JayProg to the Bluejay and load your bitstream.</p>
+                    <h2>Understanding the Configuration Interface</h2>
+                    <p>Bitstreams are loaded onto the iCE40 using a SPI interface (<code>CS</code>, <code>SCK</code>, <code>MOSI</code>, <code>MISO</code>) and two dedicated configuration signals:</p>
+                    <ul>
+                    <li><code>CRST</code> (an abbreviation for <code>CRESET_B</code>) - Configuration reset</li>
+                    <li><code>CDN</code> (an abbreviation for <code>CDONE</code>) - Configuration done</li>
+                    </ul>
+                    <p>The Bluejay's <strong>CONFIG</strong> interface (located at the bottom of header <strong>J1</strong>) provides access to these signals, along with power and ground.</p>
+                    <h2>Connecting the JayProg</h2>
+                    <p>The JayProg exposes the same signals as the Bluejay's <strong>CONFIG</strong> interface, so the two boards connect directly pin-for-pin.</p>
+                    <p></p><div class="img-wrapper"><img alt="JayProg hookup diagram" src="diag/bluejay_jayprog_setup.svg" style="width: 40rem;"/></div><p></p>
+                    <h2>Programming the FPGA (Volatile)</h2>
+                    <p>This method loads the bitstream directly into the FPGA's SRAM. The configuration is lost when power is removed.</p>
+                    <h3>Board Setup</h3>
+                    <p>Configure the board as follows:</p>
+                    <ol>
+                    <li>Set the configuration mode jumper to <strong>SM</strong> (Slave Mode)</li>
+                    <li>Connect the <strong>LED EN</strong> jumper to enable the LEDs</li>
+                    <li>Disconnect USB and 5V power — the JayProg will supply 3.3V through the <strong>3V3</strong> and <strong>GND</strong> pins</li>
+                    </ol>
+                    <p></p><div class="img-wrapper"><img alt="Board setup diagram" src="diag/sm_mode.svg" style="width: 20rem;"/></div><p></p>
+                    <h3>Programming Command</h3>
+                    <p>Once the JayProg is connected, run:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6010<span class="w"> </span>-S<span class="w"> </span>gen/top.bin
+</code></pre></div></div>
 
-                    # Contact Us
+                    <p>If successful, the <strong>USR</strong> LED should start blinking at 1 Hz!</p>
+                    <h3>Using the Makefile</h3>
+                    <p>If you created the Makefile in the previous step, you can program the FPGA with:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>prog
+</code></pre></div></div>
 
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
+                    <h2>Programming the Flash (Optional)</h2>
+                    <p>To make your design persistent across power cycles, you can program the onboard flash chip. The FPGA will then automatically configure itself from flash on each power-up.</p>
+                    <h3>Board Setup</h3>
+                    <p>Configure the board as follows:</p>
+                    <ol>
+                    <li>Set the configuration mode jumper to <strong>MM</strong> (Master Mode)</li>
+                    <li>Connect the <strong>LED EN</strong> jumper to enable the LEDs</li>
+                    <li>Disconnect USB and 5V power — the JayProg will supply 3.3V through the <strong>3V3</strong> and <strong>GND</strong> pins</li>
+                    </ol>
+                    <p></p><div class="img-wrapper"><img alt="Board setup diagram" src="diag/mm_mode.svg" style="width: 20rem;"/></div><p></p>
+                    <h3>Programming Command</h3>
+                    <p>Run:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>iceprog<span class="w"> </span>-p<span class="w"> </span>-d<span class="w"> </span>i:0x0403:0x6010<span class="w"> </span>gen/top.bin
+</code></pre></div></div>
 
-                    ## General Inquiries
+                    <p>After programming completes, the FPGA will enter Master Mode and load the bitstream from flash. The <strong>USR</strong> LED should start blinking immediately.</p>
+                    <p>You can now disconnect the JayProg. The design will automatically load whenever the board is powered on.</p>
+                    <h3>Using the Makefile</h3>
+                    <p>If using the Makefile:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>make<span class="w"> </span>flash
+</code></pre></div></div>
 
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
-
-                    ## Support
-
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <h2>Congratulations!</h2>
+                    <p>You've successfully created and programmed your first FPGA design on the Bluejay!</p></div>
+                <div class="main-navbar">
+                    <a class="button navbar-button" href="/docs/bluejay/getting_started/building_the_bitstream/index.html">
+                        Back
+                    </a>
+                </div>
             </div>
         </div>
 

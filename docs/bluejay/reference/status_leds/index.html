@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Contact - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Contact | Bluejay Devices</title>
+        <meta content="Status LEDs - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Status LEDs | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body data-page-id="contact">
+    <body data-page-id="docs-bluejay-reference-status_leds">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,22 +269,17 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Contact Us</h1>
-                    <p>For general questions or technical support, please email <a href="mailto:support@bluejaydevices.com">support@bluejaydevices.com</a>. </p>
-                    <!--
-
-                    # Contact Us
-
-                    We'd love to hear from you! Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
-
-                    ## General Inquiries
-
-                    For general questions, please email us at [info@bluejaydevices.com](mailto:info@bluejaydevices.com).
-
-                    ## Support
-
-                    For technical support, please check our [documentation](/docs/board_overview/index.html) or email [support@bluejaydevices.com](mailto:support@bluejaydevices.com).
-                    --></div>
+                    <h1>Status LEDs</h1>
+                    <p>The Bluejay includes two status LEDs, <strong>PWR</strong> and <strong>USR</strong>, to provide visual feedback to users.</p>
+                    <p>The <strong>PWR</strong> LED is driven from the 3.3V power rail and indicates the board is receiving power.</p>
+                    <p>The <strong>USR</strong> LED is connected to one of the FPGA's programmable I/O pins (<code>E1</code>) and its function is left up to the application. Note that the FPGA's PIO pin connected to the <strong>USR</strong> LED is also connected to the <strong>D16</strong> header pin.</p>
+                    <p></p><div class="img-wrapper"><img alt="Status LEDs diagram" src="diag/status_leds.svg" style="width: 25rem;"/></div><p></p>
+                    <h2>Disconnecting the LEDs</h2>
+                    <p>Each LED consumes approximately 4 mA when turned on. While status LEDs can be useful during prototyping, the additional current draw may be undesirable in power-constrained applications. To conserve power, the board provides a mechanism to disconnect the LEDs using the <strong>LED EN</strong> jumper located next to the <strong>USB-C</strong> connector.</p>
+                    <p></p><div class="img-wrapper"><img alt="LED enable jumper diagram" src="diag/led_en.svg" style="width: 25rem;"/></div><p></p>
+                    <p>When the jumper is connected, the <strong>PWR</strong> and <strong>USR</strong> LEDs are enabled. When the jumper is removed, the LEDs are disconnected.</p>
+                    <p>The diagram below shows the implementation of the LED circuit.</p>
+                    <p></p><div class="img-wrapper"><img alt="LED circuit diagram" src="diag/led_circuit.svg" style="width: 25rem;"/></div><p></p></div>
             </div>
         </div>
 
