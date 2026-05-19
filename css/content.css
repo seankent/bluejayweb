@@ -450,6 +450,21 @@ html .markdown-content * {
 }
 
 
+.markdown-content .callout {
+    border-width: var(--border-width) var(--border-width) var(--border-width) calc(var(--border-width) * 4);
+    border-style: solid;
+    border-color: var(--blue-4);
+    background-color: var(--blue-0);
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1rem;
+}
+
+.markdown-content .callout > p {
+    margin: 0;
+}
+
+
+
 @media (hover: hover) and (pointer: fine) {
     .copy-button:hover {
         //background-color: rgba(200, 200, 200, 0.2);

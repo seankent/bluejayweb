@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Installing the Tools - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Installing the Tools | Bluejay Devices</title>
+        <meta content="Creating the Design - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Creating the Design | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body class="show-side-nav" data-page-id="docs-bluejay-getting_started-installing_the_tools">
+    <body class="show-side-nav" data-page-id="docs-bluejay-getting_started-creating_the_design">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,130 +269,154 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Installing the Tools</h1>
+                    <h1>Creating the Design</h1>
                     <h2>Overview</h2>
-                    <p>To use the Bluejay, you'll need a set of command-line tools that convert your RTL design into a bitstream and load it onto the FPGA. The recommended method is to install the <strong>OSS CAD Suite</strong> from YosysHQ, which bundles all required tools in a single pre-built package for Linux, macOS, and Windows.</p>
-                    <h2>Download</h2>
-                    <p>Visit the <a href="https://github.com/YosysHQ/oss-cad-suite-build/releases/latest">OSS CAD Suite releases page</a> and download the archive for your operating system and architecture:</p>
-                    <div class="table-wrapper"><table>
-                    <thead>
-                    <tr>
-                    <th>Platform</th>
-                    <th>File</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    <td>Linux x64</td>
-                    <td><code>oss-cad-suite-linux-x64-&lt;date&gt;.tgz</code></td>
-                    </tr>
-                    <tr>
-                    <td>macOS x64 (Intel)</td>
-                    <td><code>oss-cad-suite-darwin-x64-&lt;date&gt;.tgz</code></td>
-                    </tr>
-                    <tr>
-                    <td>macOS arm64 (Apple Silicon)</td>
-                    <td><code>oss-cad-suite-darwin-arm64-&lt;date&gt;.tgz</code></td>
-                    </tr>
-                    <tr>
-                    <td>Windows x64</td>
-                    <td><code>oss-cad-suite-windows-x64-&lt;date&gt;.exe</code></td>
-                    </tr>
-                    </tbody>
-                    </table></div>
-                    <h2>Installation</h2>
-                    <h3>Linux</h3>
-                    <p><strong>Extract the archive:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>tar<span class="w"> </span>-xzf<span class="w"> </span>oss-cad-suite-linux-x64-&lt;date&gt;.tgz
-</code></pre></div></div>
-
-                    <p>We recommend placing the extracted folder in <code>/opt/</code>:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>mv<span class="w"> </span>oss-cad-suite<span class="w"> </span>/opt/
-</code></pre></div></div>
-
-                    <p><strong>Add the tools to your PATH:</strong></p>
-                    <p>Add the following line to your shell's configuration file (e.g., <code>~/.bashrc</code>):</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/opt/oss-cad-suite/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
-</code></pre></div></div>
-
-                    <p>Then reload your shell:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/.bashrc<span class="w">   </span><span class="c1"># or your equivalent rc file</span>
-</code></pre></div></div>
-
-                    <h3>macOS</h3>
-                    <p>The instructions below are for Apple Silicon (arm64). If you are on an Intel Mac, replace <code>arm64</code> with <code>x64</code> in the filenames.</p>
-                    <p><strong>Remove the quarantine attribute:</strong></p>
-                    <p>macOS Gatekeeper will block the tools from running unless you remove the quarantine attribute before extracting. Run the following command on the downloaded archive:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>xattr<span class="w"> </span>-d<span class="w"> </span>com.apple.quarantine<span class="w"> </span>oss-cad-suite-darwin-arm64-&lt;date&gt;.tgz
-</code></pre></div></div>
-
-                    <p><strong>Extract the archive:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>tar<span class="w"> </span>-xzf<span class="w"> </span>oss-cad-suite-darwin-arm64-&lt;date&gt;.tgz
-</code></pre></div></div>
-
-                    <p>We recommend placing the extracted folder in <code>/opt/</code>:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>mv<span class="w"> </span>oss-cad-suite<span class="w"> </span>/opt/
-</code></pre></div></div>
-
-                    <p><strong>Add the tools to your PATH:</strong></p>
-                    <p>Add the following line to your shell's configuration file (e.g., <code>~/.zshrc</code>, <code>~/.bashrc</code>):</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/opt/oss-cad-suite/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
-</code></pre></div></div>
-
-                    <p>Then reload your shell:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/.zshrc<span class="w">   </span><span class="c1"># or your equivalent rc file</span>
-</code></pre></div></div>
-
-                    <h3>Windows</h3>
-                    <p><strong>Extract the archive:</strong></p>
-                    <p>The Windows release is a self-extracting archive. Double-click the downloaded <code>.exe</code> and choose an extraction location. <strong>Avoid paths that contain spaces</strong> — use something like <code>C:\oss-cad-suite</code> rather than <code>C:\Program Files\oss-cad-suite</code>.</p>
-                    <p><strong>Add the tools to your PATH:</strong></p>
-                    <ol>
-                    <li>Open the <strong>Start Menu</strong>, search for <strong>"Environment Variables"</strong>, and select <strong>Edit the system environment variables</strong>.</li>
-                    <li>Click <strong>Environment Variables...</strong>.</li>
-                    <li>Under <strong>User variables</strong>, select <strong>Path</strong> and click <strong>Edit...</strong>.</li>
-                    <li>Click <strong>New</strong> and enter the path to the <code>bin</code> folder inside your extracted directory (e.g., <code>C:\oss-cad-suite\bin</code>).</li>
-                    <li>Click <strong>OK</strong> to close each dialog.</li>
-                    </ol>
-                    <p>Open a new terminal for the changes to take effect.</p>
-                    <h2>Verifying the Installation</h2>
-                    <p>Check that the following tools are available:</p>
+                    <p>In this section, you'll create a simple LED blinker that will toggle the Bluejay's <strong>USR</strong> LED on and off at 1 Hz.</p>
+                    <p>The design consists of three modules:</p>
                     <ul>
-                    <li><strong>Yosys</strong> — Synthesizes Verilog/SystemVerilog into a netlist</li>
-                    <li><strong>NextPNR</strong> — Maps the netlist to physical FPGA resources (place-and-route)</li>
-                    <li><strong>IcePack</strong> — Converts the placed design into a binary bitstream</li>
-                    <li><strong>IceProg</strong> — Programs the bitstream onto the iCE40 via an FTDI-based programmer</li>
+                    <li><code>blinky</code> - Implements the core LED blinking logic</li>
+                    <li><code>reset_controller</code> - Generates a power-on reset signal</li>
+                    <li><code>top</code> - Instantiates and connects the blinky and reset controller modules</li>
                     </ul>
-                    <p><strong>Linux/macOS:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>which<span class="w"> </span>yosys
-which<span class="w"> </span>nextpnr-ice40
-which<span class="w"> </span>icepack
-which<span class="w"> </span>iceprog
+                    <h2>Blinky Module</h2>
+                    <p>We'll start by creating the blinky module, which implements the core LED blinking functionality.</p>
+                    <p>The module has two inputs, <code>clk</code> and <code>rst</code>. The <code>clk</code> input will be connected to the board's 12 MHz oscillator and <code>rst</code> will be connected to the output of the reset controller. The module has one output, <code>out</code>, which will be connected to the <strong>USR</strong> LED. Internally, the module uses a 24-bit counter to divide the 12 MHz clock down to achieve a 1 Hz toggle rate.</p>
+                    <p>Create a file called <code>blinky.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">blinky</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5999999</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">rst</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">23</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">out__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="o">~</span><span class="n">out</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">out__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
 </code></pre></div></div>
 
-                    <p><strong>Windows:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>where yosys
-where nextpnr-ice40
-where icepack
-where iceprog
+                    <div class="callout">
+                    <p><strong>NOTE</strong></p>
+                    <p>Throughout this tutorial, we use the <code>__</code> (double underscore) notation to attach suffixes to signal names. For example, we use the <code>__nxt</code> suffix to denote a combinational next-state signal (e.g. <code>cnt__nxt</code> is the value that <code>cnt</code> will take on the next clock edge).</p>
+                    </div>
+                    <h3>How It Works</h3>
+                    <p>To generate a 1 Hz square wave, the design uses a counter (<code>cnt</code>) that increments on each clock cycle. When the counter reaches <code>MAX_COUNT</code>, it resets to 0 and toggles the LED output (<code>out</code>).</p>
+                    <p>The toggle period is determined by how long the counter takes to count from 0 to <code>MAX_COUNT</code>:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code>T_toggle = T_clk * (MAX_COUNT + 1)
 </code></pre></div></div>
 
-                    <p>Each command should return a path to the respective tool.</p>
-                    <h2>Additional Tools</h2>
-                    <p>The OSS CAD Suite includes many other open-source tools useful for FPGA development. Notable among these are:</p>
-                    <ul>
-                    <li><strong>Icarus Verilog</strong> — Verilog simulator for testing your designs</li>
-                    <li><strong>GTKWave</strong> — Waveform viewer for analyzing simulation results and debugging</li>
-                    <li><strong>Cocotb</strong> — Python-based framework for writing testbenches</li>
-                    </ul>
-                    <p>These tools are not required for this tutorial, but we recommend exploring them as your designs grow more complex.</p>
+                    <p>For a 1 Hz blink rate, the LED must toggle every 0.5 seconds. Given a 12 MHz clock, <code>MAX_COUNT</code> can be derived as follows:</p>
+                    <!-- FIXME: using systemverilog here only to preserve whitespace alignment; should use a neutral lexer once the plain pre/code CSS path is fixed -->
+
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T_toggle</span><span class="o">/</span><span class="n">T_clk</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mf">0.5</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">83.33</span><span class="w"> </span><span class="n">ns</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span>
+</code></pre></div></div>
+
+                    <p>In our design, we use a 24-bit counter, which can hold values up to 16,777,215 (and comfortably fits a <code>MAX_COUNT</code> of 5,999,999).</p>
+                    <h2>Reset Controller Module</h2>
+                    <p>Next, we'll create the reset controller to generate a power-on reset signal. This reset signal will be used by the blinky module to ensure all logic starts in a known state.</p>
+                    <p>Create a file called <code>reset_controller.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Systemverilog"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">reset_controller</span>
+<span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">rst</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">rst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="p">);</span>
+
+<span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt__nxt</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <h3>How It Works</h3>
+                    <p>The reset controller uses an 8-bit counter that increments on each clock cycle until it reaches <code>MAX_COUNT</code> (255). While counting, the <code>rst</code> output remains high. Once the counter reaches <code>MAX_COUNT</code>, it stops incrementing and the <code>rst</code> output goes low.</p>
+                    <p>This creates a reset period of 256 clock cycles (approximately 21 µs at 12 MHz). During this time, the blinky module's registers are held in their reset state, ensuring a clean startup.</p>
+                    <p>Note that the reset controller does not include a reset input for the <code>cnt</code> register. Instead, it relies on the fact that flip-flops in iCE40 FPGAs are automatically initialized to 0 during configuration. As a result, <code>cnt</code> starts at zero when the configuration process completes, and the reset sequence begins automatically.</p>
+                    <h2>Top-Level Module</h2>
+                    <p>Finally, we'll create the top-level module to tie everything together.</p>
+                    <p>Create a file called <code>top.sv</code> with the following SystemVerilog code:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+
+<span class="kt">logic</span><span class="w"> </span><span class="n">rst</span><span class="p">;</span>
+
+<span class="n">blinky</span><span class="w"> </span><span class="n">u_blinky</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="n">reset_controller</span><span class="w"> </span><span class="n">u_reset_controller</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rst</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">endmodule</span>
+</code></pre></div></div>
+
+                    <p>This module instantiates both the <code>blinky</code> and <code>reset_controller</code> modules. The <code>rst</code> signal generated by the reset controller is routed internally to the blinky module, while <code>clk</code> and <code>out</code> connect to external pins that we'll define in the next section.</p>
+                    <h2>Pin Constraints</h2>
+                    <p>Now that we have created the design's RTL modules, we need to map the top-level ports to physical pins on the FPGA using a pin constraints file.</p>
+                    <p>Pin constraints files are simple—each line maps a signal in the design to a physical pin on the FPGA package. The basic format is:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code><span class="n">set_io</span><span class="w"> </span><span class="o">&lt;</span><span class="n">signal_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pin_number</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+                    <p>Additionally, we can specify timing constraints such as clock frequencies.</p>
+                    <p>Create a file called <code>top.pcf</code> with the following contents:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>set_io clk C4
+set_io out E1
+set_frequency clk 12.0
+</code></pre></div></div>
+
+                    <p>The first assignment connects <code>clk</code> to pin <code>C4</code>, which is connected to the 12 MHz oscillator on the Bluejay board. The second assignment connects <code>out</code> to pin <code>E1</code>, which drives the <strong>USR</strong> LED (<code>E1</code> is also connected to the <strong>D16</strong> header pin).</p>
+                    <p>For the complete board pinout, see the <a href="/docs/bluejay/hardware/pin_mappings/index.html">Pin Mappings</a> page.</p>
+                    <p>The <code>set_frequency</code> constraint tells the place-and-route tool that the <code>clk</code> signal will run at 12.0 MHz.</p>
+                    <h2>Project Structure</h2>
+                    <p>At this point, your project directory should contain four files:</p>
+                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>.
+├── blinky.sv
+├── reset_controller.sv
+├── top.pcf
+└── top.sv
+</code></pre></div></div>
+
                     <h2>Next Steps</h2>
-                    <p>With your tools installed, you're ready to create your first FPGA design!</p></div>
+                    <p>With your design files created, you're ready to build the bitstream!</p></div>
                 <div class="main-navbar">
-                    <a class="button navbar-button" href="/docs/bluejay/getting_started/overview/index.html">
+                    <a class="button navbar-button" href="/docs/bluejay/getting_started/installing_the_tools/index.html">
                         Back
                     </a>
-                    <a class="button navbar-button" href="/docs/bluejay/getting_started/creating_the_design/index.html">
+                    <a class="button navbar-button" href="/docs/bluejay/getting_started/building_the_bitstream/index.html">
                         Next
                     </a>
                 </div>

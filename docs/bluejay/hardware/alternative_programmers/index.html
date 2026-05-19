@@ -2,8 +2,8 @@
 <html lang="en"><head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="Installing the Tools - Documentation and resources from Bluejay Devices." name="description"/>
-        <title>Installing the Tools | Bluejay Devices</title>
+        <meta content="Alternative Programmers - Documentation and resources from Bluejay Devices." name="description"/>
+        <title>Alternative Programmers | Bluejay Devices</title>
         <link href="/images/logo.svg" rel="icon"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <link href="/css/content.css" rel="stylesheet"/>
@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Nunito:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
     </head>
 
-    <body class="show-side-nav" data-page-id="docs-bluejay-getting_started-installing_the_tools">
+    <body class="show-side-nav" data-page-id="docs-bluejay-hardware-alternative_programmers">
         <div class="header">
             <a class="nav-logo" href="/index.html">
                 <img alt="logo" src="/images/bluejay_devices.svg"/>
@@ -269,133 +269,99 @@
         <div class="main">
             <div class="docs">
                 <div class="markdown-content">
-                    <h1>Installing the Tools</h1>
-                    <h2>Overview</h2>
-                    <p>To use the Bluejay, you'll need a set of command-line tools that convert your RTL design into a bitstream and load it onto the FPGA. The recommended method is to install the <strong>OSS CAD Suite</strong> from YosysHQ, which bundles all required tools in a single pre-built package for Linux, macOS, and Windows.</p>
-                    <h2>Download</h2>
-                    <p>Visit the <a href="https://github.com/YosysHQ/oss-cad-suite-build/releases/latest">OSS CAD Suite releases page</a> and download the archive for your operating system and architecture:</p>
+                    <h1>Alternative Programmers</h1>
+                    <p>If you don't have a JayProg, you can use any FT232H-based USB programmer to configure the Bluejay. Two common options are the FTDI C232HM USB-to-serial cable and the Adafruit FT232H breakout board.</p>
+                    <p>Both use the device ID <code>i:0x0403:0x6014</code> with <code>iceprog</code>. Refer to the <a href="/docs/bluejay/getting_started/programming_the_board/index.html">Programming the Board</a> page for the full programming workflow — just substitute <code>i:0x0403:0x6014</code> for <code>i:0x0403:0x6010</code> in the commands.</p>
+                    <h2>Understanding the Configuration Interface</h2>
+                    <p>Bitstreams are loaded onto the iCE40 using a SPI interface (<code>CS</code>, <code>SCK</code>, <code>MOSI</code>, <code>MISO</code>) and two dedicated configuration signals:</p>
+                    <ul>
+                    <li><code>CRST</code> (an abbreviation for <code>CRESET_B</code>) - Configuration reset</li>
+                    <li><code>CDN</code> (an abbreviation for <code>CDONE</code>) - Configuration done</li>
+                    </ul>
+                    <p>The Bluejay's <strong>CONFIG</strong> interface (located at the bottom of header <strong>J1</strong>) provides access to these signals, along with power and ground.</p>
+                    <h2>FTDI C232HM USB-to-Serial Cable</h2>
+                    <p>The FTDI C232HM cable has a USB Type-A connector on one end and 10 color-coded wires with female headers on the other.</p>
+                    <p>The following table shows how to connect the FTDI cable to the Bluejay:</p>
                     <div class="table-wrapper"><table>
-                    <thead>
-                    <tr>
-                    <th>Platform</th>
-                    <th>File</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                    <td>Linux x64</td>
-                    <td><code>oss-cad-suite-linux-x64-&lt;date&gt;.tgz</code></td>
-                    </tr>
-                    <tr>
-                    <td>macOS x64 (Intel)</td>
-                    <td><code>oss-cad-suite-darwin-x64-&lt;date&gt;.tgz</code></td>
-                    </tr>
-                    <tr>
-                    <td>macOS arm64 (Apple Silicon)</td>
-                    <td><code>oss-cad-suite-darwin-arm64-&lt;date&gt;.tgz</code></td>
-                    </tr>
-                    <tr>
-                    <td>Windows x64</td>
-                    <td><code>oss-cad-suite-windows-x64-&lt;date&gt;.exe</code></td>
-                    </tr>
-                    </tbody>
+                        <colgroup>
+                            <col style="width: 50%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Bluejay Pin Name</th>
+                              <th>FTDI Cable Pin Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>3V3</td><td>VCC</td></tr>
+                            <tr><td>GND</td><td>GND</td></tr>
+                            <tr><td>CS</td><td>GPIOL0</td></tr>
+                            <tr><td>SCK</td><td>TCK/SK</td></tr>
+                            <tr><td>MOSI</td><td>TDI/DO</td></tr>
+                            <tr><td>MISO</td><td>TDO/DI</td></tr>
+                            <tr><td>CRST</td><td>GPIOL3</td></tr>
+                            <tr><td>CDN</td><td>GPIOL2</td></tr>
+                        </tbody>
                     </table></div>
-                    <h2>Installation</h2>
-                    <h3>Linux</h3>
-                    <p><strong>Extract the archive:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>tar<span class="w"> </span>-xzf<span class="w"> </span>oss-cad-suite-linux-x64-&lt;date&gt;.tgz
-</code></pre></div></div>
 
-                    <p>We recommend placing the extracted folder in <code>/opt/</code>:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>mv<span class="w"> </span>oss-cad-suite<span class="w"> </span>/opt/
-</code></pre></div></div>
+                    <p>Unfortunately, the cables are not labeled, so connections must be made based on wire color. For reference, the complete cable pinout is shown below:</p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 10%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 20%;"/>
+                            <col style="width: 30%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Pin</th>
+                              <th>Pin Name</th>
+                              <th>Pin Color</th>
+                              <th>Type</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>VCC</td><td>Red</td><td>Output</td><td>3.3V power output</td></tr>
+                            <tr><td>2</td><td>TCK/SK</td><td>Orange</td><td>Output</td><td>Serial clock</td></tr>
+                            <tr><td>3</td><td>TDI/DO</td><td>Yellow</td><td>Output</td><td>Serial data output</td></tr>
+                            <tr><td>4</td><td>TDO/DI</td><td>Green</td><td>Input</td><td>Serial data input</td></tr>
+                            <tr><td>5</td><td>TMS/CS</td><td>Brown</td><td>Output</td><td>Serial chip select</td></tr>
+                            <tr><td>6</td><td>GPIOL0</td><td>Gray</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>7</td><td>GPIOL1</td><td>Purple</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>8</td><td>GPIOL2</td><td>White</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>9</td><td>GPIOL3</td><td>Blue</td><td>Input/Output</td><td>General purpose input/output</td></tr>
+                            <tr><td>10</td><td>GND</td><td>Black</td><td>GND</td><td>Ground</td></tr>
+                        </tbody>
+                    </table></div>
 
-                    <p><strong>Add the tools to your PATH:</strong></p>
-                    <p>Add the following line to your shell's configuration file (e.g., <code>~/.bashrc</code>):</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/opt/oss-cad-suite/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
-</code></pre></div></div>
-
-                    <p>Then reload your shell:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/.bashrc<span class="w">   </span><span class="c1"># or your equivalent rc file</span>
-</code></pre></div></div>
-
-                    <h3>macOS</h3>
-                    <p>The instructions below are for Apple Silicon (arm64). If you are on an Intel Mac, replace <code>arm64</code> with <code>x64</code> in the filenames.</p>
-                    <p><strong>Remove the quarantine attribute:</strong></p>
-                    <p>macOS Gatekeeper will block the tools from running unless you remove the quarantine attribute before extracting. Run the following command on the downloaded archive:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>xattr<span class="w"> </span>-d<span class="w"> </span>com.apple.quarantine<span class="w"> </span>oss-cad-suite-darwin-arm64-&lt;date&gt;.tgz
-</code></pre></div></div>
-
-                    <p><strong>Extract the archive:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>tar<span class="w"> </span>-xzf<span class="w"> </span>oss-cad-suite-darwin-arm64-&lt;date&gt;.tgz
-</code></pre></div></div>
-
-                    <p>We recommend placing the extracted folder in <code>/opt/</code>:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>sudo<span class="w"> </span>mv<span class="w"> </span>oss-cad-suite<span class="w"> </span>/opt/
-</code></pre></div></div>
-
-                    <p><strong>Add the tools to your PATH:</strong></p>
-                    <p>Add the following line to your shell's configuration file (e.g., <code>~/.zshrc</code>, <code>~/.bashrc</code>):</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/opt/oss-cad-suite/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
-</code></pre></div></div>
-
-                    <p>Then reload your shell:</p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/.zshrc<span class="w">   </span><span class="c1"># or your equivalent rc file</span>
-</code></pre></div></div>
-
-                    <h3>Windows</h3>
-                    <p><strong>Extract the archive:</strong></p>
-                    <p>The Windows release is a self-extracting archive. Double-click the downloaded <code>.exe</code> and choose an extraction location. <strong>Avoid paths that contain spaces</strong> — use something like <code>C:\oss-cad-suite</code> rather than <code>C:\Program Files\oss-cad-suite</code>.</p>
-                    <p><strong>Add the tools to your PATH:</strong></p>
-                    <ol>
-                    <li>Open the <strong>Start Menu</strong>, search for <strong>"Environment Variables"</strong>, and select <strong>Edit the system environment variables</strong>.</li>
-                    <li>Click <strong>Environment Variables...</strong>.</li>
-                    <li>Under <strong>User variables</strong>, select <strong>Path</strong> and click <strong>Edit...</strong>.</li>
-                    <li>Click <strong>New</strong> and enter the path to the <code>bin</code> folder inside your extracted directory (e.g., <code>C:\oss-cad-suite\bin</code>).</li>
-                    <li>Click <strong>OK</strong> to close each dialog.</li>
-                    </ol>
-                    <p>Open a new terminal for the changes to take effect.</p>
-                    <h2>Verifying the Installation</h2>
-                    <p>Check that the following tools are available:</p>
-                    <ul>
-                    <li><strong>Yosys</strong> — Synthesizes Verilog/SystemVerilog into a netlist</li>
-                    <li><strong>NextPNR</strong> — Maps the netlist to physical FPGA resources (place-and-route)</li>
-                    <li><strong>IcePack</strong> — Converts the placed design into a binary bitstream</li>
-                    <li><strong>IceProg</strong> — Programs the bitstream onto the iCE40 via an FTDI-based programmer</li>
-                    </ul>
-                    <p><strong>Linux/macOS:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite" data-lang="Terminal"><pre><span></span><code>which<span class="w"> </span>yosys
-which<span class="w"> </span>nextpnr-ice40
-which<span class="w"> </span>icepack
-which<span class="w"> </span>iceprog
-</code></pre></div></div>
-
-                    <p><strong>Windows:</strong></p>
-                    <div class="code-wrapper"><button aria-label="Copy to clipboard" class="copy-button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><div class="codehilite"><pre><span></span><code>where yosys
-where nextpnr-ice40
-where icepack
-where iceprog
-</code></pre></div></div>
-
-                    <p>Each command should return a path to the respective tool.</p>
-                    <h2>Additional Tools</h2>
-                    <p>The OSS CAD Suite includes many other open-source tools useful for FPGA development. Notable among these are:</p>
-                    <ul>
-                    <li><strong>Icarus Verilog</strong> — Verilog simulator for testing your designs</li>
-                    <li><strong>GTKWave</strong> — Waveform viewer for analyzing simulation results and debugging</li>
-                    <li><strong>Cocotb</strong> — Python-based framework for writing testbenches</li>
-                    </ul>
-                    <p>These tools are not required for this tutorial, but we recommend exploring them as your designs grow more complex.</p>
-                    <h2>Next Steps</h2>
-                    <p>With your tools installed, you're ready to create your first FPGA design!</p></div>
-                <div class="main-navbar">
-                    <a class="button navbar-button" href="/docs/bluejay/getting_started/overview/index.html">
-                        Back
-                    </a>
-                    <a class="button navbar-button" href="/docs/bluejay/getting_started/creating_the_design/index.html">
-                        Next
-                    </a>
-                </div>
+                    <h2>Adafruit FT232H Breakout Board</h2>
+                    <p>The Adafruit FT232H breakout board connects to your computer via USB-C and breaks out the FT232H I/O on two 11-pin headers.</p>
+                    <p>The following table shows how to connect the FT232H breakout board to the Bluejay:</p>
+                    <div class="table-wrapper"><table>
+                        <colgroup>
+                            <col style="width: 50%;"/>
+                            <col style="width: 50%;"/>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                              <th>Bluejay Pin Name</th>
+                              <th>FT232H Breakout Board Pin Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>3V3</td><td>3V</td></tr>
+                            <tr><td>GND</td><td>GND</td></tr>
+                            <tr><td>CS</td><td>D4</td></tr>
+                            <tr><td>SCK</td><td>D0</td></tr>
+                            <tr><td>MOSI</td><td>D1</td></tr>
+                            <tr><td>MISO</td><td>D2</td></tr>
+                            <tr><td>CDN</td><td>D6</td></tr>
+                            <tr><td>CRST</td><td>D7</td></tr>
+                        </tbody>
+                    </table></div></div>
             </div>
         </div>
 
